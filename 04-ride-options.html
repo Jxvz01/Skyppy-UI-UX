@@ -1,0 +1,339 @@
+<!-- 04 Ride Options -->
+<!DOCTYPE html><html class="light" lang="en"><head>
+  <script>
+    if (window === window.parent && !window.location.search.includes('standalone=true')) {
+      window.location.replace('skyppy.html' + '#screen-04');
+    }
+  </script>
+<meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_stack" name="shell-type"><title>Skyppy 2.0</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary": "#546500", "on-primary-fixed-variant": "#0037ba", "secondary-fixed": "#d4ee66", "on-tertiary": "#ffffff", "error": "#ba1a1a", "background": "#f8f9ff", "on-secondary-container": "#586a00", "outline-variant": "#c4c5d8", "tertiary": "#4d5568", "on-error": "#ffffff", "outline": "#747687", "on-background": "#101c2b", "secondary-container": "#d1ec64", "surface-dim": "#cfdbf0", "primary-fixed-dim": "#b8c4ff", "on-surface": "#101c2b", "on-tertiary-fixed": "#141b2c", "on-tertiary-fixed-variant": "#3f4759", "on-primary-fixed": "#001454", "primary-fixed": "#dde1ff", "primary": "#0042dd", "tertiary-fixed": "#dbe2f9", "error-container": "#ffdad6", "surface-container": "#e6eeff", "secondary-fixed-dim": "#b8d24d", "inverse-primary": "#b8c4ff", "surface-bright": "#f8f9ff", "on-secondary-fixed-variant": "#3f4c00", "on-primary": "#ffffff", "surface-container-highest": "#d7e3f8", "primary-container": "#315ef8", "surface-tint": "#174ce8", "on-secondary-fixed": "#181e00", "tertiary-container": "#656d81", "inverse-on-surface": "#eaf1ff", "surface-container-low": "#eff4ff", "on-secondary": "#ffffff", "tertiary-fixed-dim": "#bfc6dc", "surface-container-high": "#dde9fe", "inverse-surface": "#253141", "on-tertiary-container": "#edf0ff", "surface": "#f8f9ff", "surface-variant": "#d7e3f8", "on-surface-variant": "#434655", "on-error-container": "#93000a", "on-primary-container": "#f0f0ff", "surface-container-lowest": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter": "1rem", "margin": "1rem", "space-md": "1rem", "space-xl": "2rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xs": "0.25rem" }, fontFamily: { "numeric-xl": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "numeric-md": ["Inter"], "label-sm": ["Inter"], "label-lg": ["Inter"], "headline-xl-mobile": ["Manrope"], "headline-xl": ["Manrope"], "headline-md": ["Manrope"], "label-md": ["Inter"], "headline-lg": ["Manrope"], "body-sm": ["Inter"] }, fontSize: { "numeric-xl": ["24px", { "lineHeight": "28px", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "22px", "fontWeight": "500" }], "numeric-md": ["16px", { "lineHeight": "20px", "fontWeight": "700" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.04em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }] } } } };</script><style>@layer base{html,body{width:100vw;min-height:100vh;margin:0;padding:0;}body{overscroll-behavior-y:none;background-color:#f8f9ff;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><button aria-label="Go back" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-[0.98] transition-all" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';" type="button" data-navigate="03-location-selection"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><h1 class="font-headline-md text-headline-md text-on-surface">04 Ride Options</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Help &amp; Safety" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">shield</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full pb-8">
+<div class="px-margin pt-2 flex flex-col gap-space-md">
+<!-- Route & Trip Context Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span class="truncate max-w-[120px]">VVCE, Gokulam</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+<span class="truncate max-w-[130px]">JSS Medical</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">
+          Best Price
+        </span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2 text-on-surface">
+<div class="flex items-center gap-1 font-numeric-md text-numeric-md">
+<span class="material-symbols-outlined text-[18px] text-primary">schedule</span>
+<span class="">12 min</span>
+</div>
+<span class="text-outline-variant font-body-sm text-body-sm">•</span>
+<div class="flex items-center gap-1 font-body-md text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">route</span>
+<span class="">4.2 km</span>
+</div>
+</div>
+<button class="text-primary font-label-md text-label-md flex items-center gap-0.5 hover:underline" onclick="toggleRouteSummary()" type="button">
+<span class="">Details</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+<div class="hidden pt-2 mt-2 bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm" id="route-drawer">
+<div class="flex justify-between items-center">
+<span class="">Pickup: VVCE Gate 2, Gokulam 3rd Stage</span>
+<span class="text-primary font-label-md text-label-md">Edit</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="">Drop: Main OPD Entrance, Bannimantap</span>
+<span class="text-primary font-label-md text-label-md">Edit</span>
+</div>
+</div>
+</div>
+<!-- Skyppy Miles Micro Banner -->
+<div class="bg-primary/5 rounded-xl px-space-md py-2 flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface">
+          Earn <span class="font-bold text-primary">+4.2 km</span> Skyppy Miles on this ride
+        </p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- Vehicle Options Header -->
+<div class="flex items-center justify-between px-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Available Rides</h2>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live driver density: High
+      </span>
+</div>
+<!-- Vehicle Selector Cards Stack -->
+<div class="flex flex-col gap-space-sm" id="ride-options">
+<!-- 1. Auto Option (Active Selected State) -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-md cursor-pointer transition-all duration-150 transform active:scale-[0.99] shadow-[0_0_0_2px_rgba(0,66,221,1)] bg-surface-container-low" id="card-auto" onclick="selectRide('auto', 76, 'Auto')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Stylized yellow and green Indian three-wheeler auto rickshaw vehicle icon on crisp clean background for tech mobility platform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGpm9AeQiLQG5LlVHb7EORaevjaqZ1oTwZRFLe2w-g9ln09iPFCctXR70CNGfrMtujRzt3ugtB_4MhMdkGq698IXwUIhmJE-VXTGbMG2u4SCfHerWXhruYnnZEsseZj4T16u1lx2xBYsIM6aSztUN8Qx7TPc_pHhk_zWD0g4fVHdgk4CHpWPui_y9GE4TtRK4ZEp2wlSOuHfnIacHeiUiifs0yp2LWv4OqayF-9iY">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-secondary-container text-on-secondary-container">FAST</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">Auto</span>
+<span class="bg-primary/10 text-primary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-semibold">Fastest</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">2-3 seats</span>
+<span class="">•</span>
+<span class="text-primary font-semibold">4 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹76</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant line-through">₹91</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary" id="check-auto">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Mini Option -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-xs hover:shadow-sm cursor-pointer transition-all duration-150 transform active:scale-[0.99]" id="card-mini" onclick="selectRide('mini', 112, 'Mini AC')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Sleek white compact hatchback car on minimal studio background for clean smart ridesharing mobility visual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZJfUqQkJFghgZADqli2xaHfNEHX0jU0iax2aksqptqZC25FfypSO8Gz7JRaAuahfMFqegLAnayF0QBAwlsGSgitztasxWadQtLaj3sETr4R9du2MuY9R8LwHZp2b1qcRGKr-btYB9r22yrrNlzlkVV2EjkL0w10t8sbUER6Pp_OQl9f4N-RgM8dIDXNRjmCSTSeAPZsfDdkdM4W35_-y1xcEAQ_52OvLtObZBzQI">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-surface-container-highest text-on-surface-variant">AC</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Mini</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Hatchback</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">4 seats</span>
+<span class="">•</span>
+<span class="">5 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹112</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Standard</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent" id="check-mini">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Sedan Option -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-xs hover:shadow-sm cursor-pointer transition-all duration-150 transform active:scale-[0.99]" id="card-sedan" onclick="selectRide('sedan', 156, 'Sedan Comfort')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Modern premium dark blue executive sedan car side angle isometric view clean ride app representation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEQGdaqpK4uMsCxH32_81v-AWAwHK-OYkVaAWmhLN6MQ_Kb4nu0Ds_wqw6R8nY8bYA7v-40LP5Blaa9YoPyxTJCvYVZkYw1ZaWUMrn0By6_fLg6ZaaAE6iVvdNBcFNtP5eHb6f7kh6tLN49PtXbEyek_Rwh7cmVGQ50PXyhjDUBkfUVdx_f5RhLXxqfx8XZHVMdtIAFaNyBm0NfIHTGI2OTtCiLdxYCAPfc1p7qms">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-primary-fixed text-on-primary-fixed">PREMIUM</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Sedan</span>
+<span class="bg-secondary-container/60 text-on-secondary-container font-label-sm text-label-sm px-1 rounded">Top Rated</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">4 seats</span>
+<span class="">•</span>
+<span class="">6 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹156</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Quiet ride</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent" id="check-sedan">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. SUV Option -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-xs hover:shadow-sm cursor-pointer transition-all duration-150 transform active:scale-[0.99]" id="card-suv" onclick="selectRide('suv', 228, 'SUV Extra')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Spacious silver modern SUV car icon illustration with large cabin for comfortable group commuting app ui" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3s58WZXFPYiIC2s4j-U5YtUKAKpikVbTnWap-mOLmRCOCS5l80Ov3SpHJod0DXLyG0gHquUqgBmxRGL5utBB-rzd9yE9t-ePbpoc4h_tOpbPB02q6yHN4240Lj1E-b3meWChrq0L-0ZTGjRQNVv4SJ04NSOZiVdGasTRYQDKVGKzhIO5gSv6iLqnZhZtGiJ6e7JKHPpyhx5vs9MxTJ2wPMA18OHygyNVBhCipHr4">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-surface-container-highest text-on-surface-variant">6 SEATER</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">SUV</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Extra Space</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">6 seats</span>
+<span class="">•</span>
+<span class="">7 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹228</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Groups</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent" id="check-suv">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Skyppy SafeRide Protection Card -->
+<div class="bg-surface-container-low rounded-2xl p-space-md flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Skyppy SafeRide Protection</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Verified drivers, continuous SOS monitoring &amp; live route telemetry</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[20px]">info</span>
+</div>
+<!-- Payment & Coupon Section -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<!-- Primary Payment Method Selector -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Pay with UPI</span>
+<span class="font-numeric-md text-numeric-md text-on-surface-variant font-normal">•••• 2590</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary font-medium">Auto-debit on drop-off</span>
+</div>
+</div>
+<button class="px-3 py-1 rounded-full bg-surface-container text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">
+          Change
+        </button>
+</div>
+<!-- Applied Promo Voucher Bar -->
+<div class="flex items-center justify-between pt-2 mt-1 bg-surface-container-low rounded-xl px-space-md py-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">local_offer</span>
+<span class="font-label-md text-label-md text-on-surface">Coupon <span class="font-bold text-on-surface font-numeric-md">MILES15</span> applied</span>
+</div>
+<span class="font-numeric-md text-numeric-md text-secondary font-bold">-₹15</span>
+</div>
+</div>
+<!-- Booking Floating Action Wrapper -->
+<div class="sticky bottom-0 pt-2 pb-2 bg-gradient-to-t from-surface via-surface/90 to-transparent">
+<button class="w-full h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-between px-6 transition-all duration-200 hover:brightness-105 active:scale-[0.98] cursor-pointer" id="book-cta" type="button" data-navigate="05-booking-confirmation" onclick="window.parent?.postMessage({type:'navigate', screen:'05 Booking Confirmation'}, '*'); window.location.hash='#screen-05';">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md font-bold" id="cta-label">Book Auto</span>
+<span class="text-on-primary/60 font-body-md text-body-md">•</span>
+<span class="font-numeric-xl text-numeric-xl" id="cta-price">₹76</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-lg text-label-lg font-semibold">Confirm</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</div>
+</button>
+<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-2">
+        Guaranteed fare lock • Free cancellation within 3 mins
+      </p>
+</div>
+</div>
+</div>
+<script>
+  let currentSelection = {
+    id: 'auto',
+    name: 'Auto',
+    fare: 76
+  };
+
+  function toggleRouteSummary() {
+    const drawer = document.getElementById('route-drawer');
+    if (drawer) {
+      drawer.classList.toggle('hidden');
+    }
+  }
+
+  function selectRide(id, fare, name) {
+    currentSelection = { id, fare, name };
+    if (window.SkyppyApp) { SkyppyApp.state.selectedVehicleId = id; localStorage.setItem('skyppy_selected_vehicle', id); }
+    const allCards = document.querySelectorAll('.vehicle-card');
+    allCards.forEach(card => {
+      card.classList.remove('shadow-[0_0_0_2px_rgba(0,66,221,1)]', 'bg-surface-container-low');
+      card.classList.add('bg-surface-container-lowest');
+    });
+
+    const activeCard = document.getElementById('card-' + id);
+    if (activeCard) {
+      activeCard.classList.remove('bg-surface-container-lowest');
+      activeCard.classList.add('shadow-[0_0_0_2px_rgba(0,66,221,1)]', 'bg-surface-container-low');
+    }
+
+    const checkIds = ['auto', 'mini', 'sedan', 'suv'];
+    checkIds.forEach(k => {
+      const el = document.getElementById('check-' + k);
+      if (el) {
+        if (k === id) {
+          el.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary transition-all';
+        } else {
+          el.className = 'w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent transition-all';
+        }
+      }
+    });
+
+    const ctaLabel = document.getElementById('cta-label');
+    const ctaPrice = document.getElementById('cta-price');
+    if (ctaLabel) ctaLabel.textContent = 'Book ' + name;
+    if (ctaPrice) ctaPrice.textContent = '₹' + fare;
+  }
+</script></main>
+
+
+<!-- Standalone Navigation Bridge -->
+<script>
+(function() {
+  document.addEventListener('click', function(e) {
+    const target = e.target.closest('[data-navigate]');
+    if (target) {
+      const navTarget = target.getAttribute('data-navigate');
+      if (navTarget) {
+        // If not inside an iframe, navigate directly to HTML file
+        if (window === window.top) {
+          e.preventDefault();
+          window.location.href = navTarget + '.html';
+        }
+      }
+    }
+  }, true);
+})();
+</script>
+<script src="skyppy-core.js"></script>
+</body>
+</html>
