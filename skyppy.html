@@ -1,0 +1,2990 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <script>
+    if (window === window.parent && !window.location.search.includes('standalone=true')) {
+      window.location.replace('skyppy.html' + '#screen-01');
+    }
+  </script>
+<meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><title>Skyppy 2.0</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary": "#546500", "on-primary-fixed-variant": "#0037ba", "secondary-fixed": "#d4ee66", "on-tertiary": "#ffffff", "error": "#ba1a1a", "background": "#f8f9ff", "on-secondary-container": "#586a00", "outline-variant": "#c4c5d8", "tertiary": "#4d5568", "on-error": "#ffffff", "outline": "#747687", "on-background": "#101c2b", "secondary-container": "#d1ec64", "surface-dim": "#cfdbf0", "primary-fixed-dim": "#b8c4ff", "on-surface": "#101c2b", "on-tertiary-fixed": "#141b2c", "on-tertiary-fixed-variant": "#3f4759", "on-primary-fixed": "#001454", "primary-fixed": "#dde1ff", "primary": "#0042dd", "tertiary-fixed": "#dbe2f9", "error-container": "#ffdad6", "surface-container": "#e6eeff", "secondary-fixed-dim": "#b8d24d", "inverse-primary": "#b8c4ff", "surface-bright": "#f8f9ff", "on-secondary-fixed-variant": "#3f4c00", "on-primary": "#ffffff", "surface-container-highest": "#d7e3f8", "primary-container": "#315ef8", "surface-tint": "#174ce8", "on-secondary-fixed": "#181e00", "tertiary-container": "#656d81", "inverse-on-surface": "#eaf1ff", "surface-container-low": "#eff4ff", "on-secondary": "#ffffff", "tertiary-fixed-dim": "#bfc6dc", "surface-container-high": "#dde9fe", "inverse-surface": "#253141", "on-tertiary-container": "#edf0ff", "surface": "#f8f9ff", "surface-variant": "#d7e3f8", "on-surface-variant": "#434655", "on-error-container": "#93000a", "on-primary-container": "#f0f0ff", "surface-container-lowest": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter": "1rem", "margin": "1rem", "space-md": "1rem", "space-xl": "2rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xs": "0.25rem" }, fontFamily: { "numeric-xl": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "numeric-md": ["Inter"], "label-sm": ["Inter"], "label-lg": ["Inter"], "headline-xl-mobile": ["Manrope"], "headline-xl": ["Manrope"], "headline-md": ["Manrope"], "label-md": ["Inter"], "headline-lg": ["Manrope"], "body-sm": ["Inter"] }, fontSize: { "numeric-xl": ["24px", { "lineHeight": "28px", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "22px", "fontWeight": "500" }], "numeric-md": ["16px", { "lineHeight": "20px", "fontWeight": "700" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.04em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }] } } } };</script><style>@layer base{html,body{width:100vw;min-height:100vh;margin:0;padding:0;}body{overscroll-behavior-y:none;background-color:#f8f9ff;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style></head>
+<style>
+  /* Custom scrollbar and standalone frame styling */
+  ::-webkit-scrollbar { display: none; }
+  * { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0b1320;
+    font-family: 'Inter', sans-serif;
+  }
+
+  #smartphone-preview-frame {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    max-height: 100vh;
+    border-radius: 46px;
+    background-color: #f8f9ff;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 12px #1f2937, 0 0 0 14px #374151;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 480px) {
+    body { background-color: #f8f9ff; }
+    #smartphone-preview-frame {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    #phone-dynamic-island { display: none; }
+  }
+
+  #phone-viewport {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+  }
+
+  .screen-section {
+    display: none;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  .screen-section.active {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+<body class="antialiased">
+
+  <!-- SMARTPHONE SHELL PREVIEW CONTAINER -->
+  <div id="smartphone-preview-frame">
+    <!-- Realistic Status Bar -->
+    <div class="h-11 w-full bg-surface/90 backdrop-blur-md sticky top-0 z-[60] flex items-center justify-between px-7 text-xs font-semibold text-on-surface select-none border-b border-surface-container-low/40">
+      <span id="status-clock" class="tracking-tight">09:41</span>
+      <!-- Dynamic Island Pill -->
+      <div id="phone-dynamic-island" class="w-24 h-4 bg-black rounded-full shadow-inner flex items-center justify-end px-2 gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-800"></span>
+        <span class="w-2 h-2 rounded-full bg-blue-950/80"></span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+        <span class="material-symbols-outlined text-[14px]">wifi</span>
+        <span class="material-symbols-outlined text-[16px] text-secondary">battery_full</span>
+      </div>
+    </div>
+
+    <!-- PHONE VIEWPORT (CONTAINS ALL 10 SCREENS) -->
+    <div id="phone-viewport">
+      <!-- Screen 01: Rides Home -->
+      <section id="screen-01" class="screen-section active">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><div class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[24px]">near_me</span></div><div class="flex flex-col"><span class="font-headline-md text-headline-md text-on-surface leading-tight">Skyppy</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Urban Mobility</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="Notifications" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Midnight Navy Hero & Royal Mysuru Skyline Canopy -->
+<div class="relative overflow-hidden bg-inverse-surface text-inverse-on-surface px-margin pt-4 pb-6 shadow-md rounded-b-[28px]">
+<!-- Ambient Heritage Glow & Radial Luster -->
+<div class="absolute -top-12 -right-10 w-56 h-56 rounded-full bg-primary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/2 -left-12 w-44 h-44 rounded-full bg-secondary-container/15 blur-2xl pointer-events-none"></div>
+<!-- Mysuru Palace Skyline Vector Illustration (Silhouette) -->
+<svg class="absolute bottom-0 right-0 w-64 h-28 opacity-15 pointer-events-none text-inverse-on-surface" fill="none" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+<path d="M160 30L170 55H150L160 30Z" fill="currentColor"></path>
+<path d="M160 10C155 10 152 20 152 25C152 28 156 30 160 30C164 30 168 28 168 25C168 20 165 10 160 10Z" fill="currentColor"></path>
+<rect fill="currentColor" height="85" width="36" x="142" y="55"></rect>
+<rect fill="#101c2b" height="18" rx="4" width="8" x="148" y="70"></rect>
+<rect fill="#101c2b" height="18" rx="4" width="8" x="164" y="70"></rect>
+<!-- Left Domes & Pillars -->
+<path d="M90 45C85 45 80 52 80 60H100C100 52 95 45 90 45Z" fill="currentColor"></path>
+<rect fill="currentColor" height="80" width="28" x="76" y="60"></rect>
+<rect fill="#101c2b" height="25" rx="7" width="14" x="83" y="75"></rect>
+<path d="M35 60C30 60 26 66 26 72H44C44 66 40 60 35 60Z" fill="currentColor"></path>
+<rect fill="currentColor" height="68" width="22" x="24" y="72"></rect>
+<!-- Right Domes & Pillars -->
+<path d="M230 45C225 45 220 52 220 60H240C240 52 235 45 230 45Z" fill="currentColor"></path>
+<rect fill="currentColor" height="80" width="28" x="216" y="60"></rect>
+<rect fill="#101c2b" height="25" rx="7" width="14" x="223" y="75"></rect>
+<path d="M285 60C280 60 276 66 276 72H294C294 66 290 60 285 60Z" fill="currentColor"></path>
+<rect fill="currentColor" height="68" width="22" x="274" y="72"></rect>
+<!-- Base Tier Architecture -->
+<rect fill="currentColor" height="25" width="320" x="0" y="115"></rect>
+<circle cx="160" cy="8" fill="#d1ec64" r="3"></circle>
+</svg>
+<!-- Top Greeting with Live Transit Micro-Pill -->
+<div class="relative z-10 flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-secondary-fixed font-semibold tracking-wide">MYSURU TRANSIT LIVE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed animate-pulse"></span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-highest/20 backdrop-blur-md px-2.5 py-1 rounded-full text-inverse-on-surface">
+<span class="material-symbols-outlined text-[15px] text-secondary-fixed">partly_cloudy_day</span>
+<span class="font-label-sm text-label-sm font-medium">27°C • Clear Roads</span>
+</div>
+</div>
+<!-- Editorial Header Headline -->
+<div class="relative z-10 mb-4">
+<span class="font-body-sm text-body-sm text-outline-variant block mb-0.5">Good morning, Jeevan</span>
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-inverse-on-surface tracking-tight font-extrabold">Where are we going today?</h1>
+</div>
+<!-- Dual Mobility Booking Modes -->
+<div class="relative z-10 flex items-center gap-2">
+<button class="flex-1 h-11 px-4 rounded-xl bg-primary-container text-on-primary flex items-center justify-center gap-2 font-label-lg text-label-lg shadow-sm active:scale-[0.98] transition-transform cursor-pointer" type="button" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" data-navigate="02-destination-search">
+<span class="material-symbols-outlined text-[18px]">local_taxi</span>
+<span class="">Instant Ride</span>
+</button>
+<button class="flex-1 h-11 px-4 rounded-xl bg-surface-container-highest/25 hover:bg-surface-container-highest/35 backdrop-blur-md text-inverse-on-surface flex items-center justify-center gap-2 font-label-lg text-label-lg active:scale-[0.98] transition-transform" type="button" onclick="SkyppyApp.openModal(\'skyppy-schedule\')" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">calendar_clock</span>
+<span class="">Schedule Trip</span>
+</button>
+</div>
+</div>
+<!-- Interactive Search & Booking Elevated Module -->
+<div class="px-margin -mt-3 relative z-20">
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-[0_8px_24px_rgba(16,28,43,0.08)] flex flex-col gap-3">
+<!-- Origin Input Bar -->
+<div class="flex items-center justify-between bg-surface-container-low px-3.5 py-2.5 rounded-xl">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container shrink-0 shadow-[0_0_0_3px_rgba(49,94,248,0.2)]"></div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-tertiary">Pickup Location</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold truncate">VVCE, Gokulam, Mysuru</span>
+</div>
+</div>
+<button aria-label="Swap or locate" class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-xs hover:bg-surface-container transition-colors shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+</div>
+<!-- Destination Search Interactive Trigger Field -->
+<div class="flex items-center gap-2 bg-surface-container-low px-3.5 py-3 rounded-xl focus-within:bg-surface-container-lowest focus-within:shadow-[0_0_0_2px_#315ef8] transition-all cursor-pointer active:scale-[0.98]" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" data-navigate="02-destination-search">
+<span class="material-symbols-outlined text-[20px] text-error shrink-0">location_on</span>
+<input class="w-full bg-transparent font-body-lg text-body-lg text-on-surface placeholder:text-outline focus:outline-none" placeholder="Where to in Mysuru?" type="text">
+<button aria-label="Voice search" class="w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center text-primary-container hover:bg-primary-container/20 transition-colors shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Smart Repeat-Trip One-Tap Shortcut -->
+<div class="px-margin pt-4">
+<div class="bg-surface-container-low rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-xs">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">electric_rickshaw</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Repeat Recent</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-tertiary">Auto</span>
+</div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold truncate">VVCE → JSS Medical College</p>
+</div>
+</div>
+<button class="shrink-0 h-9 px-3 bg-on-surface text-surface-container-lowest rounded-xl font-label-md text-label-md font-bold flex items-center gap-1 hover:bg-inverse-surface transition-colors shadow-xs active:scale-95" type="button" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" data-navigate="02-destination-search">
+<span class="">Book</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Quick Access Destinations 4-Column Grid -->
+<div class="px-margin pt-4">
+<div class="flex items-center justify-between mb-2.5">
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider text-tertiary">Quick Shortcuts</span>
+<button class="font-label-sm text-label-sm text-primary font-semibold hover:underline" type="button">Manage</button>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95" type="button" onclick="SkyppyApp.navigateTo(\'03-location-selection\', {destination: \'Home, Shivarathreeshwara Nagar\'});" data-navigate="03-location-selection">
+<div class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">home</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-on-surface leading-tight">Home</span>
+<span class="font-label-sm text-label-sm text-outline">2.4 km</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95" type="button" onclick="SkyppyApp.navigateTo(\'03-location-selection\', {destination: \'Work, VVCE Gokulam\'});" data-navigate="03-location-selection">
+<div class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">apartment</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-on-surface leading-tight">Work</span>
+<span class="font-label-sm text-label-sm text-outline">Gokulam</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95" type="button" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';">
+<div class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-on-surface leading-tight">Saved</span>
+<span class="font-label-sm text-label-sm text-outline">6 spots</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95" type="button" onclick="SkyppyApp.navigateTo(\'03-location-selection\', {destination: \'Mysuru Railway Station\'});" data-navigate="03-location-selection">
+<div class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">train</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-on-surface leading-tight">Station</span>
+<span class="font-label-sm text-label-sm text-outline">Direct</span>
+</button>
+</div>
+</div>
+<!-- Skyppy Miles Loyalty / Frequent Commuter Card -->
+<div class="px-margin pt-4">
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-inverse-surface via-[#1b2537] to-on-primary-fixed p-4 text-inverse-on-surface shadow-md">
+<div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-primary/20 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex items-start justify-between mb-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">military_tech</span>
+</div>
+<div>
+<span class="font-label-md text-label-md font-bold text-secondary-fixed block leading-tight">Skyppy Miles</span>
+<span class="font-label-sm text-label-sm text-outline-variant">Tier-2 Platinum Commuter</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl font-bold tracking-tight text-inverse-on-surface">248.6</span>
+<span class="font-label-sm text-label-sm text-outline-variant ml-0.5">km</span>
+</div>
+</div>
+<!-- Linear Milestone Progress Visual -->
+<div class="relative z-10 space-y-1.5">
+<div class="w-full bg-surface-container-highest/20 h-2 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary-container to-secondary-container rounded-full" style="width: 82.8%;"></div>
+</div>
+<div class="flex items-center justify-between text-outline-variant font-label-sm text-label-sm">
+<span class="text-inverse-on-surface font-medium">51.4 km to 15% Ride Voucher</span>
+<a class="text-secondary-fixed hover:underline flex items-center gap-0.5 font-bold" href="#" onclick="window.parent?.postMessage({type:'navigate', screen:'07 Skyppy Miles'}, '*'); window.location.hash='#screen-07'; return false;" data-navigate="07-skyppy-miles">
+<span class="">View Rewards</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Destinations Ride Log -->
+<div class="px-margin pt-5 pb-6">
+<div class="flex items-center justify-between mb-3">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Recent Destinations</h2>
+<a class="font-label-md text-label-md text-primary font-semibold hover:underline cursor-pointer" data-navigate="08-activity" onclick="event.preventDefault(); window.parent?.postMessage({type:'navigate', screen:'08 Activity'}, '*'); window.location.hash='#screen-08';">See all</a>
+</div>
+<div class="space-y-2">
+<!-- Destination 1: JSS Hospital -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl shadow-xs flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">local_hospital</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">JSS Medical College &amp; Hospital</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Bannimantap, Mysuru • 4.2 km • ~12 min</span>
+</div>
+</div>
+<button aria-label="Book ride to JSS Medical" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Destination 2: Railway Station -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl shadow-xs flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">directions_subway</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Mysuru Railway Station</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Medar Block, Yadavagiri • 6.1 km • ~18 min</span>
+</div>
+</div>
+<button aria-label="Book ride to Railway Station" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Destination 3: Mysuru Palace -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl shadow-xs flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">castle</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Mysuru Palace (Amba Vilas)</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Sayyaji Rao Rd, Agrahara • 5.8 km • ~16 min</span>
+</div>
+</div>
+<button aria-label="Book ride to Mysuru Palace" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div></main>
+      </section>
+
+      <!-- Screen 02: Destination Search -->
+      <section id="screen-02" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><button aria-label="Go back" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" onclick="window.parent?.postMessage({type:'navigate', screen:'01 Rides Home'}, '*'); window.location.hash='#screen-01';" type="button" data-navigate="01-rides-home"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><h1 class="font-headline-md text-headline-md text-on-surface">02 Destination Search</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Help &amp; Safety" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">shield</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full pb-safe">
+<!-- Search Header Input Block -->
+<section class="px-margin pt-space-xs pb-space-sm bg-surface">
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex flex-col gap-space-xs">
+<!-- Pickup Row (Current location context) -->
+<div class="flex items-center gap-space-sm px-space-xs py-1">
+<div class="w-3 h-3 rounded-full bg-primary flex-shrink-0 flex items-center justify-center">
+<div class="w-1.5 h-1.5 bg-surface-container-lowest rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Pickup</p>
+<p class="font-body-md text-body-md text-on-surface truncate font-medium">VVCE Campus, Gokulam 3rd Stage</p>
+</div>
+<button aria-label="Swap location" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">swap_vert</span>
+</button>
+</div>
+<!-- Divider line with transit dots -->
+<div class="flex items-center gap-3 pl-1.5 py-0.5">
+<div class="w-0.5 h-3 bg-outline-variant/60 rounded-full"></div>
+</div>
+<!-- Destination Search Bar -->
+<div class="flex items-center gap-space-sm bg-surface-container-low rounded-lg px-space-sm py-2">
+<span class="material-symbols-outlined text-error text-[20px] flex-shrink-0">location_on</span>
+<input class="flex-1 min-w-0 bg-transparent text-on-surface font-body-lg text-body-lg placeholder:text-outline focus:outline-none" id="destination-input" placeholder="Search destination in Mysuru..." type="text" value="JSS Medical">
+<button aria-label="Clear input" class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-transform" id="clear-btn" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+<button aria-label="Voice search" class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-sm active:scale-90 transition-transform" id="voice-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Horizontal Filter Chips -->
+<section class="w-full overflow-x-auto px-margin py-space-xs no-scrollbar flex items-center gap-2">
+<button class="filter-chip px-3 py-1.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm active:scale-95 transition-transform" data-filter="all">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span class="">All</span>
+</button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm hover:bg-surface-container-low active:scale-95 transition-transform" data-filter="recent">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span class="">Recent</span>
+</button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm hover:bg-surface-container-low active:scale-95 transition-transform" data-filter="saved">
+<span class="material-symbols-outlined text-[16px]">bookmark</span>
+<span class="">Saved</span>
+</button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm hover:bg-surface-container-low active:scale-95 transition-transform" data-filter="transit">
+<span class="material-symbols-outlined text-[16px]">directions_subway</span>
+<span class="">Nearby Metro &amp; Rail</span>
+</button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm hover:bg-surface-container-low active:scale-95 transition-transform" data-filter="hubs">
+<span class="material-symbols-outlined text-[16px]">local_activity</span>
+<span class="">Popular Hubs</span>
+</button>
+</section>
+<!-- Interactive Pin to Map Fast Action -->
+<section class="px-margin mt-space-sm">
+<div class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl p-space-sm shadow-md flex items-center justify-between active:scale-[0.99] transition-transform cursor-pointer" role="button" tabindex="0" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-on-primary/15 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">pin_drop</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-headline-md text-headline-md leading-none text-on-primary truncate">Set pin on live map</p>
+<p class="font-body-sm text-body-sm text-on-primary-container truncate mt-0.5">Explore landmarks with live traffic overlay</p>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-on-primary/20 flex items-center justify-center flex-shrink-0 ml-2">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</div>
+</div>
+</section>
+<!-- Recent Searches Section -->
+<section class="px-margin mt-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">schedule</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Recent searches</h2>
+</div>
+<button class="font-label-md text-label-md text-primary hover:underline" type="button">See all</button>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Item 1: JSS Hospital -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex items-center justify-between gap-space-sm active:bg-surface-container-low transition-colors cursor-pointer" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';">
+<div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="Sunny daytime shot of the entrance of JSS Hospital and Medical College in Mysuru with clean palm trees and royal Karnataka architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4aBG4_Zth2cyMUEY9o1ZdkvoKIXdgmW2VKUGDa7yfJF2IpW7pdewTuD-7YQt5CTZ2OO6gGbM35R4ZAJU-MVkh-2zzqplT_sS_A6BKXRPOI2xmB4rF-kXaBfmZby5jHMO_VynSj-zL8QwlE31CphabAl6HFcDWzhnIpvbmMg-qcidZ_UfSnqonMauj1Bfs6SFwR6DBl_z-5DSWoTSwklzdMQtvgmEix9nzPP3p8-o">
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-body-lg text-body-lg font-semibold text-on-surface truncate">JSS Medical College &amp; Hospital</p>
+<span class="px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase flex-shrink-0">Fastest</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Bannimantap, Mysuru</p>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-numeric-md text-numeric-md text-primary font-bold">4.2 km</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-outline">~11 mins</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 flex-shrink-0">
+<button aria-label="Book auto directly" class="h-8 px-2.5 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center gap-1 shadow-sm active:scale-95 transition-transform" type="button">
+<span class="">Ride</span>
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Mysuru Railway Station -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex items-center justify-between gap-space-sm active:bg-surface-container-low transition-colors cursor-pointer" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';">
+<div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="Front facade of Mysore Junction Railway Station building displaying the historic dome structure bathed in bright morning light with commuter taxis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWCdro_M8-gy6hjaiF_1Ez9HEA5gODnaOKNqoO22am6QYUD5hhzPj8l6PZ9l5viMhaPNFSGHDrP6h787TAuz9Rc_-53MC1f-eVxpffSIhnoSiEHZ5N54l1YjMMP-vjpmQbqCbKlxIbjwyu9WkduTg2a073IqP-7K5CHVpnr-pg5m9O32Oa0YOgEO5YAT33Dhg3uOFgcBB62MfrFvgfsOqY9BYzjCGY-r5cssQ-7-U">
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Mysuru Railway Station</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Medar Block, Yadavagiri</p>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-numeric-md text-numeric-md text-primary font-bold">6.1 km</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-outline">~16 mins</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 flex-shrink-0">
+<button aria-label="Book auto directly" class="h-8 px-2.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform" type="button">
+<span class="">Ride</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Item 3: Mysuru Palace -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex items-center justify-between gap-space-sm active:bg-surface-container-low transition-colors cursor-pointer" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';">
+<div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="Majestic exterior archway and royal gardens of the Amba Vilas Mysore Palace under a radiant clear blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvBXGv3apiDmTts6j9-SdNT9zyWceTbb3XqfXatKxVRf7-lQduZaqb1YNThaBMytdtCV_XX1SLogRLuWsoX13LizJWKojCzK4JsmC6CwMLN0UZBpd8psBAmhuUzVvm39XTzhRXGmQe1wJ1djfMQoTldCNo3Nth-_XArMNPnOWk6GAkSSPKjMti5z_1UR1gFLHMu2_zmzAGvbdfsWnmrJ8Ro6WI3p1FovwkGMt5PI4">
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Mysuru Palace (Amba Vilas)</p>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-sm text-label-sm uppercase flex-shrink-0">Popular</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Sayyaji Rao Rd, Agrahara</p>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-numeric-md text-numeric-md text-primary font-bold">5.8 km</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-outline">~14 mins</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 flex-shrink-0">
+<button aria-label="Book auto directly" class="h-8 px-2.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform" type="button">
+<span class="">Ride</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Saved Places Grid -->
+<section class="px-margin mt-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">bookmark_added</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Saved places</h2>
+</div>
+<button class="font-label-md text-label-md text-primary hover:underline" type="button">+ Add new</button>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Home Tile -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex flex-col justify-between active:scale-[0.98] transition-transform cursor-pointer" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold bg-secondary-container/40 px-2 py-0.5 rounded-full">3.8 km</span>
+</div>
+<div class="mt-3">
+<p class="font-headline-md text-headline-md text-on-surface font-semibold truncate">Home</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">Shivarathreeshwara Nagar</p>
+</div>
+</div>
+<!-- Work Tile -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex flex-col justify-between active:scale-[0.98] transition-transform cursor-pointer" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">work</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium bg-surface-container px-2 py-0.5 rounded-full">Origin</span>
+</div>
+<div class="mt-3">
+<p class="font-headline-md text-headline-md text-on-surface font-semibold truncate">Work</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">VVCE Campus, Gokulam</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Popular Nearby Hubs -->
+<section class="px-margin mt-space-md mb-space-lg">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">explore</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Popular hubs nearby</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Live ETA</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-space-xs shadow-sm flex flex-col gap-1">
+<!-- Hub 1 -->
+<div class="p-space-sm rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between cursor-pointer" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+</div>
+<div class="min-w-0">
+<p class="font-body-lg text-body-lg font-medium text-on-surface truncate">Nexus Centre City Mall</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Hyder Ali Rd, Nazarbad</p>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<span class="font-numeric-md text-numeric-md text-secondary font-bold">2.4 km</span>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</div>
+</div>
+<div class="h-[1px] bg-surface-container mx-space-sm" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';"></div>
+<!-- Hub 2 -->
+<div class="p-space-sm rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between cursor-pointer" data-navigate="03-location-selection" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">landscape</span>
+</div>
+<div class="min-w-0">
+<p class="font-body-lg text-body-lg font-medium text-on-surface truncate">Chamundi Foothills Entry</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Tavarekatte, Chamundi Hill Rd</p>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<span class="font-numeric-md text-numeric-md text-secondary font-bold">7.9 km</span>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Search Input Script -->
+<script>
+    (function() {
+      const input = document.getElementById('destination-input');
+      const clearBtn = document.getElementById('clear-btn');
+      const voiceBtn = document.getElementById('voice-btn');
+      const chips = document.querySelectorAll('.filter-chip');
+
+      if (clearBtn && input) {
+        clearBtn.addEventListener('click', () => {
+          input.value = '';
+          input.focus();
+        });
+      }
+
+      if (voiceBtn) {
+        voiceBtn.addEventListener('click', () => {
+          voiceBtn.classList.toggle('bg-error');
+          setTimeout(() => {
+            voiceBtn.classList.remove('bg-error');
+          }, 2000);
+        });
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => {
+            c.className = 'filter-chip px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm hover:bg-surface-container-low active:scale-95 transition-transform';
+          });
+          chip.className = 'filter-chip px-3 py-1.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md flex items-center gap-1.5 flex-shrink-0 shadow-sm active:scale-95 transition-transform';
+        });
+      });
+    })();
+  </script>
+</div></main>
+      </section>
+
+      <!-- Screen 03: Location Selection -->
+      <section id="screen-03" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><button aria-label="Go back" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" type="button" data-navigate="02-destination-search"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><h1 class="font-headline-md text-headline-md text-on-surface">03 Location Selection</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Help &amp; Safety" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">shield</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full relative">
+<!-- Interactive Nocturnal Map Canvas -->
+<div class="relative w-full h-[459px] overflow-hidden select-none bg-inverse-surface">
+<!-- Map Vector Ground & Water Bodies -->
+<svg class="absolute inset-0 w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 400 480">
+<defs>
+<!-- Gradients for subtle depth -->
+<linearGradient id="routeGradient" x1="0%" x2="100%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#315ef8"></stop>
+<stop offset="70%" stop-color="#0042dd"></stop>
+<stop offset="100%" stop-color="#5885ff"></stop>
+</linearGradient>
+<radialGradient cx="50%" cy="50%" id="lakeGlow" r="50%">
+<stop offset="0%" stop-color="#1e293b"></stop>
+<stop offset="100%" stop-color="#111827"></stop>
+</radialGradient>
+</defs>
+<!-- Midnight Vector Grid (Road Grid Base) -->
+<g opacity="0.6" stroke="#1e293b" stroke-width="1.2">
+<line x1="-20" x2="420" y1="90" y2="110"></line>
+<line x1="-20" x2="420" y1="170" y2="185"></line>
+<line x1="-20" x2="420" y1="260" y2="280"></line>
+<line x1="-20" x2="420" y1="360" y2="375"></line>
+<line x1="70" x2="90" y1="-20" y2="500"></line>
+<line x1="180" x2="195" y1="-20" y2="500"></line>
+<line x1="280" x2="310" y1="-20" y2="500"></line>
+<line x1="360" x2="375" y1="-20" y2="500"></line>
+</g>
+<!-- Urban Forest / Chamundi Foothills Organic Blocks -->
+<path d="M 280,310 Q 340,300 370,340 T 390,420 L 290,440 Z" fill="#13231f" opacity="0.75"></path>
+<!-- Kukkarahalli Lake Simulation Area -->
+<path d="M 270,170 C 295,150 350,165 365,200 C 375,230 355,275 325,280 C 295,285 260,260 255,225 C 250,195 255,180 270,170 Z" fill="url(#lakeGlow)" stroke="#22394d" stroke-width="1.5"></path>
+<text fill="#64748b" font-family="Inter" font-size="9" font-weight="600" letter-spacing="0.05em" text-anchor="middle" x="312" y="224">KUKKARAHALLI</text>
+<text fill="#475569" font-family="Inter" font-size="8" text-anchor="middle" x="312" y="235">LAKE</text>
+<!-- Secondary Arterial Roads (Mysuru Ring Road & Vinoba Road) -->
+<path d="M 30,420 C 100,380 150,330 200,310 C 250,290 310,310 390,320" fill="none" stroke="#2c394f" stroke-linecap="round" stroke-width="4"></path>
+<path d="M 80,40 C 130,120 180,180 230,220 C 290,265 330,340 370,410" fill="none" stroke="#243042" stroke-linecap="round" stroke-width="5"></path>
+<path d="M 120,440 L 160,280 L 270,140 L 310,60" fill="none" stroke="#243042" stroke-linecap="round" stroke-width="3"></path>
+<!-- Active Journey Route: VVCE Gokulam -> JSS Bannimantap -->
+<!-- Outer Glow Path -->
+<path d="M 95,355 Q 120,330 145,315 T 195,270 L 225,240 Q 250,215 270,180 T 290,135 L 305,95" fill="none" opacity="0.25" stroke="#315ef8" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"></path>
+<!-- Core Electric High-Visibility Navigation Ribbon -->
+<path d="M 95,355 Q 120,330 145,315 T 195,270 L 225,240 Q 250,215 270,180 T 290,135 L 305,95" fill="none" id="routeMain" stroke="url(#routeGradient)" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path>
+<!-- Animated Transit Pulse Segment -->
+<path d="M 195,270 L 225,240 Q 250,215 270,180" fill="none" opacity="0.8" stroke="#ffffff" stroke-dasharray="8 12" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Landmark Identifier: Mysuru Palace reference off-route -->
+<g opacity="0.85" transform="translate(180, 150)">
+<circle cx="0" cy="0" fill="#1b2434" r="14"></circle>
+<circle cx="0" cy="0" fill="#eab308" opacity="0.9" r="5"></circle>
+<text fill="#94a3b8" font-family="Inter" font-size="8" font-weight="600" text-anchor="middle" x="0" y="16">Palace Ward</text>
+</g>
+</svg>
+<!-- Floating Live ETA & Distance Bubble on Route -->
+<div class="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-space-xs bg-inverse-surface/95 text-inverse-on-surface shadow-xl rounded-full px-3 py-1.5 backdrop-blur-md">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+<span class="font-numeric-md text-label-md text-surface-container-lowest font-bold">12 min</span>
+<span class="text-on-surface-variant font-body-sm text-[11px]">•</span>
+<span class="font-body-sm text-[11px] text-surface-variant font-medium">4.2 km</span>
+</div>
+<!-- Origin Landmark Pin: VVCE Gokulam -->
+<div class="absolute left-[82px] top-[342px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-8 h-8 rounded-full bg-primary/30 animate-pulse"></div>
+<div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center shadow-lg">
+<div class="w-2 h-2 rounded-full bg-surface-container-lowest"></div>
+</div>
+</div>
+<div class="mt-1 bg-inverse-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-md">
+<span class="font-label-sm text-[10px] text-surface-bright font-bold tracking-tight">VVCE Pickup</span>
+</div>
+</div>
+<!-- Destination Landmark Pin: JSS Medical College Bannimantap -->
+<div class="absolute left-[305px] top-[85px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-8 h-8 rounded-full bg-error/30 animate-pulse"></div>
+<div class="w-6 h-6 rounded-full bg-error flex items-center justify-center shadow-xl">
+<span class="material-symbols-outlined text-on-error text-[14px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<div class="mt-1 bg-inverse-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-md">
+<span class="font-label-sm text-[10px] text-surface-bright font-bold tracking-tight">JSS Medical</span>
+</div>
+</div>
+<!-- Floating Live Traffic Condition Pill (Top Right Map Canvas) -->
+<div class="absolute top-4 right-margin flex items-center gap-1.5 bg-inverse-surface/85 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<span class="font-label-sm text-[10px] text-secondary-fixed font-bold tracking-wider uppercase">Normal Traffic</span>
+</div>
+<!-- Floating Map Quick-Controls Cluster (Right Side) -->
+<div class="absolute bottom-6 right-margin flex flex-col gap-2.5 z-10">
+<button aria-label="Re-center route" class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-lg flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+<button aria-label="Toggle map perspective" class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-lg flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+</div>
+</div>
+<!-- Draggable Confirmation Bottom Sheet Card -->
+<div class="relative w-full -mt-5 bg-surface-container-lowest rounded-t-[28px] shadow-[0_-8px_30px_rgba(16,28,43,0.08)] px-margin pt-3 pb-8 z-20 flex flex-col">
+<!-- Tactile Drag Handle -->
+<div class="w-full flex justify-center py-1.5 mb-2">
+<div class="w-12 h-1.5 rounded-full bg-surface-variant"></div>
+</div>
+<!-- Header Section of Sheet -->
+<div class="flex items-center justify-between mb-4">
+<div>
+<span class="font-label-sm text-primary uppercase font-bold tracking-wider">Route Verification</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Confirm Ride Route</h2>
+</div>
+<button aria-label="Swap locations" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">swap_vert</span>
+</button>
+</div>
+<!-- Connected Waypoints Container -->
+<div class="bg-surface-container-low rounded-2xl p-space-md mb-4 flex flex-col gap-space-sm relative">
+<!-- Pickup Location Row -->
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+</div>
+<div class="min-w-0">
+<span class="font-label-sm text-on-surface-variant uppercase font-semibold text-[10px]">Pickup Point</span>
+<p class="font-body-lg text-on-surface font-semibold text-[15px] truncate">VVCE, Gokulam</p>
+<p class="font-body-sm text-on-surface-variant text-[12px] truncate">Mysuru, Karnataka 570002</p>
+</div>
+</div>
+<button aria-label="Edit pickup" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors shrink-0" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+<!-- Route Connector Accent Line -->
+<div class="ml-3.5 my-0.5 flex flex-col gap-1">
+<span class="w-0.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="w-0.5 h-1.5 rounded-full bg-outline-variant"></span>
+</div>
+<!-- Destination Location Row -->
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-7 h-7 rounded-full bg-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error text-[16px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="min-w-0">
+<span class="font-label-sm text-on-surface-variant uppercase font-semibold text-[10px]">Drop Destination</span>
+<p class="font-body-lg text-on-surface font-semibold text-[15px] truncate">JSS Medical College</p>
+<p class="font-body-sm text-on-surface-variant text-[12px] truncate">Bannimantap A-Layout, Mysuru</p>
+</div>
+</div>
+<button aria-label="Edit destination" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors shrink-0" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</div>
+<!-- Quick Route Preference Filter Chips -->
+<div class="flex items-center gap-2 mb-5 overflow-x-auto pb-1 no-scrollbar">
+<div class="flex items-center gap-1.5 bg-primary-container/15 text-primary px-3 py-1.5 rounded-full shrink-0">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-md text-label-md font-semibold">Fastest Route</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px]">verified_user</span>
+<span class="font-label-md text-label-md">Verified Drivers</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px]">money_off</span>
+<span class="font-label-md text-label-md">Zero Tolls</span>
+</div>
+</div>
+<!-- Route Metric Summary Bento Pill -->
+<div class="flex items-center justify-between bg-surface-container-high rounded-xl px-4 py-3 mb-5">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">directions_car</span>
+</div>
+<div>
+<span class="font-body-sm text-on-surface-variant text-[11px] block leading-tight">Estimated Distance</span>
+<span class="font-numeric-md text-on-surface font-bold text-[14px]">4.2 Kilometers</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-on-surface-variant text-[11px] block leading-tight">Travel Time</span>
+<span class="font-numeric-md text-secondary font-bold text-[14px]">12 - 14 Mins</span>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full h-[52px] bg-primary text-on-primary rounded-full flex items-center justify-center gap-2 shadow-lg shadow-primary/25 hover:bg-primary-container transition-all active:scale-[0.99] font-headline-md text-headline-md tracking-wide" id="confirmRouteBtn" type="button" onclick="window.parent?.postMessage({type:'navigate', screen:'04 Ride Options'}, '*'); window.location.hash='#screen-04';" data-navigate="04-ride-options">
+<span class="">Continue to Ride Options</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<script>
+  // Micro-interaction for feedback on confirmation click
+  const confirmBtn = document.getElementById('confirmRouteBtn');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', () => {
+      confirmBtn.classList.add('opacity-90', 'scale-[0.98]');
+      setTimeout(() => {
+        confirmBtn.classList.remove('opacity-90', 'scale-[0.98]');
+      }, 150);
+    });
+  }
+</script></main>
+      </section>
+
+      <!-- Screen 04: Ride Options -->
+      <section id="screen-04" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><button aria-label="Go back" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-[0.98] transition-all" onclick="window.parent?.postMessage({type:'navigate', screen:'03 Location Selection'}, '*'); window.location.hash='#screen-03';" type="button" data-navigate="03-location-selection"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><h1 class="font-headline-md text-headline-md text-on-surface">04 Ride Options</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Help &amp; Safety" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">shield</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full pb-8">
+<div class="px-margin pt-2 flex flex-col gap-space-md">
+<!-- Route & Trip Context Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span class="truncate max-w-[120px]">VVCE, Gokulam</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+<span class="truncate max-w-[130px]">JSS Medical</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">
+          Best Price
+        </span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2 text-on-surface">
+<div class="flex items-center gap-1 font-numeric-md text-numeric-md">
+<span class="material-symbols-outlined text-[18px] text-primary">schedule</span>
+<span class="">12 min</span>
+</div>
+<span class="text-outline-variant font-body-sm text-body-sm">•</span>
+<div class="flex items-center gap-1 font-body-md text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">route</span>
+<span class="">4.2 km</span>
+</div>
+</div>
+<button class="text-primary font-label-md text-label-md flex items-center gap-0.5 hover:underline" onclick="toggleRouteSummary()" type="button">
+<span class="">Details</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+<div class="hidden pt-2 mt-2 bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm" id="route-drawer">
+<div class="flex justify-between items-center">
+<span class="">Pickup: VVCE Gate 2, Gokulam 3rd Stage</span>
+<span class="text-primary font-label-md text-label-md">Edit</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="">Drop: Main OPD Entrance, Bannimantap</span>
+<span class="text-primary font-label-md text-label-md">Edit</span>
+</div>
+</div>
+</div>
+<!-- Skyppy Miles Micro Banner -->
+<div class="bg-primary/5 rounded-xl px-space-md py-2 flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface">
+          Earn <span class="font-bold text-primary">+4.2 km</span> Skyppy Miles on this ride
+        </p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- Vehicle Options Header -->
+<div class="flex items-center justify-between px-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Available Rides</h2>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live driver density: High
+      </span>
+</div>
+<!-- Vehicle Selector Cards Stack -->
+<div class="flex flex-col gap-space-sm" id="ride-options">
+<!-- 1. Auto Option (Active Selected State) -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-md cursor-pointer transition-all duration-150 transform active:scale-[0.99] shadow-[0_0_0_2px_rgba(0,66,221,1)] bg-surface-container-low" id="card-auto" onclick="selectRide('auto', 76, 'Auto')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Stylized yellow and green Indian three-wheeler auto rickshaw vehicle icon on crisp clean background for tech mobility platform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGpm9AeQiLQG5LlVHb7EORaevjaqZ1oTwZRFLe2w-g9ln09iPFCctXR70CNGfrMtujRzt3ugtB_4MhMdkGq698IXwUIhmJE-VXTGbMG2u4SCfHerWXhruYnnZEsseZj4T16u1lx2xBYsIM6aSztUN8Qx7TPc_pHhk_zWD0g4fVHdgk4CHpWPui_y9GE4TtRK4ZEp2wlSOuHfnIacHeiUiifs0yp2LWv4OqayF-9iY">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-secondary-container text-on-secondary-container">FAST</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">Auto</span>
+<span class="bg-primary/10 text-primary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-semibold">Fastest</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">2-3 seats</span>
+<span class="">•</span>
+<span class="text-primary font-semibold">4 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹76</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant line-through">₹91</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary" id="check-auto">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Mini Option -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-xs hover:shadow-sm cursor-pointer transition-all duration-150 transform active:scale-[0.99]" id="card-mini" onclick="selectRide('mini', 112, 'Mini AC')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Sleek white compact hatchback car on minimal studio background for clean smart ridesharing mobility visual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZJfUqQkJFghgZADqli2xaHfNEHX0jU0iax2aksqptqZC25FfypSO8Gz7JRaAuahfMFqegLAnayF0QBAwlsGSgitztasxWadQtLaj3sETr4R9du2MuY9R8LwHZp2b1qcRGKr-btYB9r22yrrNlzlkVV2EjkL0w10t8sbUER6Pp_OQl9f4N-RgM8dIDXNRjmCSTSeAPZsfDdkdM4W35_-y1xcEAQ_52OvLtObZBzQI">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-surface-container-highest text-on-surface-variant">AC</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Mini</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Hatchback</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">4 seats</span>
+<span class="">•</span>
+<span class="">5 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹112</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Standard</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent" id="check-mini">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Sedan Option -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-xs hover:shadow-sm cursor-pointer transition-all duration-150 transform active:scale-[0.99]" id="card-sedan" onclick="selectRide('sedan', 156, 'Sedan Comfort')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Modern premium dark blue executive sedan car side angle isometric view clean ride app representation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEQGdaqpK4uMsCxH32_81v-AWAwHK-OYkVaAWmhLN6MQ_Kb4nu0Ds_wqw6R8nY8bYA7v-40LP5Blaa9YoPyxTJCvYVZkYw1ZaWUMrn0By6_fLg6ZaaAE6iVvdNBcFNtP5eHb6f7kh6tLN49PtXbEyek_Rwh7cmVGQ50PXyhjDUBkfUVdx_f5RhLXxqfx8XZHVMdtIAFaNyBm0NfIHTGI2OTtCiLdxYCAPfc1p7qms">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-primary-fixed text-on-primary-fixed">PREMIUM</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Sedan</span>
+<span class="bg-secondary-container/60 text-on-secondary-container font-label-sm text-label-sm px-1 rounded">Top Rated</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">4 seats</span>
+<span class="">•</span>
+<span class="">6 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹156</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Quiet ride</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent" id="check-sedan">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. SUV Option -->
+<div class="vehicle-card relative bg-surface-container-lowest rounded-2xl p-space-md shadow-xs hover:shadow-sm cursor-pointer transition-all duration-150 transform active:scale-[0.99]" id="card-suv" onclick="selectRide('suv', 228, 'SUV Extra')" role="button" tabindex="0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-1 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Spacious silver modern SUV car icon illustration with large cabin for comfortable group commuting app ui" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3s58WZXFPYiIC2s4j-U5YtUKAKpikVbTnWap-mOLmRCOCS5l80Ov3SpHJod0DXLyG0gHquUqgBmxRGL5utBB-rzd9yE9t-ePbpoc4h_tOpbPB02q6yHN4240Lj1E-b3meWChrq0L-0ZTGjRQNVv4SJ04NSOZiVdGasTRYQDKVGKzhIO5gSv6iLqnZhZtGiJ6e7JKHPpyhx5vs9MxTJ2wPMA18OHygyNVBhCipHr4">
+<span class="absolute -bottom-0.5 right-0.5 text-[9px] font-bold px-1 rounded bg-surface-container-highest text-on-surface-variant">6 SEATER</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">SUV</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Extra Space</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span class="">6 seats</span>
+<span class="">•</span>
+<span class="">7 min away</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="font-numeric-xl text-numeric-xl text-on-surface">₹228</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Groups</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent" id="check-suv">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Skyppy SafeRide Protection Card -->
+<div class="bg-surface-container-low rounded-2xl p-space-md flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Skyppy SafeRide Protection</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Verified drivers, continuous SOS monitoring &amp; live route telemetry</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[20px]">info</span>
+</div>
+<!-- Payment & Coupon Section -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<!-- Primary Payment Method Selector -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Pay with UPI</span>
+<span class="font-numeric-md text-numeric-md text-on-surface-variant font-normal">•••• 2590</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary font-medium">Auto-debit on drop-off</span>
+</div>
+</div>
+<button class="px-3 py-1 rounded-full bg-surface-container text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">
+          Change
+        </button>
+</div>
+<!-- Applied Promo Voucher Bar -->
+<div class="flex items-center justify-between pt-2 mt-1 bg-surface-container-low rounded-xl px-space-md py-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">local_offer</span>
+<span class="font-label-md text-label-md text-on-surface">Coupon <span class="font-bold text-on-surface font-numeric-md">MILES15</span> applied</span>
+</div>
+<span class="font-numeric-md text-numeric-md text-secondary font-bold">-₹15</span>
+</div>
+</div>
+<!-- Booking Floating Action Wrapper -->
+<div class="sticky bottom-0 pt-2 pb-2 bg-gradient-to-t from-surface via-surface/90 to-transparent">
+<button class="w-full h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-between px-6 transition-all duration-200 hover:brightness-105 active:scale-[0.98] cursor-pointer" id="book-cta" type="button" data-navigate="05-booking-confirmation" onclick="window.parent?.postMessage({type:'navigate', screen:'05 Booking Confirmation'}, '*'); window.location.hash='#screen-05';">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md font-bold" id="cta-label">Book Auto</span>
+<span class="text-on-primary/60 font-body-md text-body-md">•</span>
+<span class="font-numeric-xl text-numeric-xl" id="cta-price">₹76</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-lg text-label-lg font-semibold">Confirm</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</div>
+</button>
+<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-2">
+        Guaranteed fare lock • Free cancellation within 3 mins
+      </p>
+</div>
+</div>
+</div>
+<script>
+  let currentSelection = {
+    id: 'auto',
+    name: 'Auto',
+    fare: 76
+  };
+
+  function toggleRouteSummary() {
+    const drawer = document.getElementById('route-drawer');
+    if (drawer) {
+      drawer.classList.toggle('hidden');
+    }
+  }
+
+  function selectRide(id, fare, name) {
+    currentSelection = { id, fare, name };
+    if (window.SkyppyApp) { SkyppyApp.state.selectedVehicleId = id; localStorage.setItem('skyppy_selected_vehicle', id); }
+    const allCards = document.querySelectorAll('.vehicle-card');
+    allCards.forEach(card => {
+      card.classList.remove('shadow-[0_0_0_2px_rgba(0,66,221,1)]', 'bg-surface-container-low');
+      card.classList.add('bg-surface-container-lowest');
+    });
+
+    const activeCard = document.getElementById('card-' + id);
+    if (activeCard) {
+      activeCard.classList.remove('bg-surface-container-lowest');
+      activeCard.classList.add('shadow-[0_0_0_2px_rgba(0,66,221,1)]', 'bg-surface-container-low');
+    }
+
+    const checkIds = ['auto', 'mini', 'sedan', 'suv'];
+    checkIds.forEach(k => {
+      const el = document.getElementById('check-' + k);
+      if (el) {
+        if (k === id) {
+          el.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary transition-all';
+        } else {
+          el.className = 'w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-transparent transition-all';
+        }
+      }
+    });
+
+    const ctaLabel = document.getElementById('cta-label');
+    const ctaPrice = document.getElementById('cta-price');
+    if (ctaLabel) ctaLabel.textContent = 'Book ' + name;
+    if (ctaPrice) ctaPrice.textContent = '₹' + fare;
+  }
+</script></main>
+      </section>
+
+      <!-- Screen 05: Booking Confirmation -->
+      <section id="screen-05" class="screen-section">
+        
+<header class="sticky top-0 w-full z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-5 h-16 shrink-0 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+  <button id="s5-back-btn" onclick="navigateTo('screen-04')" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors" type="button" aria-label="Back">
+    <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+  </button>
+  <div class="flex items-center gap-2">
+    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white shadow-sm shrink-0">
+      <svg class="w-4 h-4 text-white -translate-y-px translate-x-px" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+      </svg>
+    </div>
+    <div class="flex flex-col text-left leading-none">
+      <span class="font-extrabold text-lg text-slate-900 tracking-tight font-headline">Skyppy</span>
+      <span class="text-[8px] font-bold uppercase tracking-[0.22em] text-slate-400 mt-0.5">Urban Mobility</span>
+    </div>
+  </div>
+  <button onclick="openModal('notifications')" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors" type="button" aria-label="Help">
+    <span class="material-symbols-outlined text-[19px]">shield</span>
+  </button>
+</header>
+
+<main class="flex-1 flex flex-col w-full relative bg-[#f8f9fc] text-[#101c2b] pb-6">
+  <!-- SCREEN ONE: FINDING AN AVAILABLE VEHICLE -->
+  <div id="ref-screen-searching" class="flex-1 flex flex-col justify-between px-5 pt-4 pb-4">
+    <div class="text-center mt-1">
+      <h1 class="font-extrabold text-[22px] text-slate-900 tracking-tight leading-snug">Confirming your ride</h1>
+      <p class="text-xs text-slate-500 font-medium mt-1">Finding the best available vehicle near you...</p>
+    </div>
+
+    <!-- Map Canvas Visualisation -->
+    <div class="relative w-full h-[320px] rounded-3xl bg-[#f0f4f9]/90 border border-slate-200/60 overflow-hidden my-4 flex items-center justify-center shadow-inner">
+      <svg class="absolute inset-0 w-full h-full opacity-35" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="80" x2="100%" y2="80" stroke="#cbd5e1" stroke-width="1" />
+        <line x1="0" y1="160" x2="100%" y2="160" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4" />
+        <line x1="0" y1="240" x2="100%" y2="240" stroke="#cbd5e1" stroke-width="1" />
+        <line x1="80" y1="0" x2="80" y2="100%" stroke="#cbd5e1" stroke-width="1" />
+        <line x1="190" y1="0" x2="190" y2="100%" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4" />
+        <line x1="290" y1="0" x2="290" y2="100%" stroke="#cbd5e1" stroke-width="1" />
+        <path d="M-20 220 L180 80 L380 40" stroke="#cbd5e1" stroke-width="2.5" fill="none" />
+      </svg>
+      <span class="absolute bottom-4 left-6 text-[11px] font-bold text-slate-400/60 uppercase tracking-[0.35em]">M y s u r u</span>
+
+      <!-- Blue Route Path -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none">
+        <path d="M 64 195 Q 160 215, 205 180 T 295 160" stroke="#93c5fd" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.45" />
+        <path d="M 64 195 Q 160 215, 205 180 T 295 160" stroke="#0042dd" stroke-width="4" fill="none" stroke-linecap="round" />
+      </svg>
+
+      <!-- Left Pickup Callout -->
+      <div class="absolute left-6 top-[130px] flex flex-col items-center">
+        <div class="bg-white rounded-xl shadow-md border border-slate-100 px-3 py-1.5 mb-1.5 max-w-[130px] text-center">
+          <span class="text-[11px] font-bold text-slate-800 leading-snug block truncate">VVCE Campus</span>
+          <span class="text-[9px] text-slate-400 block truncate">Gokulam</span>
+        </div>
+        <div class="w-4 h-4 rounded-full bg-primary ring-4 ring-blue-100 shadow-sm"></div>
+      </div>
+
+      <!-- Right Drop Callout -->
+      <div class="absolute right-6 top-[95px] flex flex-col items-center">
+        <div class="bg-white rounded-xl shadow-md border border-slate-100 px-3 py-1.5 mb-1.5 max-w-[130px] text-center">
+          <span class="text-[11px] font-bold text-slate-800 leading-snug block truncate">JSS Medical</span>
+          <span class="text-[9px] text-slate-400 block truncate">College</span>
+        </div>
+        <div class="w-5 h-5 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-[24px]">location_on</span>
+        </div>
+      </div>
+
+      <!-- Animated Car -->
+      <div class="absolute flex items-center justify-center" style="top: 160px; left: 165px;">
+        <div class="absolute w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 animate-ping"></div>
+        <div class="relative w-8 h-4 bg-white rounded-md shadow-md border border-slate-300 flex items-center justify-between px-1 z-10 rotate-[12deg]">
+          <div class="w-1.5 h-2.5 bg-slate-900 rounded-xs"></div>
+          <div class="w-2.5 h-2 bg-slate-700 rounded-xs"></div>
+          <div class="w-1.5 h-2.5 bg-slate-900 rounded-xs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress List Card -->
+    <div class="w-full bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/80 flex flex-col gap-4">
+      <div class="flex items-center gap-3 relative">
+        <div class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+        </div>
+        <span class="text-sm font-medium text-slate-700">Ride requested</span>
+        <div class="absolute left-[9px] top-6 w-[2px] h-4 bg-primary/40"></div>
+      </div>
+      <div class="flex items-center gap-3 relative">
+        <div class="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center shrink-0 bg-white">
+          <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+        </div>
+        <span class="text-sm font-bold text-slate-900">Finding a nearby vehicle</span>
+        <div class="absolute left-[9px] top-6 w-[2px] h-4 bg-slate-200"></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-5 h-5 rounded-full border border-slate-300 bg-white flex items-center justify-center shrink-0"></div>
+        <span class="text-sm text-slate-400">Finalising your booking</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-2">
+      <button onclick="showConfirmedScreenRef()" class="text-xs text-primary font-bold hover:underline py-1" type="button">
+        Skip to Confirmed Pass →
+      </button>
+    </div>
+  </div>
+
+  <!-- SCREEN TWO: YOUR RIDE IS CONFIRMED! -->
+  <div id="ref-screen-confirmed" class="hidden flex-1 flex flex-col justify-between px-5 pt-3 pb-3">
+    <!-- Confirmed Checkmark Header -->
+    <div class="flex flex-col items-center text-center mt-1">
+      <div class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shadow-xs mb-2">
+        <span class="material-symbols-outlined text-[20px] font-black">check</span>
+      </div>
+      <h1 class="font-extrabold text-[22px] text-slate-900 tracking-tight leading-snug">Your ride is confirmed!</h1>
+      <p class="text-xs text-slate-500 font-medium mt-0.5">Your auto is on the way to pickup location.</p>
+    </div>
+
+    <!-- Vehicle Presentation -->
+    <div class="relative w-full h-[180px] flex items-center justify-center my-1">
+      <div class="absolute w-64 h-24 rounded-full bg-blue-100/50 blur-xl pointer-events-none"></div>
+      <div class="absolute bottom-2 w-48 h-3.5 bg-slate-900/10 rounded-full blur-xs pointer-events-none"></div>
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGpm9AeQiLQG5LlVHb7EORaevjaqZ1oTwZRFLe2w-g9ln09iPFCctXR70CNGfrMtujRzt3ugtB_4MhMdkGq698IXwUIhmJE-VXTGbMG2u4SCfHerWXhruYnnZEsseZj4T16u1lx2xBYsIM6aSztUN8Qx7TPc_pHhk_zWD0g4fVHdgk4CHpWPui_y9GE4TtRK4ZEp2wlSOuHfnIacHeiUiifs0yp2LWv4OqayF-9iY" alt="Auto" class="relative z-10 max-h-[145px] object-contain drop-shadow-sm select-none" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=400&q=80';">
+    </div>
+
+    <!-- Driver & Vehicle Information Card -->
+    <div class="w-full bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col gap-3">
+      <!-- Driver Row -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80" alt="Ramesh K." class="w-11 h-11 rounded-full object-cover border border-slate-200">
+          <div>
+            <span class="font-bold text-sm text-slate-900 block leading-tight">Ramesh K.</span>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-amber-500 font-bold text-xs">★ 4.8</span>
+              <span class="px-2 py-0.5 rounded-full bg-blue-50 text-primary text-[10px] font-bold">Demo Driver</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="tel:+919876543210" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-primary hover:bg-slate-200 transition-colors">
+            <span class="material-symbols-outlined text-[18px]">call</span>
+          </a>
+          <button type="button" onclick="openModal('chat')" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-primary hover:bg-slate-200 transition-colors">
+            <span class="material-symbols-outlined text-[18px]">chat</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Vehicle Model & Reg No -->
+      <div class="grid grid-cols-2 gap-2 text-left">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+            <span class="material-symbols-outlined text-[16px]">directions_car</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold uppercase block">Vehicle</span>
+            <span class="text-xs font-bold text-slate-800 block">Bajaj RE (Auto)</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold uppercase block">Reg. No.</span>
+            <span class="font-mono text-xs font-bold text-slate-800">KA-09 AB 4217</span>
+          </div>
+          <span class="text-[9px] bg-slate-100 text-slate-500 font-semibold px-1.5 py-0.5 rounded">Fictional</span>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Arriving in & Start OTP -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+            <span class="material-symbols-outlined text-[16px]">schedule</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block">Arriving in</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-slate-900">3 mins</span>
+              <span class="text-[10px] text-primary font-bold bg-blue-50 px-1.5 py-0.2 rounded-full">~ 1.2 km</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="text-[10px] text-slate-400 font-semibold uppercase block">Start OTP</span>
+          <span class="font-mono text-xs font-black text-primary bg-primary/10 px-2 py-0.5 rounded">5482</span>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Route Points -->
+      <div class="flex flex-col gap-1.5 text-xs text-slate-700">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></div>
+          <span class="truncate font-medium">VVCE Campus, Gokulam</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"></div>
+          <span class="truncate font-medium">JSS Medical College &amp; Hospital</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="mt-3 pt-2 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-1">
+          <span class="text-[10px] text-slate-400 font-medium">Estimated fare</span>
+          <span class="material-symbols-outlined text-[13px] text-slate-400 cursor-pointer" onclick="openModal('fareBreakdown')">info</span>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span class="text-2xl font-black text-slate-900 tracking-tight font-numeric">₹61</span>
+          <span class="text-[9px] text-slate-400 font-medium">Demo Price</span>
+        </div>
+      </div>
+      <button onclick="navigateTo('screen-06')" class="h-12 px-6 rounded-xl bg-primary text-white font-bold text-sm shadow-md hover:bg-blue-700 active:scale-95 transition-all flex items-center gap-2 cursor-pointer" type="button">
+        <span>Track Live Ride</span>
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      </button>
+    </div>
+
+    <div class="text-center mt-1">
+      <button onclick="openModal('cancel-sheet')" class="text-[11px] font-semibold text-slate-400 hover:text-red-500 transition-colors py-1 cursor-pointer" type="button">
+        Cancel Booking
+      </button>
+    </div>
+  </div>
+</main>
+
+      </section>
+
+      <!-- Screen 06: Live Ride Tracking -->
+      <section id="screen-06" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><button aria-label="Go back" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95" onclick="window.parent?.postMessage({type:'navigate', screen:'01 Rides Home'}, '*'); window.location.hash='#screen-01';" type="button" data-navigate="01-rides-home"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><h1 class="font-headline-md text-headline-md text-on-surface">06 Live Ride Tracking</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Help &amp; Safety" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">shield</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full relative pb-8">
+<!-- Interactive Nocturnal Map Canvas -->
+<div class="relative w-full h-[400px] overflow-hidden rounded-b-3xl bg-inverse-surface shadow-md">
+<!-- Static / Map Pipeline Container -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center brightness-[0.82] contrast-[1.12]" data-location="Mysuru Palace, Mysuru, Karnataka, India" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAR14LwIzODwREc7VJdauHoAZPSGX2tvIOWN3xuqii1yjmR8YrRbaRZNLXDLc4udAwpJQKyDjVn-2A4SPReiLkpz2gr_kuc-AtqUYHaws_Etpb2YtK9Tb1Owzw9Hcdzxlfqc6Jov7c9lYhv8lrQU9uDndCtapg9yjqcu-FOh9A-v2jFrUZnQ-4aZWWy0vu5nJy5gRDmJm7407xI-XdnJiKpP7qozu-uFnoyxr18IB8');"></div>
+<!-- Night Vector Map Overlay Graphic & Synthetic Route Polyline -->
+<div class="absolute inset-0 bg-gradient-to-b from-inverse-surface/60 via-transparent to-inverse-surface/80 pointer-events-none"></div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 393 400" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="routeGlow" x1="0%" x2="100%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#315ef8" stop-opacity="0.9"></stop>
+<stop offset="60%" stop-color="#315ef8" stop-opacity="1"></stop>
+<stop offset="100%" stop-color="#d1ec64" stop-opacity="0.9"></stop>
+</linearGradient>
+<filter height="140%" id="shadowFilter" width="140%" x="-20%" y="-20%">
+<feDropShadow dx="0" dy="2" flood-color="#001454" flood-opacity="0.6" stdDeviation="4"></feDropShadow>
+</filter>
+</defs>
+<!-- Glow Polyline Track -->
+<path d="M 88 322 C 112 284, 150 252, 192 214 S 274 138, 308 94" fill="none" opacity="0.35" stroke="#315ef8" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></path>
+<!-- Core Route Polyline -->
+<path d="M 88 322 C 112 284, 150 252, 192 214 S 274 138, 308 94" fill="none" id="activeRoutePath" stroke="url(#routeGlow)" stroke-dasharray="6 2" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.5"></path>
+<!-- Destination Pin (JSS Medical College) -->
+<g transform="translate(308, 94)">
+<circle cx="0" cy="0" fill="#ba1a1a" fill-opacity="0.25" r="14"></circle>
+<circle cx="0" cy="0" fill="#ba1a1a" r="7"></circle>
+<circle cx="0" cy="0" fill="#ffffff" r="2.5"></circle>
+</g>
+<!-- Pickup Origin (VVCE Gokulam) -->
+<g transform="translate(88, 322)">
+<circle cx="0" cy="0" fill="#315ef8" fill-opacity="0.25" r="16"></circle>
+<circle cx="0" cy="0" fill="#315ef8" r="8"></circle>
+<circle cx="0" cy="0" fill="#ffffff" r="3"></circle>
+</g>
+</svg>
+<!-- Floating Dynamic Driver Auto Marker -->
+<div class="absolute top-[210px] left-[180px] -translate-x-1/2 -translate-y-1/2 transition-transform duration-700 ease-out z-20 flex flex-col items-center" id="driverMarker" style="transform: translate(calc(-50% + 0px), calc(-50% + 0px));">
+<div class="relative bg-secondary-container text-on-secondary-fixed p-1.5 rounded-full shadow-xl flex items-center justify-center ring-4 ring-primary-container/30">
+<span class="material-symbols-outlined text-[20px] text-on-secondary-fixed">electric_rickshaw</span>
+</div>
+<div class="px-2 py-0.5 mt-1 rounded-full bg-inverse-surface/90 backdrop-blur-md shadow-md">
+<span class="font-label-sm text-label-sm text-surface-bright tracking-tight">Ramesh • 24 km/h</span>
+</div>
+</div>
+<!-- Map Landmark Chips -->
+<div class="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-inverse-surface/75 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm text-surface-bright">
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed">temple_hindu</span>
+<span class="font-label-sm text-label-sm tracking-wide uppercase">Mysuru Palace • 1.8 km</span>
+</div>
+<!-- Floating Arrival Pill (Signal Lime Banner) -->
+<div class="absolute top-4 right-4 z-20">
+<div class="bg-secondary-container text-on-secondary-fixed px-3.5 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 animate-pulse">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-[9px] uppercase leading-none text-on-secondary-fixed-variant">Arriving in</span>
+<span class="font-headline-md text-[15px] leading-tight font-bold">4 min</span>
+</div>
+</div>
+</div>
+<!-- Floating Right-side Map Controls -->
+<div class="absolute right-3.5 bottom-6 z-20 flex flex-col gap-2.5">
+<button aria-label="Recenter map" class="w-11 h-11 rounded-full bg-surface-container-lowest text-on-surface shadow-md flex items-center justify-center hover:bg-surface-container transition-all active:scale-95" id="recenterBtn" type="button">
+<span class="material-symbols-outlined text-[22px]">my_location</span>
+</button>
+<button aria-label="Toggle Live Traffic" class="w-11 h-11 rounded-full bg-surface-container-lowest text-on-surface shadow-md flex items-center justify-center hover:bg-surface-container transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-[22px]">traffic</span>
+</button>
+<button aria-label="Emergency SOS Shield" class="w-11 h-11 rounded-full bg-error-container text-on-error-container shadow-md flex items-center justify-center hover:opacity-90 transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-[22px]">emergency_home</span>
+</button>
+</div>
+<!-- Location Waypoint Indicators Overlaid on Map Bottom -->
+<div class="absolute bottom-3 left-4 z-10 flex items-center gap-2">
+<span class="px-2.5 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded-full font-label-sm text-label-sm text-on-surface shadow-sm">
+        Pickup: VVCE Gokulam
+      </span>
+</div>
+</div>
+<!-- Primary Floating Bottom Panel (Elevated Card Sheet) -->
+<div class="px-margin -mt-5 relative z-30 flex flex-col gap-space-sm">
+<div class="bg-surface-container-lowest rounded-3xl p-space-md shadow-xl flex flex-col gap-space-md">
+<!-- Driver Profile & Direct Communication -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative flex-shrink-0">
+<img class="w-14 h-14 rounded-full object-cover shadow-sm" data-alt="A portrait of Ramesh, a friendly 40-year-old South Indian auto driver in Mysuru wearing a clean uniform shirt and warm smile, crisp daytime sunlight, sharp professional candid capture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFC_47gt-3lPsOkq5tq9A1wWjAanAGLT6QZO8F3aTw1LfNOksrrxtXPF71CGQ_FJ7pd2LCtqBQDSpXdXwOpey0sE6qNx6fucroCvNH0h6iro5jb2ysLyvNzFo1738hYjEHq4Swjk-8vLvooNWxWoVptliHy445jMIRy5KQxPdsJiOuxf15CvmmGzGTG3p2hxjjR4GDmV5Xy9khm4tVw1cxiuqqOxQX-FwykOSgEZM">
+<div class="absolute -bottom-1 -right-1 bg-primary text-on-primary rounded-full w-5 h-5 flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+</div>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h2 class="font-headline-md text-headline-md text-on-surface truncate">Ramesh K.</h2>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-[10px]">PRO</span>
+</div>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-numeric-md text-label-md text-on-surface">4.8</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(1,240 rides)</span>
+</div>
+</div>
+</div>
+<!-- Quick Contacts (Call & In-app Chat) -->
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<button aria-label="Call Driver Ramesh" class="w-11 h-11 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-surface-container-high transition-transform active:scale-95 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">phone</span>
+</button>
+<button aria-label="Chat with Driver Ramesh" class="w-11 h-11 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container transition-transform active:scale-95 shadow-md" type="button">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+</button>
+</div>
+</div>
+<!-- Vehicle Identity Plate & Start-Ride PIN Card -->
+<div class="flex items-center justify-between p-3 rounded-2xl bg-surface-container-low">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wide text-on-surface-variant">Vehicle Details</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-numeric-md text-numeric-md text-on-surface tracking-wider font-bold">KA-09 AB 4217</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Auto</span>
+</div>
+<span class="font-body-sm text-[11px] text-tertiary">Bajaj Compact • Yellow &amp; Green</span>
+</div>
+<!-- High-visibility Secure OTP Pill -->
+<div class="flex flex-col items-end pl-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Start OTP</span>
+<div class="px-3 py-1 rounded-xl bg-primary text-on-primary shadow-sm flex items-center justify-center mt-0.5">
+<span class="font-numeric-xl text-numeric-xl tracking-widest text-on-primary">5482</span>
+</div>
+</div>
+</div>
+<!-- Linear Ride Progress Stepper -->
+<div class="flex flex-col gap-2 pt-1">
+<div class="flex items-center justify-between text-center relative px-2">
+<!-- Continuous Track Layer -->
+<div class="absolute left-6 right-6 top-3 h-1 bg-surface-container rounded-full -z-0"></div>
+<!-- Completed Segment Layer -->
+<div class="absolute left-6 w-[28%] top-3 h-1 bg-primary rounded-full -z-0"></div>
+<!-- Step 1: En Route (Active) -->
+<div class="flex flex-col items-center gap-1 z-10">
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[14px]">electric_rickshaw</span>
+</div>
+<span class="font-label-sm text-[11px] font-semibold text-primary">Driver on way</span>
+</div>
+<!-- Step 2: Pickup -->
+<div class="flex flex-col items-center gap-1 z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px]">pin_drop</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Pickup</span>
+</div>
+<!-- Step 3: On Ride -->
+<div class="flex flex-col items-center gap-1 z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px]">navigation</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant">On ride</span>
+</div>
+<!-- Step 4: Arrival -->
+<div class="flex flex-col items-center gap-1 z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px]">flag</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Arrival</span>
+</div>
+</div>
+</div>
+<!-- Action Row: Share Ride & Safety Toolkit -->
+<div class="grid grid-cols-2 gap-space-sm pt-2">
+<button class="h-12 rounded-xl bg-surface-container-low text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-2 hover:bg-surface-container transition-colors shadow-sm active:scale-[0.98]" id="shareRideBtn" type="button">
+<span class="material-symbols-outlined text-[19px] text-primary">share_location</span>
+<span class="">Share Trip</span>
+</button>
+<button class="h-12 rounded-xl bg-surface-container-low text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-2 hover:bg-surface-container transition-colors shadow-sm active:scale-[0.98]" type="button" onclick="showToast('24/7 Safety Helpline active • Live telemetry monitored');">
+<span class="material-symbols-outlined text-[19px] text-secondary">security</span>
+<span class="">Safety Toolkit</span>
+</button>
+</div>
+<!-- Understated Cancellation Action -->
+<div class="flex items-center justify-center pt-1">
+<button class="py-2 px-4 rounded-lg text-error hover:bg-error-container/20 font-label-md text-label-md transition-colors inline-flex items-center gap-1 active:scale-[0.98]" id="cancelRideBtn" type="button" onclick="openCancelModal()"><span class="material-symbols-outlined text-[16px]">close</span><span class="">Cancel Booking</span></button>
+</div>
+</div>
+
+<!-- Quick Simulation Action: Complete Ride -->
+<div class="px-margin pt-2">
+  <button type="button" onclick="simulateTripCompletion()" class="w-full py-2.5 px-3 rounded-xl bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-transform">
+    <span class="material-symbols-outlined text-[18px]">verified</span>
+    <span>Simulate Trip Completion (+4.2 km Miles)</span>
+  </button>
+</div>
+<script>
+function simulateTripCompletion() {
+  SkyppyApp.showToast('Trip completed! +4.2 km credited to Skyppy Miles.');
+  setTimeout(() => {
+    SkyppyApp.navigateTo('08-activity', { activityTab: 'completed' });
+  }, 900);
+}
+</script>
+
+<!-- Route Overview Quick Details Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex items-center justify-between active:scale-[0.98] transition-all" onclick="showToast('Base fare ₹30 + ₹12/km (3.8km) + Platform fee ₹3 = ₹76');">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Fare Estimate</span>
+<span class="font-numeric-md text-numeric-md text-on-surface font-bold">₹76 • UPI AutoPay</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary pl-2 flex-shrink-0">
+<span class="font-label-md text-label-md font-semibold">Breakdown</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Notification Toast Simulation Container -->
+<div class="fixed bottom-6 left-margin right-margin z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none" id="statusToast">
+<div class="bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-xl flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">check_circle</span>
+<span class="font-body-sm text-body-sm" id="toastMessage">Link copied to clipboard!</span>
+</div>
+<button class="text-inverse-on-surface/80" onclick="document.getElementById('statusToast').classList.add('opacity-0', 'translate-y-24')" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div><div id="cancelModalBackdrop" class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col justify-end"><div class="absolute inset-0" onclick="closeCancelModal()"></div><div id="cancelModalSheet" class="relative w-full bg-surface-container-lowest rounded-t-3xl shadow-2xl p-space-md z-10 transform translate-y-full transition-transform duration-300 ease-out flex flex-col gap-space-md max-h-[90vh] overflow-y-auto"><div class="flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-11 h-11 rounded-2xl bg-error-container text-error flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-[24px]">warning</span></div><div><h3 class="font-headline-md text-headline-md text-on-surface">Cancel your ride?</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Driver Ramesh K. is on the way (4 min away)</p></div></div><button aria-label="Dismiss dialog" type="button" onclick="closeCancelModal()" class="w-9 h-9 rounded-full bg-surface-container-low text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button></div><div class="flex items-center gap-2.5 p-3 rounded-2xl bg-surface-container-low text-on-surface"><span class="material-symbols-outlined text-[20px] text-primary flex-shrink-0">schedule</span><div class="flex-1 text-[12px] leading-tight"><span class="font-semibold text-primary">₹0 cancellation fee</span> if cancelled now. Remaining free cancellation window: <span class="font-bold text-on-surface font-numeric-md">01:45</span></div></div><div class="flex flex-col gap-2"><span class="font-label-sm text-label-sm uppercase tracking-wide text-on-surface-variant font-semibold">Reason for cancellation</span><div class="flex flex-col gap-2" id="cancelReasonsGroup"><label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer transition-colors cancel-option"><span class="font-body-md text-body-md text-on-surface">Driver is taking too long</span><input type="radio" name="cancelReason" value="taking_too_long" class="w-4 h-4 text-primary accent-primary"></label><label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer transition-colors cancel-option"><span class="font-body-md text-body-md text-on-surface">Driver asked to cancel</span><input type="radio" name="cancelReason" value="driver_asked" class="w-4 h-4 text-primary accent-primary"></label><label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer transition-colors cancel-option"><span class="font-body-md text-body-md text-on-surface">Changed pickup location / destination</span><input type="radio" name="cancelReason" value="changed_location" class="w-4 h-4 text-primary accent-primary"></label><label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer transition-colors cancel-option"><span class="font-body-md text-body-md text-on-surface">Booked by mistake / Plans changed</span><input type="radio" name="cancelReason" value="plans_changed" class="w-4 h-4 text-primary accent-primary"></label></div></div><div class="flex flex-col gap-2.5 pt-1"><button type="button" onclick="closeCancelModal()" class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center hover:bg-primary-container transition-transform active:scale-[0.98] shadow-md">Keep My Ride</button><button type="button" onclick="confirmCancelBooking()" class="w-full h-12 rounded-xl bg-error-container text-on-error-container font-label-lg text-label-lg flex items-center justify-center hover:opacity-90 transition-transform active:scale-[0.98]">Yes, Cancel Ride</button></div></div></div><script>function openCancelModal(){const backdrop=document.getElementById('cancelModalBackdrop');const sheet=document.getElementById('cancelModalSheet');if(backdrop&&sheet){backdrop.classList.remove('opacity-0','pointer-events-none');backdrop.classList.add('opacity-100');sheet.classList.remove('translate-y-full');sheet.classList.add('translate-y-0');}}function closeCancelModal(){const backdrop=document.getElementById('cancelModalBackdrop');const sheet=document.getElementById('cancelModalSheet');if(backdrop&&sheet){backdrop.classList.add('opacity-0','pointer-events-none');backdrop.classList.remove('opacity-100');sheet.classList.add('translate-y-full');sheet.classList.remove('translate-y-0');}}function confirmCancelBooking(){showToast('Ride cancelled with ₹0 fee');setTimeout(()=>{window.parent?.postMessage({type:'navigate',screen:'01 Rides Home'},'*');if(window.navigateScreen){window.navigateScreen('01 Rides Home');}window.location.hash='#screen-01';},600);}</script>
+</div>
+<script>
+  // Subtle marker movement simulation to emulate live GPS telemetry
+  const driverMarker = document.getElementById('driverMarker');
+  let step = 0;
+  if (driverMarker) {
+    setInterval(() => {
+      step = (step + 1) % 4;
+      const offsets = [
+        { x: 0, y: 0 },
+        { x: 4, y: -5 },
+        { x: -2, y: 3 },
+        { x: 2, y: -2 }
+      ];
+      const cur = offsets[step];
+      driverMarker.style.transform = `translate(calc(-50% + ${cur.x}px), calc(-50% + ${cur.y}px))`;
+    }, 2200);
+  }
+
+  // Recenter interaction feedback
+  const recenterBtn = document.getElementById('recenterBtn');
+  if (recenterBtn && driverMarker) {
+    recenterBtn.addEventListener('click', () => {
+      driverMarker.classList.add('scale-125');
+      setTimeout(() => driverMarker.classList.remove('scale-125'), 400);
+      showToast('Map centered on Auto KA-09 AB 4217');
+    });
+  }
+
+  // Share trip copy action
+  const shareRideBtn = document.getElementById('shareRideBtn');
+  if (shareRideBtn) {
+    shareRideBtn.addEventListener('click', () => {
+      showToast('Live tracking link copied to clipboard!');
+    });
+  }
+
+  // Cancel ride handler prompt
+  const cancelRideBtn = document.getElementById('cancelRideBtn');
+  if (cancelRideBtn) {
+    cancelRideBtn.addEventListener('click', () => {
+      showToast('Cancellation fee is ₹0 if cancelled in 2 mins');
+    });
+  }
+
+  function showToast(text) {
+    const toast = document.getElementById('statusToast');
+    const msg = document.getElementById('toastMessage');
+    if (toast && msg) {
+      msg.textContent = text;
+      toast.classList.remove('opacity-0', 'translate-y-24');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-24');
+      }, 3200);
+    }
+  }
+</script></main>
+      </section>
+
+      <!-- Screen 07: Skyppy Miles -->
+      <section id="screen-07" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><div class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[24px]">near_me</span></div><div class="flex flex-col"><span class="font-headline-md text-headline-md text-on-surface leading-tight">Skyppy</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Urban Mobility</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="Notifications" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pb-6 gap-space-lg">
+<!-- Top Context & Tier Header -->
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-lg text-headline-lg text-on-surface">Skyppy Miles</span>
+<button aria-label="Miles rules information" class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-tertiary hover:text-primary transition-colors" id="infoTriggerBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container shadow-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Tier 2 Explorer</span>
+</div>
+</div>
+<!-- Hero Distance Card (Midnight Tech Canopy) -->
+<div class="relative overflow-hidden rounded-xl bg-inverse-surface text-inverse-on-surface p-5 shadow-xl">
+<div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-primary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-10 -bottom-10 w-36 h-36 rounded-full bg-secondary-fixed/15 blur-2xl pointer-events-none"></div>
+<div class="relative flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-outline-variant font-bold">Total Distance Travelled</span>
+<div class="flex items-center gap-1 text-secondary-fixed font-label-md text-label-md bg-white/10 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]">speed</span>
+<span class="">100% Distance-Backed</span>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-xl text-[44px] leading-none tracking-tight font-extrabold text-surface-container-lowest">248.6</span>
+<span class="font-headline-md text-headline-md font-bold text-secondary-fixed">KM</span>
+</div>
+<p class="font-body-sm text-body-sm text-surface-dim mt-1.5 flex items-center gap-1.5">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary-fixed"></span>
+          This month: <span class="text-surface-container-lowest font-medium">64.2 km</span> across 14 trips
+        </p>
+</div>
+<!-- Milestone Gauge Container -->
+<div class="bg-white/5 rounded-xl p-3.5 mt-1 backdrop-blur-sm shadow-inner">
+<div class="flex justify-between items-center text-xs font-medium mb-2">
+<span class="font-label-sm text-label-sm uppercase text-surface-dim">Next Goal: <strong class="text-surface-container-lowest">300.0 KM</strong></span>
+<span class="font-label-sm text-label-sm text-secondary-fixed font-bold">51.4 km remaining</span>
+</div>
+<div class="relative w-full h-3 bg-white/15 rounded-full overflow-visible flex items-center">
+<div class="h-full bg-gradient-to-r from-primary-container via-primary-fixed-dim to-secondary-fixed rounded-full relative" style="width: 82.8%;">
+<div class="absolute -right-2 -top-1 w-5 h-5 rounded-full bg-secondary-container text-on-secondary-container shadow-md flex items-center justify-center transform scale-110">
+<span class="material-symbols-outlined text-[12px] font-bold">arrow_forward</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2.5 font-label-sm text-label-sm text-outline-variant">
+<span class="">Tier Base: 200 km</span>
+<span class="text-secondary-fixed font-semibold">Tier 3 Master at 300 km</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active & Ready Rewards (Carousel) -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">redeem</span>
+<span class="font-headline-md text-headline-md text-on-surface">Available Vouchers</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase">2 Ready</span>
+</div>
+<div class="flex gap-3 overflow-x-auto pb-2 -mx-margin px-margin scrollbar-none snap-x snap-mandatory">
+<!-- Card 1 -->
+<div class="snap-start shrink-0 w-[270px] bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col justify-between gap-3 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary-container/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">local_activity</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-bold">Valid 14d</span>
+</div>
+<div>
+<span class="font-headline-md text-headline-md text-on-surface block leading-tight">₹50 Flat Off</span>
+<span class="font-body-sm text-body-sm text-tertiary">Applicable directly on your next Mysore city commute</span>
+</div>
+<button class="w-full py-2 px-3 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-transform cursor-pointer" data-navigate="04-ride-options" onclick="window.parent?.postMessage({type:'navigate', screen:'04 Ride Options'}, '*'); window.location.hash='#screen-04';" type="button"><span class="">Apply to Next Ride</span><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+</div>
+<!-- Card 2 -->
+<div class="snap-start shrink-0 w-[270px] bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col justify-between gap-3 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-secondary-container/20 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">shield</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">2 Passes Left</span>
+</div>
+<div>
+<span class="font-headline-md text-headline-md text-on-surface block leading-tight">Peak Surge Shield</span>
+<span class="font-body-sm text-body-sm text-tertiary">Zero multiplier surge rates during evening commute</span>
+</div>
+<button class="w-full py-2 px-3 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-95 transition-transform" type="button">
+<span class="">Auto-Protected</span>
+<span class="material-symbols-outlined text-[16px]">check</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Vertical Milestone Timeline -->
+<div class="flex flex-col gap-space-sm bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+<div class="flex items-center justify-between pb-2">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Milestone Ladder</h3>
+<p class="font-body-sm text-body-sm text-tertiary">Unlock perpetual privileges as your distance adds up</p>
+</div>
+<span class="material-symbols-outlined text-primary-container text-[24px]">flag</span>
+</div>
+<div class="relative flex flex-col gap-5 mt-2 ml-2">
+<!-- Continuous Guide Line -->
+<div class="absolute left-[15px] top-3 bottom-5 w-0.5 bg-surface-container-highest"></div>
+<!-- Node 1: Unlocked 50 km -->
+<div class="relative flex items-start gap-3.5 z-10">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[18px] font-bold">check</span>
+</div>
+<div class="flex-1 bg-surface-container-low/70 rounded-lg p-3">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">50 km · First Explorer</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">UNLOCKED</span>
+</div>
+<p class="font-body-sm text-body-sm text-tertiary mt-0.5">Mysuru Heritage Pioneer badge + welcome credits.</p>
+<span class="font-label-sm text-label-sm text-outline mt-1 block">Completed 12 Jan 2025</span>
+</div>
+</div>
+<!-- Node 2: Unlocked 100 km -->
+<div class="relative flex items-start gap-3.5 z-10">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[18px] font-bold">check</span>
+</div>
+<div class="flex-1 bg-surface-container-low/70 rounded-lg p-3">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">100 km · 15% Off 5 Rides</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">UNLOCKED</span>
+</div>
+<p class="font-body-sm text-body-sm text-tertiary mt-0.5">Redeemed across city and express transit bookings.</p>
+<span class="font-label-sm text-label-sm text-outline mt-1 block">Completed 04 Feb 2025</span>
+</div>
+</div>
+<!-- Node 3: Current Target 250 km (ALMOST UNLOCKED) -->
+<div class="relative flex items-start gap-3.5 z-10">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-md animate-pulse">
+<span class="material-symbols-outlined text-[18px]">lock_open</span>
+</div>
+<div class="flex-1 bg-primary-fixed/30 rounded-lg p-3 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-primary">250 km · Zero Peak Surge</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-extrabold uppercase">1.4 KM LEFT!</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Unlocked permanently! Just one short auto hop to finish this tier.</p>
+<div class="w-full bg-surface-container rounded-full h-2 mt-2.5 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 99.4%;"></div>
+</div>
+</div>
+</div>
+<!-- Node 4: Locked 500 km -->
+<div class="relative flex items-start gap-3.5 z-10 opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-container text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-lg p-3">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">500 km · Priority Dispatch</span>
+<span class="font-label-sm text-label-sm text-tertiary font-medium">LOCKED</span>
+</div>
+<p class="font-body-sm text-body-sm text-tertiary mt-0.5">Top dispatch queue assignment during rush hours &amp; rain.</p>
+</div>
+</div>
+<!-- Node 5: Locked 1,000 km -->
+<div class="relative flex items-start gap-3.5 z-10 opacity-60">
+<div class="w-8 h-8 rounded-full bg-surface-container text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-lg p-3">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">1,000 km · Skyppy VIP Club</span>
+<span class="font-label-sm text-label-sm text-tertiary font-medium">LOCKED</span>
+</div>
+<p class="font-body-sm text-body-sm text-tertiary mt-0.5">Lifetime platform benefits &amp; Mysore Palace Gala invitation.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Distance Ledger / Recent Rides Credited -->
+<div class="flex flex-col gap-space-sm bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">history_edu</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Distance Ledger</h3>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary">Real-time sync</span>
+</div>
+<div class="flex flex-col divide-y-0 gap-2.5 mt-1">
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">two_wheeler</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">VVCE to JSS Medical College</span>
+<span class="font-body-sm text-body-sm text-tertiary">Yesterday · Auto Ride</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-primary-container">+4.2 km</span>
+<span class="block font-label-sm text-label-sm text-secondary font-medium">Credited</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">directions_car</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Mysuru Station to Bogadi</span>
+<span class="font-body-sm text-body-sm text-tertiary">3 days ago · Mini Sedan</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-primary-container">+8.6 km</span>
+<span class="block font-label-sm text-label-sm text-secondary font-medium">Credited</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Educational Explainer Modal (Dismissable via JS) -->
+<div class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-inverse-surface/60 backdrop-blur-sm p-4" id="milesModal">
+<div class="w-full max-w-sm bg-surface-container-lowest rounded-2xl p-5 shadow-2xl flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">military_tech</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">What are Skyppy Miles?</h4>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-tertiary hover:text-on-surface" id="closeModalBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-3 font-body-md text-body-md text-on-surface-variant">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary-container mt-0.5">verified</span>
+<p class=""><strong class="text-on-surface">Pure distance, zero points math:</strong> Every single GPS kilometre you complete adds 1.0 km straight to your profile ledger.</p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary-container mt-0.5">hourglass_disabled</span>
+<p class=""><strong class="text-on-surface">Never expires:</strong> Your accrued distance stays locked in. Tiers never downgrade from inactivity.</p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary-container mt-0.5">swap_driving_apps_wheel</span>
+<p class=""><strong class="text-on-surface">Multi-modal mobility:</strong> Auto rides, cabs, and parcel drops across Mysuru all contribute equally.</p>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg font-bold shadow-md active:scale-95 transition-transform mt-1" id="gotItBtn" type="button">
+        Got It, Let's Ride
+      </button>
+</div>
+</div>
+<!-- Disclaimer Footer -->
+<div class="flex items-center justify-center text-center px-4 pt-1">
+<span class="font-body-sm text-body-sm text-tertiary">All distance and reward metrics are illustrative concept data.</span>
+</div>
+</div>
+<script>
+  (function initMilesInteractions() {
+    const modal = document.getElementById('milesModal');
+    const trigger = document.getElementById('infoTriggerBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const gotItBtn = document.getElementById('gotItBtn');
+
+    if (modal && trigger) {
+      const openModal = () => modal.classList.remove('hidden');
+      const closeModal = () => modal.classList.add('hidden');
+
+      trigger.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (gotItBtn) gotItBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Set Miles tab to active state in parent shell navigation bar
+    const milesTab = document.querySelector('nav a[data-path="07-skyppy-miles"]');
+    if (milesTab) {
+      document.querySelectorAll('nav a').forEach(el => {
+        el.classList.remove('text-primary-container', 'font-label-lg');
+        el.classList.add('text-tertiary');
+      });
+      milesTab.classList.remove('text-tertiary');
+      milesTab.classList.add('text-primary-container', 'font-label-lg');
+      const icon = milesTab.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.style.fontVariationSettings = "'FILL' 1";
+      }
+    }
+  })();
+</script></main>
+      </section>
+
+      <!-- Screen 08: Activity -->
+      <section id="screen-08" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><div class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[24px]">near_me</span></div><div class="flex flex-col"><span class="font-headline-md text-headline-md text-on-surface leading-tight">Skyppy</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Urban Mobility</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="Notifications" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Page Title Section -->
+<div class="flex items-center justify-between px-margin pt-space-xs pb-space-sm">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Trip Ledger &amp; History</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Your Activity</h1>
+</div>
+<button aria-label="Download statement" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform" type="button" onclick="showActivityToast('Exporting monthly transit summary...')">
+<span class="material-symbols-outlined text-[22px]">download</span>
+</button>
+</div>
+
+<!-- Active Ongoing Ride Banner (If in transit) -->
+<div class="px-margin mb-3">
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-container to-[#1a42be] p-4 text-on-primary shadow-lg cursor-pointer active:scale-[0.99] transition-transform" onclick="window.parent?.postMessage({type:'navigate', screen:'06 Live Ride Tracking'}, '*'); window.location.hash='#screen-06';" data-navigate="06-live-ride-tracking">
+<div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-secondary-fixed shrink-0">
+<span class="material-symbols-outlined text-[28px] animate-pulse">electric_rickshaw</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-[11px] font-bold uppercase tracking-wider bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full">Active Ride</span>
+<span class="font-label-sm text-on-primary-container text-[11px]">Arriving in 4 min</span>
+</div>
+<h3 class="font-label-lg text-label-lg font-bold text-on-primary mt-0.5">VVCE → JSS Medical College</h3>
+<p class="font-body-sm text-[12px] text-on-primary-container">Driver: Ramesh K. • KA-09 AB 4217</p>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-full text-on-primary text-[12px] font-semibold">
+<span>Track</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Filter Segmented Tabs -->
+<div class="px-margin mb-3">
+<div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="activity-tabs">
+<button class="activity-tab-btn px-4 py-2 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md font-semibold shrink-0 shadow-sm active:scale-95 transition-all" data-tab="all" onclick="filterActivity('all')">
+All (28)
+</button>
+<button class="activity-tab-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md font-medium shrink-0 shadow-xs hover:bg-surface-container-low active:scale-95 transition-all" data-tab="completed" onclick="filterActivity('completed')">
+Completed
+</button>
+<button class="activity-tab-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md font-medium shrink-0 shadow-xs hover:bg-surface-container-low active:scale-95 transition-all" data-tab="scheduled" onclick="filterActivity('scheduled')">
+Scheduled (1)
+</button>
+<button class="activity-tab-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md font-medium shrink-0 shadow-xs hover:bg-surface-container-low active:scale-95 transition-all" data-tab="cancelled" onclick="filterActivity('cancelled')">
+Cancelled
+</button>
+</div>
+</div>
+
+<!-- Monthly Transit Stats Bento Mini -->
+<div class="px-margin mb-4">
+<div class="bg-surface-container-low rounded-2xl p-3.5 flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] uppercase tracking-wider text-outline">November 2026</span>
+<p class="font-label-md text-label-md font-bold text-on-surface">14 Trips • 64.2 km Travelled</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-on-surface">₹1,180</span>
+<span class="block font-label-sm text-[10px] text-secondary font-semibold">100% Eco-Credited</span>
+</div>
+</div>
+</div>
+
+<!-- Scheduled Trip Card (Visible when tab is all or scheduled) -->
+<div class="px-margin mb-4 activity-item" data-type="scheduled">
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-secondary/20 flex flex-col gap-3">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_clock</span>
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider text-secondary">Scheduled Ride</span>
+</div>
+<span class="font-label-sm text-[11px] font-semibold px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">Tomorrow, 08:30 AM</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col min-w-0">
+<p class="font-headline-md text-[15px] font-bold text-on-surface truncate">VVCE Campus → Infosys Mysore (Hebbal)</p>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Mini AC Hatchback • 11.2 km • ~24 mins</span>
+</div>
+<span class="font-numeric-md text-numeric-md font-bold text-on-surface shrink-0">₹185</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-[11px] text-tertiary">Pickup alert set for 08:15 AM</span>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-[11px] font-semibold active:scale-95 transition-transform" onclick="showActivityToast('Opening scheduled ride details...')">Manage</button>
+<button class="px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-[11px] font-semibold active:scale-95 transition-transform" onclick="showActivityToast('Trip schedule cancelled with ₹0 fee.')">Cancel</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Past Completed Rides List -->
+<div class="px-margin flex flex-col gap-3 pb-6" id="activity-list">
+
+<!-- Trip 1: VVCE to JSS Medical -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 activity-item" data-type="completed">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">electric_rickshaw</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Auto Rickshaw</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-label-sm text-[10px] text-tertiary">Yesterday, 04:15 PM</span>
+</div>
+<p class="font-body-sm text-[13px] text-on-surface-variant">VVCE Gokulam → JSS Medical College</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-on-surface">₹76</span>
+<span class="block font-label-sm text-[10px] text-secondary font-semibold">UPI AutoPay</span>
+</div>
+</div>
+<!-- Trip Meta Pill -->
+<div class="flex items-center justify-between py-2 px-3 rounded-xl bg-surface-container-low text-[12px] text-tertiary">
+<div class="flex items-center gap-2">
+<span>4.2 km • 12 mins</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-primary font-medium">+4.2 Skyppy Miles</span>
+</div>
+<div class="flex items-center gap-1 text-secondary font-bold">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>5.0</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-between pt-0.5">
+<button class="font-label-md text-label-md text-primary font-semibold flex items-center gap-1 hover:underline" onclick="showReceiptModal('SKY784392', 'Yesterday, 04:15 PM', 'VVCE Gokulam', 'JSS Medical College', '₹76', 'Auto Rickshaw', 'Ramesh K. (KA-09 AB 4217)')">
+<span class="material-symbols-outlined text-[16px]">receipt</span>
+<span>Receipt</span>
+</button>
+<button class="h-8 px-3 rounded-full bg-primary text-on-primary font-label-sm text-[11px] font-bold flex items-center gap-1 shadow-sm active:scale-95 transition-transform" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" data-navigate="02-destination-search">
+<span>Rebook</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+
+<!-- Trip 2: Railway Station to Bogadi -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 activity-item" data-type="completed">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">directions_car</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Mini AC Cab</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-label-sm text-[10px] text-tertiary">07 Nov, 11:20 AM</span>
+</div>
+<p class="font-body-sm text-[13px] text-on-surface-variant">Mysuru Railway Station → Bogadi 2nd Stage</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-on-surface">₹142</span>
+<span class="block font-label-sm text-[10px] text-outline font-medium">HDFC Card</span>
+</div>
+</div>
+<!-- Trip Meta Pill -->
+<div class="flex items-center justify-between py-2 px-3 rounded-xl bg-surface-container-low text-[12px] text-tertiary">
+<div class="flex items-center gap-2">
+<span>8.6 km • 21 mins</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-primary font-medium">+8.6 Skyppy Miles</span>
+</div>
+<div class="flex items-center gap-1 text-secondary font-bold">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-between pt-0.5">
+<button class="font-label-md text-label-md text-primary font-semibold flex items-center gap-1 hover:underline" onclick="showReceiptModal('SKY692104', '07 Nov 2026, 11:20 AM', 'Mysuru Railway Station', 'Bogadi 2nd Stage', '₹142', 'Mini AC Cab', 'Santhosh M. (KA-09 C 8120)')">
+<span class="material-symbols-outlined text-[16px]">receipt</span>
+<span>Receipt</span>
+</button>
+<button class="h-8 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-[11px] font-bold flex items-center gap-1 active:scale-95 transition-transform" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" data-navigate="02-destination-search">
+<span>Rebook</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+
+<!-- Trip 3: VVCE to Mysuru Palace -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 activity-item" data-type="completed">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">electric_rickshaw</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Auto Rickshaw</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-label-sm text-[10px] text-tertiary">05 Nov, 06:40 PM</span>
+</div>
+<p class="font-body-sm text-[13px] text-on-surface-variant">VVCE Gokulam → Mysuru Palace (Amba Vilas)</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-on-surface">₹98</span>
+<span class="block font-label-sm text-[10px] text-outline font-medium">Cash Paid</span>
+</div>
+</div>
+<!-- Trip Meta Pill -->
+<div class="flex items-center justify-between py-2 px-3 rounded-xl bg-surface-container-low text-[12px] text-tertiary">
+<div class="flex items-center gap-2">
+<span>5.8 km • 16 mins</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-primary font-medium">+5.8 Skyppy Miles</span>
+</div>
+<div class="flex items-center gap-1 text-secondary font-bold">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>5.0</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-between pt-0.5">
+<button class="font-label-md text-label-md text-primary font-semibold flex items-center gap-1 hover:underline" onclick="showReceiptModal('SKY542890', '05 Nov 2026, 06:40 PM', 'VVCE Gokulam', 'Mysuru Palace', '₹98', 'Auto Rickshaw', 'Kumar Swamy (KA-09 E 3319)')">
+<span class="material-symbols-outlined text-[16px]">receipt</span>
+<span>Receipt</span>
+</button>
+<button class="h-8 px-3 rounded-full bg-surface-container-high text-on-surface font-label-sm text-[11px] font-bold flex items-center gap-1 active:scale-95 transition-transform" onclick="window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';" data-navigate="02-destination-search">
+<span>Rebook</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+
+<!-- Trip 4: Cancelled Trip (Shows in Cancelled tab and All tab) -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 activity-item" data-type="cancelled">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-error-container text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">cancel</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Auto Rickshaw</h3>
+<span class="px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-[10px] font-bold">Cancelled</span>
+</div>
+<p class="font-body-sm text-[13px] text-on-surface-variant">VVCE Gokulam → Nexus Centre City Mall</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-numeric-md text-numeric-md font-bold text-on-surface">₹0</span>
+<span class="block font-label-sm text-[10px] text-outline font-medium">Free cancel</span>
+</div>
+</div>
+<p class="font-body-sm text-[12px] text-outline">Cancelled within 2 mins grace period • 01 Nov 2026, 01:10 PM</p>
+</div>
+
+</div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receiptModalBackdrop" class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col justify-end">
+<div class="absolute inset-0" onclick="closeReceiptModal()"></div>
+<div id="receiptModalSheet" class="relative w-full bg-surface-container-lowest rounded-t-3xl shadow-2xl p-space-md z-10 transform translate-y-full transition-transform duration-300 ease-out flex flex-col gap-space-md max-h-[85vh] overflow-y-auto">
+<div class="flex items-center justify-between border-b pb-3 border-surface-container-low">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface" id="modal-booking-id">SKY784392</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="modal-date">Yesterday, 04:15 PM</p>
+</div>
+</div>
+<button aria-label="Close receipt" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface" onclick="closeReceiptModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-2.5">
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span>Vehicle &amp; Driver</span>
+<span class="font-semibold text-on-surface" id="modal-driver">Ramesh K. (Auto)</span>
+</div>
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span>Pickup Point</span>
+<span class="font-semibold text-on-surface" id="modal-pickup">VVCE Gokulam</span>
+</div>
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span>Drop Destination</span>
+<span class="font-semibold text-on-surface" id="modal-drop">JSS Medical College</span>
+</div>
+<div class="h-px bg-surface-container my-1"></div>
+<div class="flex justify-between text-headline-md text-on-surface font-bold">
+<span>Total Fare Paid</span>
+<span class="text-primary font-numeric-xl" id="modal-fare">₹76</span>
+</div>
+</div>
+<div class="flex gap-2 pt-2">
+<button class="flex-1 h-12 rounded-xl bg-surface-container text-on-surface font-label-lg flex items-center justify-center gap-2 active:scale-95 transition-transform" type="button" onclick="showActivityToast('PDF receipt downloaded!')">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Download PDF</span>
+</button>
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-label-lg flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform" type="button" onclick="closeReceiptModal(); window.parent?.postMessage({type:'navigate', screen:'02 Destination Search'}, '*'); window.location.hash='#screen-02';">
+<span class="material-symbols-outlined text-[18px]">repeat</span>
+<span>Book Again</span>
+</button>
+</div>
+</div>
+</div>
+
+<!-- Toast Feedback -->
+<div class="fixed bottom-24 left-margin right-margin z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none" id="activityToast">
+<div class="bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">check_circle</span>
+<span class="font-body-sm text-body-sm" id="activityToastMsg">Action completed</span>
+</div>
+</div>
+
+</main>
+      </section>
+
+      <!-- Screen 09: Profile -->
+      <section id="screen-09" class="screen-section">
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-16"><div class="flex items-center gap-space-sm"><div class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[24px]">near_me</span></div><div class="flex flex-col"><span class="font-headline-md text-headline-md text-on-surface leading-tight">Skyppy</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Urban Mobility</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="Notifications" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80"></div></div></header>
+        <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="flex items-center justify-between px-margin pt-space-xs pb-space-sm">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Mysuru Smart Rider</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Account &amp; Profile</h1>
+</div>
+<button aria-label="Settings" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform" type="button" onclick="SkyppyApp.showToast('Settings: Language (Kannada/English), Theme & Permissions')">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+</button>
+</div>
+<div class="px-margin flex flex-col gap-space-md pb-space-lg">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-surface-container-low/70 pointer-events-none"></div>
+<div class="flex items-start justify-between relative z-10">
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary font-headline-md text-headline-md flex items-center justify-center shadow-md">
+              JH
+            </div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface truncate">Jeevan H.</span>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full whitespace-nowrap">Tier 2 Explorer</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">jeevanh259@gmail.com</span>
+<span class="font-label-md text-label-md text-tertiary mt-0.5">+91 98450 33812</span>
+</div>
+</div>
+<button aria-label="Edit Profile" class="w-9 h-9 rounded-full bg-surface-container-low text-tertiary flex items-center justify-center hover:text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+<div class="grid grid-cols-3 gap-space-xs mt-space-md pt-space-sm bg-surface-container-low rounded-lg p-space-sm">
+<div class="flex flex-col items-center justify-center text-center p-1.5 cursor-pointer active:scale-95 transition-transform" data-navigate="08-activity" onclick="SkyppyApp.navigateTo('08-activity')">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+</div>
+<span class="font-numeric-md text-numeric-md text-on-surface">28</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Rides</span>
+</div>
+<div class="flex flex-col items-center justify-center text-center p-1.5 cursor-pointer active:scale-95 transition-transform" data-navigate="07-skyppy-miles" onclick="SkyppyApp.navigateTo('07-skyppy-miles')">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary mb-1">
+<span class="material-symbols-outlined text-[18px]">route</span>
+</div>
+<span class="font-numeric-md text-numeric-md text-on-surface">248.6</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">KM Traveled</span>
+</div>
+<div class="flex flex-col items-center justify-center text-center p-1.5 cursor-pointer active:scale-95 transition-transform" data-navigate="08-activity" onclick="SkyppyApp.navigateTo('08-activity')">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary-container mb-1">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+<span class="font-numeric-md text-numeric-md text-on-surface">₹2,480</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Spent</span>
+</div>
+</div>
+</div>
+<div class="bg-primary-container text-on-primary rounded-xl p-space-md shadow-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<span class="font-label-lg text-label-lg tracking-wide text-on-primary">Skyppy Miles Explorer</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-bold">248.6 km</span>
+</div>
+<div class="mt-space-md">
+<div class="flex items-center justify-between text-on-primary-container font-body-sm text-body-sm mb-1.5">
+<span class="">51.4 km to 300 km VIP Milestone</span>
+<span class="font-numeric-md text-numeric-md font-bold text-on-primary">82%</span>
+</div>
+<div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full w-[82%]"></div>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-primary-container">Unlock ₹150 off next 5 rides</span>
+<button class="inline-flex items-center gap-1 font-label-md text-label-md text-secondary-container hover:underline cursor-pointer active:scale-95 transition-all" type="button" data-navigate="07-skyppy-miles" onclick="event.preventDefault(); window.parent?.postMessage({type:'navigate', screen:'07 Skyppy Miles'}, '*'); window.location.hash='#screen-07';"><span class="">Miles Dashboard</span><span class="material-symbols-outlined text-[16px]">arrow_forward</span></button>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary px-1">Mobility &amp; Rides</span>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors cursor-pointer" data-navigate="08-activity" onclick="event.preventDefault(); window.parent?.postMessage({type:'navigate', screen:'08 Activity'}, '*'); window.location.hash='#screen-08';">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Ride History</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">28 passenger trips completed</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+<div class="h-px bg-surface-container-low mx-space-md"></div>
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors cursor-pointer" data-navigate="08-activity" onclick="event.preventDefault(); window.parent?.postMessage({type:'navigate', screen:'08 Activity'}, '*'); window.location.hash='#screen-08';">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Scheduled Rides</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">1 upcoming (Tomorrow, 08:30 AM)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+<div class="h-px bg-surface-container-low mx-space-md"></div>
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Saved Places</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Home, Work &amp; 4 more pinned spots</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary px-1">Payments &amp; Rewards</span>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">credit_card</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Payment Methods</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">UPI Active (•••• 2590), HDFC Card</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+<div class="h-px bg-surface-container-low mx-space-md"></div>
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">My Vouchers &amp; Coupons</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2 active offers ready to apply</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">2 Valid</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</div>
+</a>
+<div class="h-px bg-surface-container-low mx-space-md"></div>
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Skyppy Cash Balance</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Instant auto-deduct wallet</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-numeric-md text-numeric-md text-primary font-bold">₹150.00</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</div>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary px-1">Preferences &amp; Safety</span>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-body-lg text-body-lg text-on-surface">24/7 Safety Toolkit</span>
+<span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-1.5 py-0.2 rounded-full font-bold">SOS</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Live trip sharing &amp; trusted contacts</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+<div class="h-px bg-surface-container-low mx-space-md"></div>
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Ride Preferences</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">AC default, Quiet ride, Auto-tip 5%</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+<div class="h-px bg-surface-container-low mx-space-md"></div>
+<a class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors" href="#">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-lg text-body-lg text-on-surface">Help &amp; Support</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Mysuru 24/7 transit rider helpline</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">chevron_right</span>
+</a>
+</div>
+</div>
+<div class="pt-space-xs flex flex-col gap-space-sm items-center">
+<button class="w-full h-[52px] rounded-full bg-surface-container-low hover:bg-error-container text-error font-headline-md text-headline-md flex items-center justify-center gap-space-xs transition-colors shadow-sm active:scale-[0.99]" type="button" onclick="if(confirm('Log out from Jeevan H.?')) { SkyppyApp.showToast('Logged out successfully'); setTimeout(()=>SkyppyApp.navigateTo('01-rides-home'), 600); }">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="">Log Out from Jeevan's Account</span>
+</button>
+<div class="flex flex-col items-center justify-center py-space-xs text-center">
+<span class="font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider">Skyppy 2.0 — Urban Passenger Mobility</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Build 2024.11.4 • Mysuru Smart Transit</span>
+</div>
+</div>
+</div>
+</div></main>
+      </section>
+
+      <!-- Screen 10: Appearance & Theme -->
+      <section id="screen-10" class="screen-section">
+        
+<header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="flex items-center justify-between px-margin h-16">
+    <div class="flex items-center gap-space-sm">
+      <button aria-label="Go back" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95" onclick="navigateTo('screen-09')" type="button">
+        <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+      </button>
+      <h1 class="font-headline-md text-headline-md text-on-surface">10 Appearance & Theme</h1>
+    </div>
+    <div class="flex items-center gap-space-sm">
+      <button aria-label="Help & Safety" class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" type="button" onclick="openModal('notifications')">
+        <span class="material-symbols-outlined text-[20px]">shield</span>
+      </button>
+      <img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&q=80" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 64 64\'%3E%3Ccircle cx=\'32\' cy=\'32\' r=\'32\' fill=\'%23101c2b\'/%3E%3Ccircle cx=\'32\' cy=\'24\' r=\'10\' fill=\'%23d1ec64\'/%3E%3Cpath d=\'M16 52c0-8.8 7.2-15 16-15s16 6.2 16 15\' fill=\'%23d1ec64\'/%3E%3C/svg%3E';">
+    </div>
+  </div>
+</header>
+
+        
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen">
+  <div class="flex flex-col w-full px-margin py-4 gap-4">
+    <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-outline-variant/10">
+      <h2 class="font-headline-md font-bold text-on-surface text-lg mb-1">Display & Theme Preference</h2>
+      <p class="font-body-sm text-sm text-on-surface-variant mb-4">Choose your preferred appearance mode for daytime commuting or nocturnal night rides in Mysuru.</p>
+      
+      <div class="flex flex-col gap-3">
+        <!-- Light Mode Card -->
+        <div onclick="setTheme('light')" id="theme-card-light" class="p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-between border-primary bg-primary/5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-[24px]">light_mode</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-sm text-on-surface">Light Mode (Daylight)</h3>
+              <p class="text-xs text-on-surface-variant">Bright crisp contrast, optimal for sunny Mysuru afternoons</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-primary text-[22px]" id="theme-check-light">check_circle</span>
+        </div>
+
+        <!-- Dark Mode Card -->
+        <div onclick="setTheme('dark')" id="theme-card-dark" class="p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-between border-outline-variant/30 hover:border-primary/50">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-[24px]">dark_mode</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-sm text-on-surface">Dark Mode (Nocturnal)</h3>
+              <p class="text-xs text-on-surface-variant">Deep obsidian tones, reduced glare for evening journeys</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline text-[22px] hidden" id="theme-check-dark">check_circle</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Preview Card -->
+    <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/10 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+          <span class="material-symbols-outlined text-[18px]">palette</span>
+        </div>
+        <div>
+          <span class="font-bold text-xs text-on-surface block">Theme Persistence</span>
+          <span class="text-[11px] text-on-surface-variant">Automatically saved to browser local storage</span>
+        </div>
+      </div>
+      <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold active:scale-95 transition-transform" type="button">
+        Quick Toggle
+      </button>
+    </div>
+  </div>
+</main>
+
+      </section>
+    </div>
+
+    <!-- PERSISTENT BOTTOM NAVIGATION BAR -->
+    <nav id="app-bottom-nav" class="fixed bottom-0 w-full z-40 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-surface-container-low/60 shadow-[0_-4px_20px_rgba(16,28,43,0.06)]">
+      <div class="flex justify-around items-center h-16 px-space-xs max-w-md mx-auto">
+        <button onclick="navigateTo('screen-01')" class="nav-tab-btn flex flex-col items-center justify-center w-16 h-12 rounded-xl transition-all gap-0.5 text-primary font-bold active:scale-95" data-tab="screen-01" type="button">
+          <span class="material-symbols-outlined text-[22px]">directions_car</span>
+          <span class="font-label-sm text-[10px]">Home</span>
+        </button>
+        <button onclick="navigateTo('screen-08')" class="nav-tab-btn flex flex-col items-center justify-center w-16 h-12 rounded-xl transition-all gap-0.5 text-tertiary hover:text-on-surface active:scale-95" data-tab="screen-08" type="button">
+          <span class="material-symbols-outlined text-[22px]">receipt_long</span>
+          <span class="font-label-sm text-[10px]">Activity</span>
+        </button>
+        <button onclick="navigateTo('screen-07')" class="nav-tab-btn flex flex-col items-center justify-center w-16 h-12 rounded-xl transition-all gap-0.5 text-tertiary hover:text-on-surface active:scale-95" data-tab="screen-07" type="button">
+          <span class="material-symbols-outlined text-[22px]">military_tech</span>
+          <span class="font-label-sm text-[10px]">Miles</span>
+        </button>
+        <button onclick="navigateTo('screen-09')" class="nav-tab-btn flex flex-col items-center justify-center w-16 h-12 rounded-xl transition-all gap-0.5 text-tertiary hover:text-on-surface active:scale-95" data-tab="screen-09" type="button">
+          <span class="material-symbols-outlined text-[22px]">person</span>
+          <span class="font-label-sm text-[10px]">Profile</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-banner" class="fixed bottom-20 left-4 right-4 z-[110] pointer-events-none flex justify-center transition-all opacity-0 translate-y-3 duration-200">
+      <div class="bg-inverse-surface text-inverse-on-surface px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2 max-w-xs text-xs font-semibold">
+        <span class="material-symbols-outlined text-[18px] text-secondary-container" id="toast-icon">check_circle</span>
+        <span id="toast-text">Message</span>
+      </div>
+    </div>
+
+    <!-- MODAL OVERLAYS CONTAINER -->
+    <div id="modal-backdrop" class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden flex items-end justify-center">
+      <div class="absolute inset-0" onclick="closeModal()"></div>
+      
+      <!-- Notifications Modal -->
+      <div id="modal-notifications" class="modal-box hidden relative w-full max-w-md bg-surface-container-lowest rounded-t-3xl p-5 z-10 max-h-[85vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-surface-container-low pb-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">notifications_active</span>
+            <h3 class="font-bold text-base text-on-surface">Mysuru Live Alerts</h3>
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface" type="button">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+        <div class="flex flex-col gap-2.5">
+          <div class="p-3 rounded-2xl bg-surface-container-low flex items-start gap-3">
+            <span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">electric_rickshaw</span>
+            <div>
+              <p class="font-bold text-xs text-on-surface">Driver Ramesh K. is on the way</p>
+              <p class="text-[11px] text-on-surface-variant">Approaching VVCE Gate 2 in Auto Rickshaw (KA-09 AB 4217)</p>
+              <span class="text-[10px] text-outline font-semibold mt-1 block">Just now</span>
+            </div>
+          </div>
+          <div class="p-3 rounded-2xl bg-surface-container-low flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">traffic</span>
+            <div>
+              <p class="font-bold text-xs text-on-surface">Bannimantap Corridor Flowing Smooth</p>
+              <p class="text-[11px] text-on-surface-variant">Zero congestion recorded on highway stretch to JSS Hospital</p>
+              <span class="text-[10px] text-outline font-semibold mt-1 block">10 mins ago</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="closeModal(); showToast('All notifications marked as read');" class="w-full mt-4 py-2.5 rounded-xl bg-surface-container text-on-surface font-bold text-xs hover:bg-surface-container-high transition-colors" type="button">
+          Mark All as Read
+        </button>
+      </div>
+
+      <!-- Chat Modal -->
+      <div id="modal-chat" class="modal-box hidden relative w-full max-w-md bg-surface-container-lowest rounded-t-3xl p-5 z-10 flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-surface-container-low pb-2">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">RK</div>
+            <div>
+              <h4 class="font-bold text-xs text-on-surface">Ramesh K. (Auto Driver)</h4>
+              <span class="text-[10px] text-secondary font-semibold">Online • Approaching Gate</span>
+            </div>
+          </div>
+          <button onclick="closeModal()" class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface" type="button">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </div>
+        <!-- Quick replies -->
+        <div class="flex gap-1.5 overflow-x-auto pb-1">
+          <button onclick="sendChatMessage('I am at the gate')" class="px-2.5 py-1 rounded-full bg-surface-container text-xs text-on-surface shrink-0 font-medium active:scale-95" type="button">I am at the gate</button>
+          <button onclick="sendChatMessage('Turning on hazards')" class="px-2.5 py-1 rounded-full bg-surface-container text-xs text-on-surface shrink-0 font-medium active:scale-95" type="button">Turning on hazards</button>
+          <button onclick="sendChatMessage('Please wait 2 mins')" class="px-2.5 py-1 rounded-full bg-surface-container text-xs text-on-surface shrink-0 font-medium active:scale-95" type="button">Please wait 2 mins</button>
+        </div>
+        <!-- Messages body -->
+        <div id="chat-messages-list" class="h-48 overflow-y-auto flex flex-col gap-2 p-1 text-xs">
+          <div class="bg-surface-container text-on-surface self-start rounded-2xl rounded-bl-xs px-3 py-1.5 max-w-[80%]">
+            Namaskara! I am approaching your pickup at VVCE.
+          </div>
+        </div>
+        <!-- Input -->
+        <div class="flex items-center gap-2 pt-1 border-t border-surface-container-low">
+          <input id="chat-input" type="text" placeholder="Message Ramesh..." class="flex-1 h-9 px-3 rounded-full bg-surface-container text-xs text-on-surface focus:outline-none" onkeydown="if(event.key==='Enter') sendChatMessage()">
+          <button onclick="sendChatMessage()" class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center shadow-md active:scale-95" type="button">
+            <span class="material-symbols-outlined text-[16px]">send</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trip Completed Modal -->
+      <div id="modal-trip-completed" class="modal-box hidden relative w-full max-w-md bg-surface-container-lowest rounded-t-3xl p-6 z-10 flex flex-col items-center text-center gap-3">
+        <div class="w-14 h-14 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+          <span class="material-symbols-outlined text-[32px]">check_circle</span>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg text-on-surface">You Have Arrived!</h3>
+          <p class="text-xs text-on-surface-variant">Trip to JSS Medical College successfully completed</p>
+        </div>
+        <div class="bg-surface-container-low rounded-2xl p-3 w-full flex items-center justify-between text-xs">
+          <span class="text-on-surface font-semibold">Skyppy Miles Credited</span>
+          <span class="font-bold text-primary">+4.2 KM</span>
+        </div>
+        <!-- Rating stars -->
+        <div class="flex gap-2 my-1 text-amber-400">
+          <span class="material-symbols-outlined text-[28px] cursor-pointer" onclick="setTripRating(1)">star</span>
+          <span class="material-symbols-outlined text-[28px] cursor-pointer" onclick="setTripRating(2)">star</span>
+          <span class="material-symbols-outlined text-[28px] cursor-pointer" onclick="setTripRating(3)">star</span>
+          <span class="material-symbols-outlined text-[28px] cursor-pointer" onclick="setTripRating(4)">star</span>
+          <span class="material-symbols-outlined text-[28px] cursor-pointer text-amber-500" onclick="setTripRating(5)">star</span>
+        </div>
+        <!-- Tip Buttons -->
+        <div class="w-full">
+          <span class="text-[11px] font-bold text-outline uppercase block mb-1.5">Add Driver Tip</span>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="selectTip(0)" class="tip-btn py-1.5 rounded-xl border text-xs font-bold bg-surface-container text-on-surface border-surface-container-high" type="button">None</button>
+            <button onclick="selectTip(10)" class="tip-btn py-1.5 rounded-xl border text-xs font-bold bg-surface-container text-on-surface border-surface-container-high" type="button">₹10</button>
+            <button onclick="selectTip(20)" class="tip-btn py-1.5 rounded-xl border text-xs font-bold bg-primary text-on-primary border-primary shadow-sm" type="button">₹20</button>
+            <button onclick="selectTip(50)" class="tip-btn py-1.5 rounded-xl border text-xs font-bold bg-surface-container text-on-surface border-surface-container-high" type="button">₹50</button>
+          </div>
+        </div>
+        <button onclick="finishTripAndGoToActivity()" class="w-full py-3 rounded-xl bg-primary text-on-primary font-bold text-sm shadow-md mt-2 active:scale-95 transition-transform" type="button">
+          Done & View Activity
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT-SIDE ROUTER, EVENT LISTENERS & STATE ENGINE -->
+  <script>
+    // Live Clock in Status Bar
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const el = document.getElementById('status-clock');
+      if (el) el.textContent = `${h}:${m}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Universal Navigation System
+    let currentScreen = 'screen-01';
+    const screenHistory = ['screen-01'];
+
+    function navigateTo(screenId) {
+      const targetEl = document.getElementById(screenId);
+      if (!targetEl) return;
+
+      // Hide all screens
+      document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
+      targetEl.classList.add('active');
+      currentScreen = screenId;
+      screenHistory.push(screenId);
+      window.location.hash = '#' + screenId;
+
+      // Reset scroll position of phone viewport
+      const viewport = document.getElementById('phone-viewport');
+      if (viewport) viewport.scrollTop = 0;
+
+      // Update Bottom Navigation Tab Highlight
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === screenId) {
+          btn.classList.add('text-primary', 'font-bold');
+          btn.classList.remove('text-tertiary');
+        } else {
+          btn.classList.remove('text-primary', 'font-bold');
+          btn.classList.add('text-tertiary');
+        }
+      });
+    }
+
+    function goBack() {
+      if (screenHistory.length > 1) {
+        screenHistory.pop(); // Remove current
+        const prev = screenHistory.pop(); // Get previous
+        navigateTo(prev);
+      } else {
+        navigateTo('screen-01');
+      }
+    }
+
+    // Intercept clicks on Stitch navigation attributes
+    document.addEventListener('click', (e) => {
+      // Check for elements with data-navigate
+      const navTarget = e.target.closest('[data-navigate]');
+      if (navTarget) {
+        e.preventDefault();
+        const dest = navTarget.getAttribute('data-navigate');
+        const screenMap = {
+          '01-rides-home': 'screen-01',
+          '02-destination-search': 'screen-02',
+          '03-location-selection': 'screen-03',
+          '04-ride-options': 'screen-04',
+          '05-booking-confirmation': 'screen-05',
+          '06-live-ride-tracking': 'screen-06',
+          '07-skyppy-miles': 'screen-07',
+          '08-activity': 'screen-08',
+          '09-profile': 'screen-09',
+          '10-theme-settings': 'screen-10'
+        };
+        if (screenMap[dest]) {
+          navigateTo(screenMap[dest]);
+          return;
+        }
+      }
+
+      // Check for back buttons
+      const backBtn = e.target.closest('button[aria-label="Go back"]');
+      if (backBtn && !backBtn.getAttribute('onclick')) {
+        e.preventDefault();
+        goBack();
+      }
+
+      // Check for profile buttons
+      const profileBtn = e.target.closest('img[alt="Profile"]')?.parentElement;
+      if (profileBtn) {
+        e.preventDefault();
+        navigateTo('screen-09');
+      }
+    });
+
+    // Hashchange listener for direct URL / back-forward navigation
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && document.getElementById(hash)) {
+        navigateTo(hash);
+      }
+    });
+
+    // Check initial hash on load
+    if (window.location.hash) {
+      const initHash = window.location.hash.replace('#', '');
+      if (document.getElementById(initHash)) {
+        navigateTo(initHash);
+      }
+    }
+
+    // Modal Helpers
+    function openModal(modalId) {
+      const backdrop = document.getElementById('modal-backdrop');
+      const box = document.getElementById('modal-' + modalId);
+      if (backdrop && box) {
+        backdrop.classList.remove('hidden');
+        document.querySelectorAll('.modal-box').forEach(b => b.classList.add('hidden'));
+        box.classList.remove('hidden');
+      }
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById('modal-backdrop');
+      if (backdrop) backdrop.classList.add('hidden');
+      document.querySelectorAll('.modal-box').forEach(b => b.classList.add('hidden'));
+    }
+
+    // Toast Notification Helper
+    function showToast(msg, icon = 'check_circle') {
+      const toast = document.getElementById('toast-banner');
+      const text = document.getElementById('toast-text');
+      const iconEl = document.getElementById('toast-icon');
+      if (toast && text) {
+        text.textContent = msg;
+        if (iconEl) iconEl.textContent = icon;
+        toast.classList.remove('opacity-0', 'translate-y-3');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'translate-y-3');
+        }, 3000);
+      }
+    }
+
+    // Theme switching
+    function setTheme(mode) {
+      const html = document.documentElement;
+      const lightCard = document.getElementById('theme-card-light');
+      const darkCard = document.getElementById('theme-card-dark');
+      const checkLight = document.getElementById('theme-check-light');
+      const checkDark = document.getElementById('theme-check-dark');
+
+      if (mode === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        if (darkCard) {
+          darkCard.classList.add('border-primary', 'bg-primary/5');
+          darkCard.classList.remove('border-outline-variant/30');
+        }
+        if (lightCard) {
+          lightCard.classList.remove('border-primary', 'bg-primary/5');
+          lightCard.classList.add('border-outline-variant/30');
+        }
+        if (checkDark) checkDark.classList.remove('hidden');
+        if (checkLight) checkLight.classList.add('hidden');
+      } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+        if (lightCard) {
+          lightCard.classList.add('border-primary', 'bg-primary/5');
+          lightCard.classList.remove('border-outline-variant/30');
+        }
+        if (darkCard) {
+          darkCard.classList.remove('border-primary', 'bg-primary/5');
+          darkCard.classList.add('border-outline-variant/30');
+        }
+        if (checkLight) checkLight.classList.remove('hidden');
+        if (checkDark) checkDark.classList.add('hidden');
+      }
+      showToast(`Theme updated to ${mode === 'dark' ? 'Dark Mode' : 'Light Mode'}`);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      setTheme(isDark ? 'light' : 'dark');
+    }
+
+    // Driver Chat System
+    function sendChatMessage(text) {
+      const input = document.getElementById('chat-input');
+      const msg = text || (input ? input.value.trim() : '');
+      if (!msg) return;
+
+      const list = document.getElementById('chat-messages-list');
+      if (list) {
+        const userBubble = document.createElement('div');
+        userBubble.className = 'bg-primary text-on-primary self-end rounded-2xl rounded-br-xs px-3 py-1.5 max-w-[80%]';
+        userBubble.textContent = msg;
+        list.appendChild(userBubble);
+        if (input) input.value = '';
+        list.scrollTop = list.scrollHeight;
+
+        // Auto driver response
+        setTimeout(() => {
+          const driverBubble = document.createElement('div');
+          driverBubble.className = 'bg-surface-container text-on-surface self-start rounded-2xl rounded-bl-xs px-3 py-1.5 max-w-[80%]';
+          driverBubble.textContent = 'Got it! I am right outside your location.';
+          list.appendChild(driverBubble);
+          list.scrollTop = list.scrollHeight;
+        }, 1000);
+      }
+    }
+
+    // Trip Completion Helper
+    function setTripRating(stars) {
+      showToast(`Rated ${stars} Stars! Thank you.`);
+    }
+
+    function selectTip(amount) {
+      document.querySelectorAll('.tip-btn').forEach(btn => {
+        if (btn.textContent.includes(String(amount)) || (amount === 0 && btn.textContent === 'None')) {
+          btn.className = 'tip-btn py-1.5 rounded-xl border text-xs font-bold bg-primary text-on-primary border-primary shadow-sm';
+        } else {
+          btn.className = 'tip-btn py-1.5 rounded-xl border text-xs font-bold bg-surface-container text-on-surface border-surface-container-high';
+        }
+      });
+      if (amount > 0) showToast(`₹${amount} Tip added for driver`);
+    }
+
+    function finishTripAndGoToActivity() {
+      closeModal();
+      showToast('Trip Completed! +4.2 KM added to Skyppy Miles');
+      navigateTo('screen-08');
+    }
+
+    // Copy Booking Code
+    function copyBookingCode() {
+      navigator.clipboard?.writeText('SKY784392');
+      showToast('Booking ID SKY784392 copied to clipboard');
+    }
+  </script>
+</body>
+</html>
