@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { useAppStore } from '../store/useAppStore';
+import { useCourierStore } from '../store/useCourierStore';
 import { RideHistoryItem } from '../types';
 
 export const ActivityHistory: React.FC = () => {
   const navigate = useNavigate();
   const { rideHistory, activeBooking, openModal, rebookRide, cancelScheduledRide, showToast } = useAppStore();
+  const { shipments, setActiveShipment } = useCourierStore();
+
+  const [serviceType, setServiceType] = useState<'rides' | 'courier'>('rides');
   const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'scheduled' | 'cancelled'>('all');
+  const [courierTab, setCourierTab] = useState<'all' | 'active' | 'delivered'>('all');
 
   const filtered = rideHistory.filter((item) => {
     if (activeTab === 'all') return true;
@@ -50,7 +55,151 @@ export const ActivityHistory: React.FC = () => {
           </button>
         </div>
 
-        {/* Active Ongoing Ride Banner */}
+        {/* Service Type Switcher Pill */}
+        <div className="px-margin pb-3">
+          <div className="bg-surface-container-low p-1 rounded-2xl flex items-center border border-surface-container shadow-xs">
+            <button
+              type="button"
+              onClick={() => setServiceType('rides')}
+              className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-1.5 font-label-md text-xs transition-all ${
+                serviceType === 'rides'
+                  ? 'bg-primary text-white font-bold shadow-xs'
+                  : 'text-tertiary hover:text-on-surface'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[16px]">local_taxi</span>
+              <span>Rides ({rideHistory.length})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setServiceType('courier')}
+              className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-1.5 font-label-md text-xs transition-all ${
+                serviceType === 'courier'
+                  ? 'bg-primary text-white font-bold shadow-xs'
+                  : 'text-tertiary hover:text-on-surface'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[16px]">local_shipping</span>
+              <span>Shipments ({shipments.length})</span>
+            </button>
+          </div>
+        </div>
+
+        {serviceType === 'courier' ? (
+          /* COURIER SHIPMENTS TAB */
+          <div className="flex flex-col gap-3">
+            {/* Courier Filter Tabs */}
+            <div className="px-margin">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                {[
+                  { id: 'all', label: `All (${shipments.length})` },
+                  {
+                    id: 'active',
+                    label: `In Transit (${
+                      shipments.filter((s) => s.status !== 'delivered' && s.status !== 'cancelled').length
+                    })`
+                  },
+                  {
+                    id: 'delivered',
+                    label: `Delivered (${shipments.filter((s) => s.status === 'delivered').length})`
+                  }
+                ].map((tab) => {
+                  const isSelected = courierTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setCourierTab(tab.id as any)}
+                      className={`px-3.5 py-1.5 rounded-full font-label-md text-xs shrink-0 shadow-sm active:scale-95 transition-all ${
+                        isSelected
+                          ? 'bg-on-surface text-surface-container-lowest font-bold'
+                          : 'bg-surface-container-lowest text-on-surface-variant font-medium hover:bg-surface-container-low'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Courier Shipments List */}
+            <div className="px-margin flex flex-col gap-3 pb-6">
+              {shipments
+                .filter((s) => {
+                  if (courierTab === 'all') return true;
+                  if (courierTab === 'active') return s.status !== 'delivered' && s.status !== 'cancelled';
+                  if (courierTab === 'delivered') return s.status === 'delivered';
+                  return true;
+                })
+                .map((shipment) => (
+                  <div
+                    key={shipment.id}
+                    className="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-container/60 flex flex-col gap-3"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-11 h-11 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                          <span className="material-symbols-outlined text-[24px]">local_shipping</span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <h3 className="font-mono font-bold text-xs text-on-surface">
+                              {shipment.trackingNumber}
+                            </h3>
+                            <span
+                              className={`px-1.5 py-0.5 rounded font-label-sm text-[10px] font-bold ${
+                                shipment.status === 'delivered'
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : 'bg-blue-100 text-primary'
+                              }`}
+                            >
+                              {shipment.status.replace(/_/g, ' ')}
+                            </span>
+                          </div>
+                          <p className="text-xs text-on-surface-variant font-medium mt-0.5">
+                            {shipment.sender.city} → {shipment.receiver.city} • {shipment.packageDetails.description}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="font-bold text-sm text-on-surface">
+                        ₹{shipment.pricing.totalEstimatedFare}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-surface-container text-xs">
+                      <span className="text-tertiary">
+                        Receiver: <strong>{shipment.receiver.name}</strong>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveShipment(shipment);
+                          navigate(`/courier/track/${shipment.id}`);
+                        }}
+                        className="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-bold flex items-center gap-1 active:scale-95 shadow-xs"
+                      >
+                        <span>Track Consignment</span>
+                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+              <button
+                type="button"
+                onClick={() => navigate('/courier/send')}
+                className="w-full py-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-surface-container text-primary font-bold text-xs flex items-center justify-center gap-2 active:scale-95 transition-all mt-1"
+              >
+                <span className="material-symbols-outlined text-[18px]">add_circle</span>
+                <span>Send Another Intercity Parcel</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* PASSENGER RIDES TAB (EXACT EXISTING FLOW) */
+          <>
+            {/* Active Ongoing Ride Banner */}
         {activeBooking && (
           <div className="px-margin mb-3">
             <div
@@ -269,6 +418,8 @@ export const ActivityHistory: React.FC = () => {
             })
           )}
         </div>
+        </>
+        )}
       </main>
     </div>
   );

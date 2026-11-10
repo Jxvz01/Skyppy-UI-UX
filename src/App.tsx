@@ -13,6 +13,14 @@ import { ActivityHistory } from './pages/ActivityHistory';
 import { Profile } from './pages/Profile';
 import { ThemeSettings } from './pages/ThemeSettings';
 
+// Skyppy Courier & Logistics Pages
+import { CourierHome } from './pages/CourierHome';
+import { CreateShipment } from './pages/CreateShipment';
+import { ShipmentConfirmation } from './pages/ShipmentConfirmation';
+import { ShipmentTracking } from './pages/ShipmentTracking';
+import { ReceiverPortal } from './pages/ReceiverPortal';
+import { BusinessDashboard } from './pages/BusinessDashboard';
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -27,6 +35,7 @@ export const App: React.FC = () => {
       <ScrollToTop />
       <DeviceFrame>
         <Routes>
+          {/* Passenger Rides Routes */}
           <Route path="/" element={<RidesHome />} />
           <Route path="/search" element={<DestinationSearch />} />
           <Route path="/location" element={<LocationSelection />} />
@@ -37,6 +46,16 @@ export const App: React.FC = () => {
           <Route path="/activity" element={<ActivityHistory />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/theme" element={<ThemeSettings />} />
+
+          {/* Intercity Courier & Logistics Routes */}
+          <Route path="/courier" element={<CourierHome />} />
+          <Route path="/courier/send" element={<CreateShipment />} />
+          <Route path="/courier/confirm" element={<ShipmentConfirmation />} />
+          <Route path="/courier/track" element={<ShipmentTracking />} />
+          <Route path="/courier/track/:id" element={<ShipmentTracking />} />
+          <Route path="/courier/receiver/:id" element={<ReceiverPortal />} />
+          <Route path="/courier/business" element={<BusinessDashboard />} />
+
           {/* Catch-all redirect to Home */}
           <Route path="*" element={<RidesHome />} />
         </Routes>
@@ -45,4 +64,3 @@ export const App: React.FC = () => {
   );
 };
 export default App;
-

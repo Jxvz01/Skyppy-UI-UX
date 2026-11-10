@@ -2,11 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { useAppStore } from '../store/useAppStore';
+import { useCourierStore } from '../store/useCourierStore';
 import { translations } from '../utils/i18n';
 
 export const RidesHome: React.FC = () => {
   const navigate = useNavigate();
   const { pickup, setPickup, setDestination, openModal, userProfile, miles, rideHistory, savedPlaces, language } = useAppStore();
+  const { setActiveServiceTab } = useCourierStore();
   const t = translations[language] || translations.en;
 
   const handleSelectRecent = (title: string, distanceKm: number, address = 'Mysuru, Karnataka') => {
@@ -44,6 +46,33 @@ export const RidesHome: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col relative w-full pb-6 bg-surface min-h-full">
       <Header type="tab" />
+
+      {/* Primary Service Switcher: Rides vs Courier Logistics */}
+      <div className="px-margin pt-2 pb-1 bg-surface">
+        <div className="bg-surface-container-low p-1 rounded-2xl flex items-center shadow-xs border border-surface-container">
+          <button
+            type="button"
+            className="flex-1 py-2 rounded-xl bg-primary-container text-on-primary flex items-center justify-center gap-2 font-label-md font-bold shadow-xs transition-all cursor-default"
+          >
+            <span className="material-symbols-outlined text-[18px]">local_taxi</span>
+            <span className="font-semibold">Skyppy Rides</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveServiceTab('courier');
+              navigate('/courier');
+            }}
+            className="flex-1 py-2 rounded-xl text-tertiary hover:text-on-surface flex items-center justify-center gap-2 font-label-md transition-all active:scale-95 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">local_shipping</span>
+            <span>Skyppy Courier</span>
+            <span className="px-1.5 py-0.2 rounded-md bg-secondary-fixed text-on-secondary-fixed text-[10px] font-extrabold uppercase">
+              Intercity
+            </span>
+          </button>
+        </div>
+      </div>
 
       <main className="flex flex-col w-full">
         {/* Midnight Navy Hero & Royal Mysuru Skyline Canopy */}
@@ -333,6 +362,37 @@ export const RidesHome: React.FC = () => {
                   <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Intercity Courier & Freight Banner */}
+        <div className="px-margin pt-1">
+          <div
+            onClick={() => {
+              setActiveServiceTab('courier');
+              navigate('/courier');
+            }}
+            className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-4 text-white shadow-md flex items-center justify-between cursor-pointer active:scale-[0.99] transition-all border border-blue-800/40"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-blue-500/20 text-secondary-fixed flex items-center justify-center shrink-0 border border-secondary-fixed/20">
+                <span className="material-symbols-outlined text-[24px]">local_shipping</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-sm">Need to send a parcel?</span>
+                  <span className="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-extrabold uppercase">
+                    New
+                  </span>
+                </div>
+                <p className="text-xs text-blue-200 mt-0.5">
+                  Express intercity logistics across Mysuru &amp; Bengaluru
+                </p>
+              </div>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[18px] text-white">chevron_right</span>
             </div>
           </div>
         </div>
