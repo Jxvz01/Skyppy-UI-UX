@@ -46,7 +46,7 @@ export const ThemeSettings: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
-      <Header type="stack" title="10 Appearance" backTo="/profile" />
+      <Header type="stack" title="Appearance" backTo="/profile" />
 
       <main className="flex flex-col w-full px-margin pb-10 gap-space-md">
         <div className="pt-2">

@@ -11,7 +11,7 @@ export const LocationSelection: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
-      <Header type="stack" title="03 Location Selection" backTo="/search" />
+      <Header type="stack" title="Confirm Route" backTo="/search" />
 
       <main className="flex flex-col w-full relative">
         {/* Interactive Mobility Map Canvas (High-Fidelity OpenStreetMap) */}

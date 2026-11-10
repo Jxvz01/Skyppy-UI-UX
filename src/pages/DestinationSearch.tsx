@@ -35,7 +35,7 @@ export const DestinationSearch: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
-      <Header type="stack" title="02 Select Locations" backTo="/" />
+      <Header type="stack" title="Select Locations" backTo="/" />
 
       <main className="flex flex-col w-full pt-2">
         {/* Dual Location Overview & Swap Header Card */}

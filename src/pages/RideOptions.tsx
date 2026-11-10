@@ -53,7 +53,7 @@ export const RideOptions: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
-      <Header type="stack" title={`04 ${t.rideOptionsHeader}`} backTo="/location" />
+      <Header type="stack" title={t.rideOptionsHeader} backTo="/location" />
 
       <main className="flex flex-col w-full pb-8">
         <div className="px-margin pt-2 flex flex-col gap-space-md">
