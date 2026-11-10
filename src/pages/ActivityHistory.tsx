@@ -4,10 +4,12 @@ import { Header } from '../components/Header';
 import { useAppStore } from '../store/useAppStore';
 import { useCourierStore } from '../store/useCourierStore';
 import { RideHistoryItem } from '../types';
+import { translations } from '../utils/i18n';
 
 export const ActivityHistory: React.FC = () => {
   const navigate = useNavigate();
-  const { rideHistory, activeBooking, openModal, rebookRide, cancelScheduledRide, showToast } = useAppStore();
+  const { rideHistory, activeBooking, openModal, rebookRide, cancelScheduledRide, showToast, language } = useAppStore();
+  const t = translations[language] || translations.en;
   const { shipments, setActiveShipment } = useCourierStore();
 
   const [serviceType, setServiceType] = useState<'rides' | 'courier'>('rides');
@@ -40,9 +42,11 @@ export const ActivityHistory: React.FC = () => {
         <div className="flex items-center justify-between px-margin pt-space-xs pb-space-sm">
           <div>
             <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">
-              Trip Ledger &amp; History
+              {language === 'kn' ? t.activityTitle : 'Trip Ledger & History'}
             </span>
-            <h1 className="font-headline-lg text-headline-lg text-on-surface font-bold">Your Activity</h1>
+            <h1 className="font-headline-lg text-headline-lg text-on-surface font-bold">
+              {language === 'kn' ? t.activityTitle : 'Your Activity'}
+            </h1>
           </div>
           <button
             aria-label="Download statement"
@@ -68,7 +72,7 @@ export const ActivityHistory: React.FC = () => {
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">local_taxi</span>
-              <span>Rides ({rideHistory.length})</span>
+              <span>{t.ridesTab} ({rideHistory.length})</span>
             </button>
 
             <button
@@ -81,7 +85,7 @@ export const ActivityHistory: React.FC = () => {
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">local_shipping</span>
-              <span>Shipments ({shipments.length})</span>
+              <span>{t.consignmentsTab} ({shipments.length})</span>
             </button>
           </div>
         </div>
@@ -401,14 +405,14 @@ export const ActivityHistory: React.FC = () => {
                         type="button"
                       >
                         <span className="material-symbols-outlined text-[16px]">receipt</span>
-                        <span>View Receipt</span>
+                        <span>{t.viewReceipt}</span>
                       </button>
                       <button
                         onClick={() => handleRebook(item)}
                         className="h-8 px-3.5 rounded-full bg-primary text-on-primary font-label-sm text-[11px] font-bold flex items-center gap-1 shadow-sm active:scale-95 transition-transform cursor-pointer"
                         type="button"
                       >
-                        <span>Rebook</span>
+                        <span>{t.rebookRide}</span>
                         <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                       </button>
                     </div>

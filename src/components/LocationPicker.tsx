@@ -3,6 +3,7 @@ import { useAppStore } from '../store/useAppStore';
 import { LocationItem } from '../types';
 import { MYSURU_LANDMARKS, MysuruLocation, calculateDistanceBetween } from '../utils/mysuruLocations';
 import { OpenStreetMap } from './OpenStreetMap';
+import { translations } from '../utils/i18n';
 
 interface LocationPickerProps {
   mode: 'pickup' | 'destination';
@@ -21,7 +22,8 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
   initialTab = 'search',
   showContextSwitch = true
 }) => {
-  const { pickup, destination, savedPlaces, showToast } = useAppStore();
+  const { pickup, destination, savedPlaces, showToast, language } = useAppStore();
+  const t = translations[language] || translations.en;
   const [activeTab, setActiveTab] = useState<'search' | 'map'>(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'recent' | 'saved' | 'transit' | 'hubs'>('all');
@@ -144,7 +146,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
           }`}
         >
           <span className="material-symbols-outlined text-[16px]">search</span>
-          <span>Search by Text</span>
+          <span>{t.searchByText}</span>
         </button>
         <button
           type="button"
@@ -156,7 +158,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
           }`}
         >
           <span className="material-symbols-outlined text-[16px]">pin_drop</span>
-          <span>Select on Map</span>
+          <span>{t.selectOnMap}</span>
         </button>
       </div>
 
@@ -175,7 +177,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
             >
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-secondary">Pickup</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-secondary">{t.pickupPoint}</span>
               </div>
               <p className="text-xs font-bold text-on-surface truncate mt-0.5">{pickup.title}</p>
             </button>
@@ -193,7 +195,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
             >
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-primary">Destination</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{t.dropDestination}</span>
               </div>
               <p className="text-xs font-bold text-on-surface truncate mt-0.5">{destination.title}</p>
             </button>
@@ -213,7 +215,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
               <input
                 type="text"
                 autoFocus
-                placeholder={mode === 'pickup' ? 'Search pickup point in Mysuru...' : 'Where to in Mysuru? (e.g. Palace, Station)'}
+                placeholder={mode === 'pickup' ? t.pickupLocation : t.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-transparent text-sm font-body-lg text-on-surface placeholder:text-outline focus:outline-none"
@@ -249,7 +251,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
               className="flex-1 py-2 px-3 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
             >
               <span className="material-symbols-outlined text-[16px]">near_me</span>
-              <span>Use Current GPS Location</span>
+              <span>{t.useCurrentLocation}</span>
             </button>
             <button
               type="button"
@@ -257,18 +259,18 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
               className="py-2 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform shrink-0"
             >
               <span className="material-symbols-outlined text-[16px]">map</span>
-              <span>Choose on Map</span>
+              <span>{t.selectOnMap}</span>
             </button>
           </div>
 
           {/* Category Chips Bar */}
           <div className="px-margin flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             {[
-              { id: 'all', label: 'All Places' },
-              { id: 'recent', label: 'Recent' },
-              { id: 'saved', label: 'Saved' },
-              { id: 'transit', label: 'Transit Hubs' },
-              { id: 'hubs', label: 'Heritage' }
+              { id: 'all', label: t.allPlaces },
+              { id: 'recent', label: t.recent },
+              { id: 'saved', label: t.savedSpots },
+              { id: 'transit', label: t.transitHubs },
+              { id: 'hubs', label: t.cityHeritage }
             ].map((chip) => (
               <button
                 key={chip.id}
@@ -288,7 +290,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
           {/* Location Suggestions List */}
           <div className="px-margin flex flex-col gap-2 pb-6">
             <span className="text-xs font-bold uppercase tracking-wider text-outline px-1">
-              {searchQuery ? `Matching Results (${filteredPlaces.length})` : 'Popular Locations in Mysuru'}
+              {searchQuery ? `Matching Results (${filteredPlaces.length})` : t.popularLocations}
             </span>
 
             {filteredPlaces.length === 0 ? (
@@ -376,7 +378,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
           <div className="px-margin mb-2 flex items-center justify-between">
             <span className="text-xs font-bold text-on-surface flex items-center gap-1.5">
               <span className={`w-2 h-2 rounded-full ${mode === 'pickup' ? 'bg-secondary' : 'bg-primary'}`}></span>
-              <span>Pan map to set exact {mode === 'pickup' ? 'Pickup' : 'Drop'} location</span>
+              <span>{language === 'kn' ? t.panMapInstruction : `Pan map to set exact ${mode === 'pickup' ? 'Pickup' : 'Drop'} location`}</span>
             </span>
             <span className="text-[11px] text-tertiary">Movable Pin</span>
           </div>
@@ -447,7 +449,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
                   </div>
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-secondary">
-                      {mode === 'pickup' ? 'Confirmed Pickup Point' : 'Confirmed Drop Destination'}
+                      {mode === 'pickup' ? t.confirmedPickup : t.confirmedDrop}
                     </span>
                     <h3 className="font-bold text-sm text-on-surface leading-tight mt-0.5">
                       {mapSelectedLocation.title}
@@ -468,7 +470,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
                 }`}
               >
                 <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                <span>Confirm {mode === 'pickup' ? 'Pickup Location' : 'Destination'}</span>
+                <span>{mode === 'pickup' ? t.confirmPickupLocation : t.confirmDestination}</span>
               </button>
             </div>
           </div>

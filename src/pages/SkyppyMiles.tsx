@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { useAppStore } from '../store/useAppStore';
+import { translations } from '../utils/i18n';
 
 export const SkyppyMiles: React.FC = () => {
   const navigate = useNavigate();
-  const { miles, redeemVoucher, showToast } = useAppStore();
+  const { miles, redeemVoucher, showToast, language } = useAppStore();
+  const t = translations[language] || translations.en;
   const [isExplainerOpen, setIsExplainerOpen] = useState(false);
 
   const handleApplyVoucher = (voucher: { id: string; code: string; title: string; redeemed: boolean }) => {
@@ -26,7 +28,7 @@ export const SkyppyMiles: React.FC = () => {
         {/* Top Context & Tier Header */}
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-space-sm">
-            <span className="font-headline-lg text-headline-lg text-on-surface font-bold">Skyppy Miles</span>
+            <span className="font-headline-lg text-headline-lg text-on-surface font-bold">{t.skyppyMiles}</span>
             <button
               aria-label="Miles rules information"
               onClick={() => setIsExplainerOpen(true)}
@@ -52,7 +54,7 @@ export const SkyppyMiles: React.FC = () => {
           <div className="relative flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <span className="font-label-sm text-label-sm uppercase tracking-widest text-outline-variant font-bold">
-                Total Distance Travelled
+                {language === 'kn' ? t.lifetimeMiles : 'Total Distance Travelled'}
               </span>
               <div className="flex items-center gap-1 text-secondary-fixed font-label-md text-label-md bg-white/10 px-2 py-0.5 rounded-full">
                 <span className="material-symbols-outlined text-[14px]">speed</span>
@@ -106,7 +108,7 @@ export const SkyppyMiles: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-[20px]">redeem</span>
-              <span className="font-headline-md text-headline-md text-on-surface font-bold">Available Vouchers</span>
+              <span className="font-headline-md text-headline-md text-on-surface font-bold">{t.rewardsCatalog}</span>
             </div>
             <span className="font-label-sm text-label-sm text-secondary font-bold uppercase">
               {miles.rewards.filter((r) => !r.redeemed).length} Ready

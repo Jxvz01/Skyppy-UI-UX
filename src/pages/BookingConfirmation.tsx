@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { OpenStreetMap } from '../components/OpenStreetMap';
 import { useAppStore } from '../store/useAppStore';
 import { VehicleCategoryId } from '../types';
+import { translations } from '../utils/i18n';
 
 interface VehicleFleetProfile {
   id: VehicleCategoryId;
@@ -136,7 +137,8 @@ const FLEET_CONFIG: Record<VehicleCategoryId, VehicleFleetProfile> = {
 
 export const BookingConfirmation: React.FC = () => {
   const navigate = useNavigate();
-  const { activeBooking, cancelBooking, openModal, showToast, selectVehicle } = useAppStore();
+  const { activeBooking, cancelBooking, openModal, showToast, selectVehicle, language } = useAppStore();
+  const t = translations[language] || translations.en;
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [copiedOtp, setCopiedOtp] = useState(false);
 
@@ -320,10 +322,10 @@ export const BookingConfirmation: React.FC = () => {
               {/* Heading Section */}
               <div className="flex flex-col items-center text-center mt-2">
                 <h1 className="font-extrabold text-2xl text-slate-900 tracking-tight">
-                  Confirming your ride
+                  {t.confirmingYourRide}
                 </h1>
                 <p className="text-xs text-slate-500 font-medium mt-1">
-                  Finding the best available vehicle near you...
+                  {t.findingBestVehicle}
                 </p>
               </div>
 
@@ -376,7 +378,7 @@ export const BookingConfirmation: React.FC = () => {
                   <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white shrink-0 shadow-xs">
                     <span className="material-symbols-outlined text-[13px] font-bold">check</span>
                   </div>
-                  <span className="text-sm font-semibold text-slate-700">Ride requested</span>
+                  <span className="text-sm font-semibold text-slate-700">{t.rideRequested}</span>
                 </div>
 
                 {/* Step 2: Finding a nearby vehicle */}
@@ -384,7 +386,7 @@ export const BookingConfirmation: React.FC = () => {
                   <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center shrink-0">
                     <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                   </div>
-                  <span className="text-sm font-bold text-slate-900">Finding a nearby vehicle</span>
+                  <span className="text-sm font-bold text-slate-900">{t.findingNearbyVehicle}</span>
                 </div>
 
                 {/* Step 3: Finalising your booking */}
@@ -405,7 +407,7 @@ export const BookingConfirmation: React.FC = () => {
                       progressStep === 3 ? 'font-bold text-slate-900' : 'text-slate-400'
                     }`}
                   >
-                    Finalising your booking
+                    {t.finalisingBooking}
                   </span>
                 </div>
               </div>
@@ -429,10 +431,10 @@ export const BookingConfirmation: React.FC = () => {
                   <span className="material-symbols-outlined text-[19px] font-black">check</span>
                 </div>
                 <h1 className="font-extrabold text-[22px] text-slate-900 tracking-tight leading-snug">
-                  Your ride is confirmed!
+                  {t.yourRideIsConfirmed}
                 </h1>
                 <p className="text-xs text-slate-500 font-medium mt-0.5">
-                  Your {activeVehicle.categoryNoun} is on the way to pickup location.
+                  {t.vehicleOnTheWay}
                 </p>
               </div>
 
@@ -530,7 +532,7 @@ export const BookingConfirmation: React.FC = () => {
                     </div>
                     <div className="min-w-0">
                       <span className="text-[10px] text-slate-400 font-semibold uppercase block leading-none mb-0.5">
-                        Vehicle
+                        {t.vehicleLabel}
                       </span>
                       <span className="text-xs font-bold text-slate-800 truncate block">
                         {activeVehicle.model}
@@ -542,7 +544,7 @@ export const BookingConfirmation: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-slate-400 font-semibold uppercase block leading-none mb-0.5">
-                        Reg. No.
+                        {t.regNoLabel}
                       </span>
                       <span className="font-mono text-xs font-bold text-slate-800">
                         {activeVehicle.plate}
@@ -561,7 +563,7 @@ export const BookingConfirmation: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-[10px] text-slate-400 font-semibold block leading-none mb-0.5">
-                        Arriving in
+                        {t.arrivingIn}
                       </span>
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs font-bold text-slate-900">
@@ -577,7 +579,7 @@ export const BookingConfirmation: React.FC = () => {
                   {/* Start OTP (Passenger Verification & Test Suites) */}
                   <div className="text-right">
                     <span className="text-[10px] text-slate-400 font-semibold block uppercase leading-none mb-0.5">
-                      Start OTP
+                      {t.startOtp}
                     </span>
                     <div className="flex items-center gap-1 justify-end">
                       <span className="font-mono text-xs font-black text-primary bg-primary/10 px-2 py-0.5 rounded">
@@ -642,7 +644,7 @@ export const BookingConfirmation: React.FC = () => {
                 {/* Left: Estimated Fare with Demo Price Pill */}
                 <div>
                   <div className="flex items-center gap-1">
-                    <span className="text-[10px] text-slate-400 font-medium">Estimated fare</span>
+                    <span className="text-[10px] text-slate-400 font-medium">{t.estimatedFare}</span>
                     <button
                       type="button"
                       onClick={() => openModal('fareBreakdown', { vehicleId: activeCategoryId })}
@@ -676,7 +678,7 @@ export const BookingConfirmation: React.FC = () => {
                     />
                   )}
                   <span className="relative z-10 flex items-center gap-1.5">
-                    <span>Track Live Ride</span>
+                    <span>{t.trackLiveRide}</span>
                     {!isRedirectPaused && (
                       <span className="inline-flex items-center justify-center text-[10px] font-mono font-bold bg-white/25 text-white px-1.5 py-0.5 rounded-full min-w-[22px]">
                         {redirectCountdown}s
@@ -696,7 +698,7 @@ export const BookingConfirmation: React.FC = () => {
                   onClick={handleCancelClick}
                   className="text-[11px] font-semibold text-slate-400 hover:text-red-500 transition-colors py-1 cursor-pointer"
                 >
-                  Cancel Booking
+                  {t.cancelRide}
                 </button>
               </div>
             </motion.div>

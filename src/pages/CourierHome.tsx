@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { useCourierStore } from '../store/useCourierStore';
 import { useAppStore } from '../store/useAppStore';
+import { translations } from '../utils/i18n';
 
 export const CourierHome: React.FC = () => {
   const navigate = useNavigate();
   const { shipments, setActiveServiceTab, setActiveShipment } = useCourierStore();
-  const { miles, showToast } = useAppStore();
+  const { miles, showToast, language } = useAppStore();
+  const t = translations[language] || translations.en;
 
   const [fromLocation, setFromLocation] = useState('VVCE Campus, Gokulam');
   const [toLocation, setToLocation] = useState('Bengaluru, Karnataka');
@@ -49,13 +51,11 @@ export const CourierHome: React.FC = () => {
 
             {/* Left Typography Overlay */}
             <div className="relative z-10 p-5 max-w-[62%] select-none">
-              <h1 className="text-[28px] font-extrabold tracking-tight text-white leading-[1.08]">
-                Move.<br />
-                Ride.<br />
-                Ship.
+              <h1 className="text-[28px] font-extrabold tracking-tight text-white leading-[1.08] whitespace-pre-line">
+                {t.moveRideShip}
               </h1>
               <p className="text-xs text-slate-300 font-medium mt-2">
-                Across Mysuru and beyond.
+                {t.acrossMysuru}
               </p>
             </div>
           </div>
@@ -67,7 +67,7 @@ export const CourierHome: React.FC = () => {
             {/* Book a Ride Button (Inactive) */}
             <button
               type="button"
-              aria-label="Book a Ride - Skyppy Rides"
+              aria-label={`${t.bookARide} - Skyppy Rides`}
               onClick={() => {
                 setActiveServiceTab('rides');
                 navigate('/');
@@ -75,19 +75,19 @@ export const CourierHome: React.FC = () => {
               className="flex-1 py-3 px-3 rounded-xl bg-transparent text-slate-800 hover:bg-slate-50 flex items-center justify-center gap-2 font-bold text-sm active:scale-[0.98] transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-[19px] text-slate-700">directions_car</span>
-              <span>Book a Ride</span>
+              <span>{t.bookARide}</span>
             </button>
 
             {/* Send a Parcel Button (Active) */}
             <button
               type="button"
-              aria-label="Send a Parcel - Skyppy Courier"
+              aria-label={`${t.sendAParcel} - Skyppy Courier`}
               className="flex-1 py-3 px-3 rounded-xl bg-primary text-white flex items-center justify-center gap-1.5 font-bold text-sm shadow-sm active:scale-[0.98] transition-transform cursor-default"
             >
               <span className="material-symbols-outlined text-[19px]">package_2</span>
-              <span>Send a Parcel</span>
+              <span>{t.sendAParcel}</span>
               <span className="px-1.5 py-0.5 rounded-full bg-[#d4f84c] text-black text-[9px] font-extrabold uppercase tracking-wide">
-                New
+                {t.newBadge}
               </span>
             </button>
           </div>
@@ -99,13 +99,13 @@ export const CourierHome: React.FC = () => {
             <div className="flex items-start justify-between gap-3">
               <div className="flex flex-col">
                 <span className="text-[11px] font-bold text-primary uppercase tracking-wider block">
-                  SKAPPY MOVE
+                  {t.skyppyMove}
                 </span>
                 <h2 className="text-lg font-bold text-slate-900 tracking-tight mt-0.5">
-                  Send a Parcel
+                  {t.sendAParcel}
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Ship your packages safely across cities.
+                  {t.shipPackagesSafely}
                 </p>
               </div>
 
@@ -124,28 +124,28 @@ export const CourierHome: React.FC = () => {
               <div className="flex flex-col items-center gap-1">
                 <span className="material-symbols-outlined text-primary text-[18px]">bolt</span>
                 <span className="text-[10px] font-semibold text-slate-700 leading-tight">
-                  Intercity<br />Delivery
+                  {t.intercityDelivery}
                 </span>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <span className="material-symbols-outlined text-primary text-[18px]">shield</span>
                 <span className="text-[10px] font-semibold text-slate-700 leading-tight">
-                  Safe &amp; Secure<br />Handling
+                  {t.safeSecureHandling}
                 </span>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <span className="material-symbols-outlined text-primary text-[18px]">location_on</span>
                 <span className="text-[10px] font-semibold text-slate-700 leading-tight">
-                  Live<br />Tracking
+                  {t.liveTracking}
                 </span>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <span className="material-symbols-outlined text-primary text-[18px]">verified</span>
                 <span className="text-[10px] font-semibold text-slate-700 leading-tight">
-                  Proof of<br />Delivery
+                  {t.proofOfDelivery}
                 </span>
               </div>
             </div>
@@ -163,7 +163,7 @@ export const CourierHome: React.FC = () => {
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                    FROM
+                    {t.fromLocation}
                   </span>
                   <span className="text-sm font-bold text-slate-900 truncate">
                     {fromLocation}
@@ -193,7 +193,7 @@ export const CourierHome: React.FC = () => {
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                    TO
+                    {t.toLocation}
                   </span>
                   <span className="text-sm font-bold text-slate-900 truncate">
                     {toLocation}
@@ -219,7 +219,7 @@ export const CourierHome: React.FC = () => {
               className="w-full py-3.5 px-4 mt-1 rounded-xl bg-primary text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-primary/20 active:scale-[0.98] transition-transform cursor-pointer"
             >
               <span className="material-symbols-outlined text-[19px]">package_2</span>
-              <span>Create Shipment</span>
+              <span>{t.createShipment}</span>
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </button>
           </div>
@@ -229,14 +229,14 @@ export const CourierHome: React.FC = () => {
         <div className="px-margin pt-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              QUICK ACTIONS
+              {t.quickActions}
             </span>
             <button
               type="button"
               onClick={() => navigate('/activity')}
               className="text-xs font-bold text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
             >
-              <span>View all</span>
+              <span>{t.viewAll}</span>
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
           </div>
@@ -250,8 +250,8 @@ export const CourierHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">add_box</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">New Shipment</span>
-              <span className="text-[10px] text-slate-400 mt-0.5">Send a parcel</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.newShipment}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5">{t.sendParcel}</span>
             </div>
 
             {/* Action 2: Track Shipment */}
@@ -262,8 +262,8 @@ export const CourierHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">local_shipping</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Track Shipment</span>
-              <span className="text-[10px] text-slate-400 mt-0.5">Live status</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.trackShipment}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5">{t.liveStatus}</span>
             </div>
 
             {/* Action 3: Scheduled Pickups */}
@@ -274,8 +274,8 @@ export const CourierHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">calendar_month</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Scheduled</span>
-              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">Pickups</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.scheduledPickups}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">{t.schedule}</span>
             </div>
 
             {/* Action 4: Shipment History */}
@@ -286,8 +286,8 @@ export const CourierHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">receipt_long</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Shipment</span>
-              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">History</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.shipmentHistory}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">{t.consignmentsTab}</span>
             </div>
           </div>
         </div>
@@ -302,9 +302,9 @@ export const CourierHome: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-sm font-bold text-[#d4f84c] block leading-tight">
-                    Skyppy Miles
+                    {t.skyppyMiles}
                   </span>
-                  <span className="text-[11px] text-slate-400">Ride • Ship • Earn</span>
+                  <span className="text-[11px] text-slate-400">{t.rideShipEarn}</span>
                 </div>
               </div>
 
@@ -327,13 +327,13 @@ export const CourierHome: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-300 font-medium">68 miles to Gold</span>
+              <span className="text-slate-300 font-medium">{t.milesToGold}</span>
               <button
                 type="button"
                 onClick={() => navigate('/miles')}
                 className="text-[#d4f84c] font-bold flex items-center gap-0.5 hover:underline cursor-pointer"
               >
-                <span>View Rewards</span>
+                <span>{t.viewRewards}</span>
                 <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
               </button>
             </div>

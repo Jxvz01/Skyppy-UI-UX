@@ -6,3 +6,4 @@ test('capture home redesign screenshot', async ({ page }) => {
   await page.waitForTimeout(1000);
   await page.screenshot({ path: 'screenshot-home-redesign.png', fullPage: true });
 });
+

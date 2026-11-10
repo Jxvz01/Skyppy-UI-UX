@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { OpenStreetMap } from '../components/OpenStreetMap';
 import { useAppStore } from '../store/useAppStore';
+import { translations } from '../utils/i18n';
 
 export const LocationSelection: React.FC = () => {
   const navigate = useNavigate();
-  const { pickup, destination, swapLocations, showToast } = useAppStore();
+  const { pickup, destination, swapLocations, showToast, language } = useAppStore();
+  const t = translations[language] || translations.en;
   const [selectedRoutePref, setSelectedRoutePref] = useState('fastest');
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
-      <Header type="stack" title="Confirm Route" backTo="/search" />
+      <Header type="stack" title={t.confirmRoute} backTo="/search" />
 
       <main className="flex flex-col w-full relative">
         {/* Interactive Mobility Map Canvas (High-Fidelity OpenStreetMap) */}
@@ -47,7 +49,7 @@ export const LocationSelection: React.FC = () => {
           <div className="absolute top-4 right-3 z-[400] flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-slate-700/50 pointer-events-none">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span className="font-label-sm text-[10px] text-emerald-300 font-bold tracking-wider uppercase">
-              Normal Traffic
+              {t.normalTraffic}
             </span>
           </div>
         </div>
@@ -62,8 +64,8 @@ export const LocationSelection: React.FC = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div>
-              <span className="font-label-sm text-primary uppercase font-bold tracking-wider">Route Verification</span>
-              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Confirm Ride Route</h2>
+              <span className="font-label-sm text-primary uppercase font-bold tracking-wider">{t.routeVerification}</span>
+              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">{t.confirmRideRoute}</h2>
             </div>
             <button
               aria-label="Swap locations"
@@ -88,7 +90,7 @@ export const LocationSelection: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <span className="font-label-sm text-secondary uppercase font-semibold text-[10px]">
-                    Pickup Point
+                    {t.pickupPoint}
                   </span>
                   <p className="font-body-lg text-on-surface font-semibold text-[15px] truncate">{pickup.title}</p>
                   <p className="font-body-sm text-on-surface-variant text-[12px] truncate">{pickup.address}</p>
@@ -135,7 +137,7 @@ export const LocationSelection: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <span className="font-label-sm text-primary uppercase font-semibold text-[10px]">
-                    Drop Destination
+                    {t.dropDestination}
                   </span>
                   <p className="font-body-lg text-on-surface font-semibold text-[15px] truncate">{destination.title}</p>
                   <p className="font-body-sm text-on-surface-variant text-[12px] truncate">{destination.address}</p>
@@ -155,7 +157,7 @@ export const LocationSelection: React.FC = () => {
           {/* Quick Route Preference Filter Chips */}
           <div className="flex items-center gap-2 mb-5 overflow-x-auto pb-1 no-scrollbar">
             {[
-              { id: 'fastest', label: 'Fastest Route', icon: 'bolt' },
+              { id: 'fastest', label: t.fastestRoute, icon: 'bolt' },
               { id: 'verified', label: 'Verified Drivers', icon: 'verified_user' },
               { id: 'zero_tolls', label: 'Zero Tolls', icon: 'money_off' }
             ].map((chip) => {
@@ -216,7 +218,7 @@ export const LocationSelection: React.FC = () => {
             className="w-full h-[52px] bg-primary text-on-primary rounded-full flex items-center justify-center gap-2 shadow-lg shadow-primary/25 hover:bg-primary-container transition-all active:scale-[0.99] font-headline-md text-headline-md tracking-wide cursor-pointer"
             type="button"
           >
-            <span>Continue to Ride Options</span>
+            <span>{t.proceedToChooseVehicle}</span>
             <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
           </button>
         </div>

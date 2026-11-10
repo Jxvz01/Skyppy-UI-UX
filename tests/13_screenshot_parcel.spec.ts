@@ -6,3 +6,4 @@ test('capture send parcel redesign screenshot', async ({ page }) => {
   await page.waitForTimeout(1000);
   await page.screenshot({ path: 'screenshot-parcel-redesign.png', fullPage: true });
 });
+

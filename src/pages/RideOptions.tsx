@@ -67,7 +67,7 @@ export const RideOptions: React.FC = () => {
                 <span className="truncate max-w-[130px] font-semibold text-on-surface">{destination.title}</span>
               </div>
               <span className="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">
-                Best Price
+                {t.bestPrice}
               </span>
             </div>
 
@@ -316,7 +316,7 @@ export const RideOptions: React.FC = () => {
           <div className="absolute inset-0" onClick={() => setIsPaymentSheetOpen(false)}></div>
           <div className="relative w-full bg-surface-container-lowest rounded-t-3xl shadow-2xl p-5 z-10 flex flex-col gap-3 max-w-lg mx-auto">
             <div className="flex items-center justify-between border-b pb-3 border-surface-container-low">
-              <h3 className="font-headline font-bold text-lg text-on-surface">Select Payment Method</h3>
+              <h3 className="font-headline font-bold text-lg text-on-surface">{t.selectPaymentMethod}</h3>
               <button
                 type="button"
                 onClick={() => setIsPaymentSheetOpen(false)}

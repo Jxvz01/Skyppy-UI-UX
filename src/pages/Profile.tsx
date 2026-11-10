@@ -260,7 +260,7 @@ export const Profile: React.FC = () => {
                     <span className="material-symbols-outlined text-[20px]">bookmark</span>
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">Saved Places</span>
+                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">{t.savedPlaces}</span>
                     <span className="font-body-sm text-body-sm text-on-surface-variant">
                       Home, Work &amp; pinned destinations
                     </span>
@@ -287,7 +287,7 @@ export const Profile: React.FC = () => {
                     <span className="material-symbols-outlined text-[20px]">credit_card</span>
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">Payment Methods</span>
+                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">{t.paymentMethods}</span>
                     <span className="font-body-sm text-body-sm text-on-surface-variant">
                       UPI AutoPay, Card &amp; Wallet
                     </span>
@@ -458,7 +458,7 @@ export const Profile: React.FC = () => {
                     <span className="material-symbols-outlined text-[20px]">tune</span>
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">Ride Preferences</span>
+                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">{t.ridePreferences}</span>
                     <span className="font-body-sm text-body-sm text-on-surface-variant">
                       AC default, Quiet ride, Tip &amp; Wallet
                     </span>
@@ -480,7 +480,7 @@ export const Profile: React.FC = () => {
                     <span className="material-symbols-outlined text-[20px]">support_agent</span>
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">Help &amp; Support</span>
+                    <span className="font-body-lg text-body-lg text-on-surface font-semibold">{t.helpSupport}</span>
                     <span className="font-body-sm text-body-sm text-on-surface-variant">Mysuru 24/7 transit rider helpline</span>
                   </div>
                 </div>

@@ -4,6 +4,7 @@ import { Header } from '../components/Header';
 import { LocationPicker } from '../components/LocationPicker';
 import { useAppStore } from '../store/useAppStore';
 import { LocationItem } from '../types';
+import { translations } from '../utils/i18n';
 
 export const DestinationSearch: React.FC = () => {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ export const DestinationSearch: React.FC = () => {
   const initialMode = (searchParams.get('mode') as 'pickup' | 'destination') || 'destination';
   const initialTab = (searchParams.get('tab') as 'search' | 'map') || 'search';
 
-  const { pickup, setPickup, destination, setDestination, swapLocations, showToast } = useAppStore();
+  const { pickup, setPickup, destination, setDestination, swapLocations, showToast, language } = useAppStore();
+  const t = translations[language] || translations.en;
   const [activeField, setActiveField] = useState<'destination' | 'pickup'>(initialMode);
   const [swapDegrees, setSwapDegrees] = useState(0);
 
@@ -35,7 +37,7 @@ export const DestinationSearch: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
-      <Header type="stack" title="Select Locations" backTo="/" />
+      <Header type="stack" title={t.selectLocations} backTo="/" />
 
       <main className="flex flex-col w-full pt-2">
         {/* Dual Location Overview & Swap Header Card */}
@@ -57,7 +59,7 @@ export const DestinationSearch: React.FC = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-secondary block">
-                    Pickup Point
+                    {t.pickupPoint}
                   </span>
                   <span className="text-xs font-semibold text-on-surface truncate block">
                     {pickup.title}
@@ -83,7 +85,7 @@ export const DestinationSearch: React.FC = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-primary block">
-                    Destination
+                    {t.dropDestination}
                   </span>
                   <span className="text-xs font-semibold text-on-surface truncate block">
                     {destination.title}

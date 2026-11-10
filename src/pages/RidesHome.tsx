@@ -4,6 +4,7 @@ import { Header } from '../components/Header';
 import { BottomNav } from '../components/BottomNav';
 import { useAppStore } from '../store/useAppStore';
 import { useCourierStore } from '../store/useCourierStore';
+import { translations } from '../utils/i18n';
 
 export const RidesHome: React.FC = () => {
   const navigate = useNavigate();
@@ -14,9 +15,11 @@ export const RidesHome: React.FC = () => {
     setDestination,
     swapLocations,
     openModal,
-    miles
+    miles,
+    language
   } = useAppStore();
 
+  const t = translations[language] || translations.en;
   const { setActiveServiceTab } = useCourierStore();
 
   const handleSwap = () => {
@@ -44,13 +47,11 @@ export const RidesHome: React.FC = () => {
 
             {/* Left Typography Overlay */}
             <div className="relative z-10 p-5 max-w-[62%] select-none">
-              <h1 className="text-[28px] font-extrabold tracking-tight text-white leading-[1.08]">
-                Move.<br />
-                Ride.<br />
-                Ship.
+              <h1 className="text-[28px] font-extrabold tracking-tight text-white leading-[1.08] whitespace-pre-line">
+                {t.moveRideShip}
               </h1>
               <p className="text-xs text-slate-300 font-medium mt-2">
-                Across Mysuru and beyond.
+                {t.acrossMysuru}
               </p>
             </div>
           </div>
@@ -62,18 +63,18 @@ export const RidesHome: React.FC = () => {
             {/* Book a Ride Button (Active) */}
             <button
               type="button"
-              aria-label="Book a Ride - Skyppy Rides"
+              aria-label={`${t.bookARide} - Skyppy Rides`}
               onClick={() => navigate('/search')}
               className="flex-1 py-3 px-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2 font-bold text-sm shadow-sm active:scale-[0.98] transition-transform cursor-pointer"
             >
               <span className="material-symbols-outlined text-[19px]">directions_car</span>
-              <span>Book a Ride</span>
+              <span>{t.bookARide}</span>
             </button>
 
             {/* Send a Parcel Button (Courier) */}
             <button
               type="button"
-              aria-label="Send a Parcel - Skyppy Courier"
+              aria-label={`${t.sendAParcel} - Skyppy Courier`}
               onClick={() => {
                 setActiveServiceTab('courier');
                 navigate('/courier');
@@ -81,9 +82,9 @@ export const RidesHome: React.FC = () => {
               className="flex-1 py-3 px-3 rounded-xl bg-transparent text-slate-800 hover:bg-slate-50 flex items-center justify-center gap-1.5 font-bold text-sm active:scale-[0.98] transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-[19px] text-slate-700">package_2</span>
-              <span>Send a Parcel</span>
+              <span>{t.sendAParcel}</span>
               <span className="px-1.5 py-0.5 rounded-full bg-[#d4f84c] text-black text-[9px] font-extrabold uppercase tracking-wide">
-                New
+                {t.newBadge}
               </span>
             </button>
           </div>
@@ -93,10 +94,10 @@ export const RidesHome: React.FC = () => {
         <div className="px-margin pt-4">
           <div className="flex flex-col">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-              PLAN YOUR JOURNEY
+              {t.planYourJourney}
             </span>
             <h2 className="text-lg font-bold text-slate-900 tracking-tight mt-0.5">
-              Where are we going today?
+              {t.whereAreWeGoing}
             </h2>
           </div>
 
@@ -112,7 +113,7 @@ export const RidesHome: React.FC = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-[11px] text-slate-400 font-medium">Pickup location</span>
+                  <span className="text-[11px] text-slate-400 font-medium">{t.pickupLocation}</span>
                   <span className="text-sm font-bold text-slate-900 truncate">
                     {pickup.title || 'VVCE Campus, Gokulam'}
                   </span>
@@ -149,7 +150,7 @@ export const RidesHome: React.FC = () => {
                   <span className="material-symbols-outlined text-[18px]">location_on</span>
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-[11px] text-slate-400 font-medium">Where to in Mysuru?</span>
+                  <span className="text-[11px] text-slate-400 font-medium">{t.whereToInMysuru}</span>
                   <span className="text-sm font-bold text-slate-900 truncate">
                     {destination.title || 'Mysuru City Railway Station'}
                   </span>
@@ -186,9 +187,9 @@ export const RidesHome: React.FC = () => {
                 <span className="material-symbols-outlined text-[22px]">package_2</span>
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-sm font-bold text-slate-900 leading-tight">Skyppy Move</span>
+                <span className="text-sm font-bold text-slate-900 leading-tight">{t.skyppyMove}</span>
                 <span className="text-xs text-slate-500 mt-0.5 truncate">
-                  Send parcels across cities
+                  {t.sendParcelsAcrossCities}
                 </span>
               </div>
             </div>
@@ -208,14 +209,14 @@ export const RidesHome: React.FC = () => {
         <div className="px-margin pt-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              QUICK ACTIONS
+              {t.quickActions}
             </span>
             <button
               type="button"
               onClick={() => navigate('/activity')}
               className="text-xs font-bold text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
             >
-              <span>View all</span>
+              <span>{t.viewAll}</span>
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
           </div>
@@ -229,9 +230,9 @@ export const RidesHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">directions_car</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Ride Now</span>
-              <span className="text-[10px] text-slate-400 mt-0.5">Auto • Car</span>
-              <span className="sr-only">Instant Ride Where to in Mysuru ತಕ್ಷಣದ ಸವಾರಿ</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.rideNow}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5">{t.autoCar}</span>
+              <span className="sr-only">Where to in Mysuru {t.whereToInMysuru}</span>
             </div>
 
             {/* Card 2: Send Parcel */}
@@ -245,8 +246,8 @@ export const RidesHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">package_2</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Send Parcel</span>
-              <span className="text-[10px] text-slate-400 mt-0.5">Intercity</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.sendParcel}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5">{t.intercity}</span>
             </div>
 
             {/* Card 3: Schedule */}
@@ -257,8 +258,8 @@ export const RidesHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">calendar_month</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Schedule</span>
-              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">Ride or Pickup</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.schedule}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">{t.rideOrPickup}</span>
             </div>
 
             {/* Card 4: Track */}
@@ -272,8 +273,8 @@ export const RidesHome: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
                 <span className="material-symbols-outlined text-[20px]">location_on</span>
               </div>
-              <span className="text-xs font-bold text-slate-900 leading-tight">Track</span>
-              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">Ride / Parcel</span>
+              <span className="text-xs font-bold text-slate-900 leading-tight">{t.track}</span>
+              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">{t.rideParcel}</span>
             </div>
           </div>
         </div>
@@ -288,9 +289,9 @@ export const RidesHome: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-sm font-bold text-[#d4f84c] block leading-tight">
-                    Skyppy Miles
+                    {t.skyppyMiles}
                   </span>
-                  <span className="text-[11px] text-slate-400">Ride • Ship • Earn</span>
+                  <span className="text-[11px] text-slate-400">{t.rideShipEarn}</span>
                 </div>
               </div>
 
@@ -313,13 +314,13 @@ export const RidesHome: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-300 font-medium">68 miles to Gold</span>
+              <span className="text-slate-300 font-medium">{t.milesToGold}</span>
               <button
                 type="button"
                 onClick={() => navigate('/miles')}
                 className="text-[#d4f84c] font-bold flex items-center gap-0.5 hover:underline cursor-pointer"
               >
-                <span>View Rewards</span>
+                <span>{t.viewRewards}</span>
                 <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
               </button>
             </div>

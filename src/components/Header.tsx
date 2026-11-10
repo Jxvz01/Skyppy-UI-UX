@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="h-8 px-2.5 rounded-full bg-[#edf3ff] text-primary border border-blue-100 font-semibold text-xs flex items-center gap-1 hover:bg-blue-100/70 transition-colors active:scale-95"
             >
               <span className="material-symbols-outlined text-[16px] text-primary">location_on</span>
-              <span className="font-bold">Mysuru</span>
+              <span className="font-bold">{t.cityMysuru}</span>
               <span className="material-symbols-outlined text-[15px] text-primary">keyboard_arrow_down</span>
             </button>
           )}
