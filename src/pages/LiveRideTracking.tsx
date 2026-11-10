@@ -10,7 +10,6 @@ export const LiveRideTracking: React.FC = () => {
   const { activeBooking, cancelBooking, openModal, showToast, language } = useAppStore();
   const t = translations[language] || translations.en;
 
-  const [mapMode, setMapMode] = useState<'osm' | 'vector'>('osm');
   const [stepIndex, setStepIndex] = useState(0); // 0: Assigned, 1: Approaching, 2: Arrived at Pickup, 3: On Ride, 4: Arrived
   const [speed, setSpeed] = useState(24);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -131,286 +130,23 @@ export const LiveRideTracking: React.FC = () => {
       <Header type="stack" title={t.trackingHeader} backTo="/" />
 
       <main className="flex flex-col w-full relative pb-8">
-        {/* High-Fidelity Mobility Map Canvas (OpenStreetMap Tiles + Vector Mode) */}
+        {/* High-Fidelity Mobility Map Canvas (OpenStreetMap Tiles) */}
         <div className="relative w-full h-[390px] overflow-hidden rounded-b-3xl bg-[#f4f6fa] shadow-md border-b border-slate-200/60 select-none">
-          {mapMode === 'osm' ? (
-            <OpenStreetMap
-              stepIndex={stepIndex}
-              speed={speed}
-              driverName={booking.driver.name}
-              vehicleCategory={booking.vehicleName}
-              isTrafficOn={isTrafficOn}
-              onToast={showToast}
-              className="w-full h-full"
-            />
-          ) : (
-            /* Zoomable & Pannable Vector Map Layer */
-            <div
-              className="absolute inset-0 w-full h-full transition-transform duration-300 ease-out"
-              style={{
-                transform: `scale(${zoomLevel})`,
-                transformOrigin: '50% 50%'
-              }}
-            >
-              {/* SVG Vector Map of Mysuru */}
-              <svg
-                className="w-full h-full pointer-events-none"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 393 380"
-              >
-              <defs>
-                {/* Active Route Glow */}
-                <linearGradient id="routeGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#2563eb" />
-                  <stop offset="70%" stopColor="#3b82f6" />
-                  <stop offset="100%" stopColor="#60a5fa" />
-                </linearGradient>
-
-                {/* Kukkarahalli Lake Gradient */}
-                <linearGradient id="lakeWater" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#e0f2fe" />
-                  <stop offset="100%" stopColor="#bae6fd" />
-                </linearGradient>
-
-                {/* Shadow Filters */}
-                <filter id="mapShadow" x="-10%" y="-10%" width="130%" height="130%">
-                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.08" />
-                </filter>
-              </defs>
-
-              {/* Background Base Terrain */}
-              <rect width="393" height="380" fill="#f8fafc" />
-
-              {/* Subtle Urban Blocks / Residential Neighbourhoods */}
-              <g fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="0.8">
-                {/* Gokulam Blocks */}
-                <rect x="25" y="240" width="45" height="25" rx="4" />
-                <rect x="25" y="275" width="45" height="30" rx="4" />
-                <rect x="80" y="240" width="45" height="30" rx="4" />
-                <rect x="80" y="320" width="50" height="35" rx="4" />
-
-                {/* Yadavagiri Blocks */}
-                <rect x="135" y="180" width="40" height="45" rx="4" />
-                <rect x="185" y="145" width="50" height="35" rx="4" />
-
-                {/* Mandi Mohalla / Tilak Nagar Blocks */}
-                <rect x="235" y="165" width="55" height="40" rx="4" />
-                <rect x="245" y="215" width="45" height="20" rx="4" />
-
-                {/* Bannimantap Industrial & Medical Hub */}
-                <rect x="270" y="55" width="60" height="30" rx="4" />
-                <rect x="335" y="65" width="45" height="45" rx="4" />
-              </g>
-
-              {/* Green Spaces & Heritage Preserves */}
-              {/* Cheluvamba Park */}
-              <g>
-                <path
-                  d="M 125,235 C 135,225 170,230 175,260 C 175,275 155,280 135,275 C 120,270 120,245 125,235 Z"
-                  fill="#dcfce7"
-                  stroke="#86efac"
-                  strokeWidth="1.2"
-                />
-                <circle cx="140" cy="248" r="3" fill="#22c55e" opacity="0.6" />
-                <circle cx="152" cy="255" r="4" fill="#22c55e" opacity="0.6" />
-                <text x="133" y="267" fill="#15803d" fontSize="7" fontWeight="700">Cheluvamba Park</text>
-              </g>
-
-              {/* Mysuru Palace Heritage Precinct */}
-              <g>
-                <path
-                  d="M 245,235 C 265,230 305,235 315,255 C 315,275 290,285 260,282 C 245,280 240,245 245,235 Z"
-                  fill="#fef3c7"
-                  stroke="#fde68a"
-                  strokeWidth="1.2"
-                />
-                <text x="254" y="255" fill="#b45309" fontSize="7.5" fontWeight="700">Mysuru Palace</text>
-                <text x="254" y="265" fill="#d97706" fontSize="6.5" fontWeight="600">Heritage Ward</text>
-              </g>
-
-              {/* Kukkarahalli Lake */}
-              <g>
-                <path
-                  d="M 230,305 C 260,285 315,295 345,325 C 365,345 355,375 320,380 C 275,385 235,355 230,305 Z"
-                  fill="url(#lakeWater)"
-                  stroke="#93c5fd"
-                  strokeWidth="1.5"
-                />
-                <path d="M 270,325 Q 285,320 300,325" fill="none" stroke="#60a5fa" strokeWidth="1" opacity="0.5" />
-                <path d="M 265,345 Q 280,340 295,345" fill="none" stroke="#60a5fa" strokeWidth="1" opacity="0.5" />
-                <text x="262" y="338" fill="#0284c7" fontSize="7.5" fontWeight="800" letterSpacing="0.04em">KUKKARAHALLI LAKE</text>
-              </g>
-
-              {/* Mysuru Junction Railway Tracks */}
-              <g opacity="0.7">
-                <line x1="165" y1="180" x2="235" y2="280" stroke="#cbd5e1" strokeWidth="2.5" strokeDasharray="4 3" />
-                <text x="168" y="222" fill="#64748b" fontSize="6.5" fontWeight="700">Mysuru Jn</text>
-              </g>
-
-              {/* Secondary Street Road Grid (White with subtle border) */}
-              <g fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round">
-                {/* Secondary Street Outlines */}
-                <g stroke="#e2e8f0" strokeWidth="5.5">
-                  <path d="M 25,270 L 125,270" />
-                  <path d="M 125,190 L 180,210" />
-                  <path d="M 180,240 L 260,230" />
-                  <path d="M 220,195 L 300,185" />
-                  <path d="M 265,145 L 340,150" />
-                  <path d="M 60,350 L 60,250" />
-                  <path d="M 110,320 L 110,240" />
-                  <path d="M 300,60 L 300,140" />
-                </g>
-                {/* Secondary Street Fill */}
-                <g strokeWidth="4">
-                  <path d="M 25,270 L 125,270" />
-                  <path d="M 125,190 L 180,210" />
-                  <path d="M 180,240 L 260,230" />
-                  <path d="M 220,195 L 300,185" />
-                  <path d="M 265,145 L 340,150" />
-                  <path d="M 60,350 L 60,250" />
-                  <path d="M 110,320 L 110,240" />
-                  <path d="M 300,60 L 300,140" />
-                </g>
-              </g>
-
-              {/* Primary Arterial Road Corridors */}
-              <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-                {/* Arterial Road Outer Borders */}
-                <g stroke="#cbd5e1" strokeWidth="10">
-                  {/* Outer Ring Road Bypass */}
-                  <path d="M -15,45 Q 185,15 415,35" />
-                  {/* KRS Road */}
-                  <path d="M 15,225 L 75,310 L 135,285 L 180,240" />
-                  {/* Kalidasa Road */}
-                  <path d="M 15,345 L 75,310 L 135,285 L 195,270" />
-                  {/* Sayyaji Rao Road Corridor */}
-                  <path d="M 135,285 L 180,240 L 220,195 L 265,145 L 308,95 L 365,70" />
-                </g>
-
-                {/* Arterial Road White Centers */}
-                <g stroke="#ffffff" strokeWidth="7">
-                  <path d="M -15,45 Q 185,15 415,35" />
-                  <path d="M 15,225 L 75,310 L 135,285 L 180,240" />
-                  <path d="M 15,345 L 75,310 L 135,285 L 195,270" />
-                  <path d="M 135,285 L 180,240 L 220,195 L 265,145 L 308,95 L 365,70" />
-                </g>
-              </g>
-
-              {/* Street Names and Directional Signage */}
-              <g fontFamily="system-ui, -apple-system, sans-serif" fontSize="7" fontWeight="600" fill="#64748b">
-                <text x="155" y="25" letterSpacing="0.08em">OUTER RING ROAD</text>
-                <text x="35" y="330">Kalidasa Rd</text>
-                <text x="42" y="260">KRS Road</text>
-                <text x="215" y="215" transform="rotate(-48 215 215)" fill="#475569" fontWeight="700">Sayyaji Rao Road</text>
-                <text x="285" y="112">Bannimantap</text>
-                <text x="45" y="295" fontSize="6.5" fill="#94a3b8">Gokulam 3rd Stg</text>
-              </g>
-
-              {/* Dynamic Live Traffic Flow Layer (Toggleable) */}
-              {isTrafficOn && (
-                <g fill="none" strokeLinecap="round" opacity="0.85">
-                  {/* Free-flow green on KRS Rd */}
-                  <path d="M 20,230 L 75,310" stroke="#22c55e" strokeWidth="3" />
-                  {/* Free-flow green on Bannimantap approaching JSS */}
-                  <path d="M 268,142 L 308,95 L 350,75" stroke="#22c55e" strokeWidth="3" />
-                  {/* Moderate amber flow along Sayyaji Rao Rd & Station intersection */}
-                  <path d="M 138,282 L 180,240 L 218,197" stroke="#f59e0b" strokeWidth="3.2" />
-                </g>
-              )}
-
-              {/* Active Journey Route: VVCE Gokulam -> JSS Medical College */}
-              <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-                {/* Ambient Soft Glow Underlay */}
-                <path
-                  d="M 75,310 L 135,285 L 180,240 L 220,195 L 265,145 L 308,95"
-                  stroke="#2563eb"
-                  strokeWidth="13"
-                  opacity="0.22"
-                />
-                {/* Core Vibrant Skyppy Blue Path */}
-                <path
-                  d="M 75,310 L 135,285 L 180,240 L 220,195 L 265,145 L 308,95"
-                  stroke="url(#routeGradient)"
-                  strokeWidth="5.5"
-                />
-                {/* Directional Pulsing Chevron Dashes */}
-                <path
-                  d="M 75,310 L 135,285 L 180,240 L 220,195 L 265,145 L 308,95"
-                  stroke="#ffffff"
-                  strokeWidth="2.2"
-                  strokeDasharray="4 8"
-                  opacity="0.85"
-                />
-              </g>
-
-              {/* Landmark Pins (Origin & Destination) */}
-              {/* Pickup Origin: VVCE Gokulam Campus */}
-              <g transform="translate(75, 310)">
-                <circle cx="0" cy="0" r="14" fill="#10b981" fillOpacity="0.25" className="animate-ping" />
-                <circle cx="0" cy="0" r="8" fill="#10b981" stroke="#ffffff" strokeWidth="2" filter="url(#mapShadow)" />
-                <circle cx="0" cy="0" r="3" fill="#ffffff" />
-                {/* Origin Label Tag */}
-                <g transform="translate(-40, -22)">
-                  <rect x="0" y="0" width="80" height="17" rx="8.5" fill="#10b981" filter="url(#mapShadow)" />
-                  <text x="40" y="11" fill="#ffffff" fontSize="7.5" fontWeight="700" textAnchor="middle">
-                    VVCE Gate 2
-                  </text>
-                </g>
-              </g>
-
-              {/* Destination: JSS Medical College & Hospital */}
-              <g transform="translate(308, 95)">
-                <circle cx="0" cy="0" r="14" fill="#ba1a1a" fillOpacity="0.22" className="animate-ping" />
-                <circle cx="0" cy="0" r="8" fill="#ba1a1a" stroke="#ffffff" strokeWidth="2" filter="url(#mapShadow)" />
-                <circle cx="0" cy="0" r="3" fill="#ffffff" />
-                {/* Destination Label Tag */}
-                <g transform="translate(-48, -24)">
-                  <rect x="0" y="0" width="96" height="18" rx="9" fill="#1e293b" filter="url(#mapShadow)" />
-                  <text x="48" y="12" fill="#ffffff" fontSize="7.5" fontWeight="700" textAnchor="middle">
-                    JSS Hospital
-                  </text>
-                </g>
-              </g>
-            </svg>
-
-            {/* Dynamic Interactive Driver Vehicle Marker */}
-            <div
-              className="absolute z-30 transition-all duration-700 ease-out flex flex-col items-center pointer-events-none"
-              style={{
-                top: `${(currentStep.y / 380) * 100}%`,
-                left: `${(currentStep.x / 393) * 100}%`,
-                transform: `translate(calc(-50% + ${markerOffset.x}px), calc(-50% + ${markerOffset.y}px))`
-              }}
-            >
-              {/* Radar Wave Ping */}
-              <div className="absolute w-12 h-12 rounded-full bg-primary/25 animate-ping -z-10" />
-
-              {/* Vehicle Compass Avatar (Rotates with road orientation) */}
-              <div
-                className="w-11 h-11 rounded-full bg-white shadow-xl border-2 border-primary flex items-center justify-center transition-transform duration-500 ring-2 ring-primary/20"
-                style={{ transform: `rotate(${currentStep.heading}deg)` }}
-              >
-                <span className="material-symbols-outlined text-[23px] text-primary select-none">
-                  {getVehicleIcon()}
-                </span>
-              </div>
-
-              {/* Floating Speed & Telemetry Tooltip */}
-              <div className="mt-1.5 px-2.5 py-1 rounded-full bg-slate-900/90 backdrop-blur-md shadow-lg whitespace-nowrap border border-slate-700/60 pointer-events-auto">
-                <span className="text-[10px] font-bold text-white tracking-tight flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>{booking.driver.name.split(' ')[0]}</span>
-                  <span className="text-slate-400">•</span>
-                  <span className="font-mono text-amber-300 font-bold">{speed} km/h</span>
-                  <span className="text-slate-400">•</span>
-                  <span className="text-slate-200 font-medium">{currentStep.street}</span>
-                </span>
-              </div>
-            </div>
-            </div>
-          )}
-
-          {/* Floating Arrival Countdown Pill (Global on both OSM & Vector) */}
+          <OpenStreetMap
+            mode="live-tracking"
+            stepIndex={stepIndex}
+            speed={speed}
+            driverName={booking.driver.name}
+            vehicleCategory={booking.vehicleName}
+            isTrafficOn={isTrafficOn}
+            onToast={showToast}
+            pickupLocation={{ title: booking.pickup.title }}
+            destinationLocation={{ title: booking.destination.title }}
+            className="w-full h-full"
+            showTransitPill={true}
+            showControls={true}
+          />
+          {/* Floating Arrival Countdown Pill */}
           <div className="absolute top-3.5 right-3.5 z-[450] pointer-events-auto">
             <div className="bg-primary text-white px-3.5 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-white/20">
               <span className="material-symbols-outlined text-[17px]">timer</span>
@@ -425,81 +161,22 @@ export const LiveRideTracking: React.FC = () => {
             </div>
           </div>
 
-          {/* Map Layer Switch Pill (Toggle OpenStreetMap / Vector Map) */}
+          {/* Toggle Live Traffic Button */}
           <button
             type="button"
+            aria-label="Toggle Traffic"
             onClick={() => {
-              const next = mapMode === 'osm' ? 'vector' : 'osm';
-              setMapMode(next);
-              showToast(next === 'osm' ? 'Switched to OpenStreetMap live tiles' : 'Switched to daylight vector map');
+              setIsTrafficOn(!isTrafficOn);
+              showToast(isTrafficOn ? 'Traffic layer disabled' : 'Live traffic flow layer enabled');
             }}
-            className="absolute top-14 right-3.5 z-[450] px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-slate-200/80 flex items-center gap-1 text-[10px] font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-95 cursor-pointer pointer-events-auto"
+            className={`absolute top-14 right-3.5 z-[450] px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-slate-200/80 flex items-center gap-1 text-[10px] font-bold ${
+              isTrafficOn ? 'text-primary' : 'text-slate-500'
+            } hover:bg-slate-50 transition-all active:scale-95 cursor-pointer pointer-events-auto`}
+            title="Toggle Live Traffic Layer"
           >
-            <span className="material-symbols-outlined text-[14px] text-primary">
-              {mapMode === 'osm' ? 'layers' : 'public'}
-            </span>
-            <span>{mapMode === 'osm' ? 'OpenStreetMap' : 'Vector Map'}</span>
+            <span className="material-symbols-outlined text-[14px]">traffic</span>
+            <span>{isTrafficOn ? 'Traffic ON' : 'Traffic OFF'}</span>
           </button>
-
-          {/* Vector Map Controls (Only when in vector mode; OSM has native controls) */}
-          {mapMode === 'vector' && (
-            <div className="absolute right-3.5 bottom-5 z-20 flex flex-col gap-2">
-              {/* North Compass Rose */}
-              <div
-                className="w-9 h-9 rounded-full bg-white text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center font-black text-[11px] select-none"
-                title="Orientation: North"
-              >
-                <span className="text-red-500 font-bold">N</span>
-              </div>
-
-              {/* Zoom In */}
-              <button
-                type="button"
-                aria-label="Zoom in map"
-                onClick={handleZoomIn}
-                className="w-9 h-9 rounded-full bg-white text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95 cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px]">add</span>
-              </button>
-
-              {/* Zoom Out */}
-              <button
-                type="button"
-                aria-label="Zoom out map"
-                onClick={handleZoomOut}
-                className="w-9 h-9 rounded-full bg-white text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95 cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px]">remove</span>
-              </button>
-
-              {/* Recenter Map */}
-              <button
-                type="button"
-                aria-label="Recenter map"
-                onClick={handleRecenter}
-                className="w-9 h-9 rounded-full bg-white text-primary shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95 cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px]">my_location</span>
-              </button>
-
-              {/* Toggle Live Traffic */}
-              <button
-                type="button"
-                aria-label="Toggle Traffic"
-                onClick={() => {
-                  setIsTrafficOn(!isTrafficOn);
-                  showToast(isTrafficOn ? 'Traffic layer disabled' : 'Live traffic flow layer enabled');
-                }}
-                className={`w-9 h-9 rounded-full shadow-md border flex items-center justify-center transition-all active:scale-95 cursor-pointer ${
-                  isTrafficOn
-                    ? 'bg-emerald-50 text-emerald-600 border-emerald-300'
-                    : 'bg-white text-slate-400 border-slate-200/80'
-                }`}
-              >
-                <span className="material-symbols-outlined text-[18px]">traffic</span>
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Dynamic Status Notification Banner */}

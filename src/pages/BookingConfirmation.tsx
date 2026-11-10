@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { OpenStreetMap } from '../components/OpenStreetMap';
 import { useAppStore } from '../store/useAppStore';
 import { VehicleCategoryId } from '../types';
 
@@ -326,27 +327,29 @@ export const BookingConfirmation: React.FC = () => {
                 </p>
               </div>
 
-              {/* Minimal Clean Map Visualisation */}
-              <div className="relative w-full h-[260px] my-3 rounded-2xl bg-gradient-to-b from-slate-50 to-blue-50/40 border border-slate-200/70 overflow-hidden shadow-inner flex items-center justify-center">
-                {/* Mysuru Palace Silhouette Outline */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                  <svg className="w-56 h-32 text-slate-400" viewBox="0 0 200 100" fill="currentColor">
-                    <path d="M10 80h180v8H10zM30 60h20v20H30zm40-20h20v40H70zm40 0h20v40h-20zm40 20h20v20h-20zM90 20h20v20H90z" />
-                  </svg>
-                </div>
-
-                {/* Mysuru Lettermark */}
-                <div className="absolute bottom-5 left-8 text-xs font-semibold tracking-[0.3em] text-slate-300 uppercase pointer-events-none">
-                  M y s u r u
-                </div>
+              {/* High-Fidelity OpenStreetMap Visualisation */}
+              <div className="relative w-full h-[260px] my-3 rounded-2xl overflow-hidden border border-slate-200/70 shadow-sm">
+                <OpenStreetMap
+                  mode="confirmation-searching"
+                  stepIndex={1}
+                  speed={0}
+                  driverName="Locating..."
+                  vehicleCategory={activeCategoryId}
+                  isTrafficOn={false}
+                  pickupLocation={{ title: booking.pickup.title }}
+                  destinationLocation={{ title: booking.destination.title }}
+                  showTransitPill={false}
+                  showControls={false}
+                  className="w-full h-full"
+                />
 
                 {/* Left Floating Callout (Pickup) */}
                 <motion.div
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-8 left-4 max-w-[140px] bg-white/95 backdrop-blur-md rounded-xl p-2.5 shadow-md border border-slate-100 flex items-center gap-2 z-20"
+                  className="absolute top-3 left-3 max-w-[140px] bg-white/95 backdrop-blur-md rounded-xl p-2 shadow-md border border-slate-100 flex items-center gap-2 z-[400] pointer-events-none"
                 >
-                  <div className="w-2.5 h-2.5 rounded-full bg-primary shrink-0 ring-4 ring-primary/20" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 ring-4 ring-emerald-500/20" />
                   <span className="text-[11px] font-bold text-slate-800 leading-tight truncate">
                     {booking.pickup.title.split(',')[0]}
                   </span>
@@ -357,44 +360,13 @@ export const BookingConfirmation: React.FC = () => {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 }}
-                  className="absolute top-16 right-4 max-w-[140px] bg-white/95 backdrop-blur-md rounded-xl p-2.5 shadow-md border border-slate-100 flex items-center gap-2 z-20"
+                  className="absolute top-3 right-3 max-w-[140px] bg-white/95 backdrop-blur-md rounded-xl p-2 shadow-md border border-slate-100 flex items-center gap-2 z-[400] pointer-events-none"
                 >
-                  <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0 ring-4 ring-blue-600/20" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0 ring-4 ring-red-500/20" />
                   <span className="text-[11px] font-bold text-slate-800 leading-tight truncate">
                     {booking.destination.title.split(',')[0]}
                   </span>
                 </motion.div>
-
-                {/* Route Connecting SVG with Animated Car */}
-                <svg className="w-full h-full absolute inset-0 z-10" viewBox="0 0 350 260">
-                  <path
-                    d="M 65 140 C 120 180, 200 130, 285 120"
-                    fill="none"
-                    stroke="#0042dd"
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                  />
-                  <circle cx="65" cy="140" r="5" fill="#0042dd" />
-                  <circle cx="285" cy="120" r="5" fill="#0042dd" />
-
-                  {/* Concentric Radar Rings around Vehicle */}
-                  <g transform="translate(175, 142)">
-                    <circle cx="0" cy="0" r="16" fill="rgba(0, 66, 221, 0.08)" />
-                    <circle cx="0" cy="0" r="28" fill="rgba(0, 66, 221, 0.04)" />
-                  </g>
-
-                  {/* Traveling Car Marker */}
-                  <motion.g
-                    initial={{ x: 65, y: 140 }}
-                    animate={{ x: [65, 175, 240], y: [140, 142, 126] }}
-                    transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.4 }}
-                  >
-                    <g transform="translate(-10, -6)">
-                      <rect width="20" height="12" rx="4" fill="#ffffff" stroke="#1e293b" strokeWidth="1.5" />
-                      <rect x="4" y="2" width="12" height="8" rx="2" fill="#0042dd" opacity="0.8" />
-                    </g>
-                  </motion.g>
-                </svg>
               </div>
 
               {/* Progress Steps Card */}

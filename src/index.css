@@ -122,3 +122,13 @@
   box-shadow: 0 25px 65px -15px rgba(0, 14, 60, 0.4), 0 0 0 10px #111827, 0 0 0 12px #374151;
 }
 
+/* High-Fidelity OpenStreetMap Leaflet Styling */
+.leaflet-container {
+  font-family: inherit;
+  background-color: #f1f5f9;
+}
+.leaflet-tile-pane {
+  filter: contrast(1.04) saturate(1.08) brightness(1.02);
+}
+
+

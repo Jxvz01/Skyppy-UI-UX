@@ -8,125 +8,31 @@ export const LocationSelection: React.FC = () => {
   const navigate = useNavigate();
   const { pickup, destination, swapLocations, showToast } = useAppStore();
   const [selectedRoutePref, setSelectedRoutePref] = useState('fastest');
-  const [mapLayer, setMapLayer] = useState<'osm' | 'vector'>('osm');
 
   return (
     <div className="flex-1 flex flex-col relative w-full bg-surface min-h-full">
       <Header type="stack" title="03 Location Selection" backTo="/search" />
 
       <main className="flex flex-col w-full relative">
-        {/* Interactive Mobility Map Canvas (OpenStreetMap Tiles or Daylight Vector) */}
+        {/* Interactive Mobility Map Canvas (High-Fidelity OpenStreetMap) */}
         <div className="relative w-full h-[459px] overflow-hidden select-none bg-[#f8fafc] border-b border-slate-200/60 shadow-sm">
-          {mapLayer === 'osm' ? (
-            <OpenStreetMap
-              stepIndex={2}
-              speed={0}
-              driverName="Pickup Preview"
-              vehicleCategory="auto"
-              isTrafficOn={true}
-              onToast={showToast}
-              className="w-full h-full"
-            />
-          ) : (
-            <>
-              {/* Map Vector Ground & Water Bodies */}
-              <svg className="absolute inset-0 w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 400 480">
-            <defs>
-              <linearGradient id="routeGradient" x1="0%" x2="100%" y1="100%" y2="0%">
-                <stop offset="0%" stopColor="#2563eb"></stop>
-                <stop offset="70%" stopColor="#3b82f6"></stop>
-                <stop offset="100%" stopColor="#60a5fa"></stop>
-              </linearGradient>
-              <linearGradient id="lakeWaterLoc" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#e0f2fe"></stop>
-                <stop offset="100%" stopColor="#bae6fd"></stop>
-              </linearGradient>
-            </defs>
-
-            {/* Base Terrain Fill */}
-            <rect width="400" height="480" fill="#f8fafc" />
-
-            {/* Clean Daylight Vector Grid */}
-            <g opacity="0.4" stroke="#e2e8f0" strokeWidth="1">
-              <line x1="-20" x2="420" y1="90" y2="110"></line>
-              <line x1="-20" x2="420" y1="170" y2="185"></line>
-              <line x1="-20" x2="420" y1="260" y2="280"></line>
-              <line x1="-20" x2="420" y1="360" y2="375"></line>
-              <line x1="70" x2="90" y1="-20" y2="500"></line>
-              <line x1="180" x2="195" y1="-20" y2="500"></line>
-              <line x1="280" x2="310" y1="-20" y2="500"></line>
-              <line x1="360" x2="375" y1="-20" y2="500"></line>
-            </g>
-
-            {/* Urban Forest / Chamundi Foothills Organic Blocks */}
-            <path d="M 280,310 Q 340,300 370,340 T 390,420 L 290,440 Z" fill="#dcfce7" stroke="#bbf7d0" strokeWidth="1" opacity="0.75"></path>
-
-            {/* Kukkarahalli Lake Simulation Area */}
-            <path
-              d="M 270,170 C 295,150 350,165 365,200 C 375,230 355,275 325,280 C 295,285 260,260 255,225 C 250,195 255,180 270,170 Z"
-              fill="url(#lakeWaterLoc)"
-              stroke="#93c5fd"
-              strokeWidth="1.5"
-            ></path>
-            <text fill="#0284c7" fontFamily="Inter, sans-serif" fontSize="8.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle" x="312" y="224">
-              KUKKARAHALLI
-            </text>
-            <text fill="#0369a1" fontFamily="Inter, sans-serif" fontSize="7.5" fontWeight="600" textAnchor="middle" x="312" y="235">
-              LAKE
-            </text>
-
-            {/* Secondary Arterial Roads (Outlines & Centers) */}
-            <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M 30,420 C 100,380 150,330 200,310 C 250,290 310,310 390,320" stroke="#cbd5e1" strokeWidth="7"></path>
-              <path d="M 30,420 C 100,380 150,330 200,310 C 250,290 310,310 390,320" stroke="#ffffff" strokeWidth="5"></path>
-
-              <path d="M 80,40 C 130,120 180,180 230,220 C 290,265 330,340 370,410" stroke="#cbd5e1" strokeWidth="8"></path>
-              <path d="M 80,40 C 130,120 180,180 230,220 C 290,265 330,340 370,410" stroke="#ffffff" strokeWidth="6"></path>
-
-              <path d="M 120,440 L 160,280 L 270,140 L 310,60" stroke="#e2e8f0" strokeWidth="5"></path>
-              <path d="M 120,440 L 160,280 L 270,140 L 310,60" stroke="#ffffff" strokeWidth="3.5"></path>
-            </g>
-
-            {/* Active Journey Route */}
-            <path
-              d="M 95,355 Q 120,330 145,315 T 195,270 L 225,240 Q 250,215 270,180 T 290,135 L 305,95"
-              fill="none"
-              opacity="0.22"
-              stroke="#2563eb"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="12"
-            ></path>
-            <path
-              d="M 95,355 Q 120,330 145,315 T 195,270 L 225,240 Q 250,215 270,180 T 290,135 L 305,95"
-              fill="none"
-              stroke="url(#routeGradient)"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="5"
-            ></path>
-            <path
-              d="M 195,270 L 225,240 Q 250,215 270,180"
-              fill="none"
-              opacity="0.9"
-              stroke="#ffffff"
-              strokeDasharray="6 8"
-              strokeLinecap="round"
-              strokeWidth="2"
-            ></path>
-
-            {/* Landmark Identifier: Mysuru Palace Ward */}
-            <g opacity="0.95" transform="translate(180, 150)">
-              <circle cx="0" cy="0" fill="#fef3c7" stroke="#fde68a" strokeWidth="1" r="14"></circle>
-              <circle cx="0" cy="0" fill="#d97706" r="4.5"></circle>
-              <text fill="#b45309" fontFamily="Inter, sans-serif" fontSize="7.5" fontWeight="700" textAnchor="middle" x="0" y="16">
-                Palace Ward
-              </text>
-            </g>
-          </svg>
+          <OpenStreetMap
+            mode="route-preview"
+            stepIndex={2}
+            speed={0}
+            driverName="Pickup Preview"
+            vehicleCategory="auto"
+            isTrafficOn={true}
+            pickupLocation={{ title: pickup.title }}
+            destinationLocation={{ title: destination.title }}
+            onToast={showToast}
+            className="w-full h-full"
+            showTransitPill={false}
+            showControls={true}
+          />
 
           {/* Floating Live ETA & Distance Bubble */}
-          <div className="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-space-xs bg-slate-900/90 text-white shadow-xl rounded-full px-3.5 py-1.5 backdrop-blur-md border border-slate-700/60">
+          <div className="absolute left-1/2 top-4 -translate-x-1/2 z-[400] flex items-center gap-space-xs bg-slate-900/90 text-white shadow-xl rounded-full px-3.5 py-1.5 backdrop-blur-md border border-slate-700/60 pointer-events-none">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span className="font-numeric-md text-label-md text-white font-bold">
               {destination.durationMin || 12} min
@@ -137,70 +43,12 @@ export const LocationSelection: React.FC = () => {
             </span>
           </div>
 
-          {/* Origin Landmark Pin */}
-          <div className="absolute left-[82px] top-[342px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-            <div className="relative flex items-center justify-center">
-              <div className="absolute w-8 h-8 rounded-full bg-primary/30 animate-pulse"></div>
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shadow-lg">
-                <div className="w-2 h-2 rounded-full bg-surface-container-lowest"></div>
-              </div>
-            </div>
-            <div className="mt-1 bg-inverse-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-md">
-              <span className="font-label-sm text-[10px] text-surface-bright font-bold tracking-tight">VVCE Pickup</span>
-            </div>
-          </div>
-
-          {/* Destination Landmark Pin */}
-          <div className="absolute left-[305px] top-[85px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-            <div className="relative flex items-center justify-center">
-              <div className="absolute w-8 h-8 rounded-full bg-error/30 animate-pulse"></div>
-              <div className="w-6 h-6 rounded-full bg-error flex items-center justify-center shadow-xl">
-                <span className="material-symbols-outlined text-on-error text-[14px] fill-1">location_on</span>
-              </div>
-            </div>
-            <div className="mt-1 bg-inverse-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-md">
-              <span className="font-label-sm text-[10px] text-surface-bright font-bold tracking-tight truncate max-w-[100px]">
-                {destination.title.split(' ')[0]}
-              </span>
-            </div>
-          </div>
-
           {/* Floating Traffic Condition Pill */}
-          <div className="absolute top-4 right-margin flex items-center gap-1.5 bg-inverse-surface/85 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-secondary-fixed"></span>
-            <span className="font-label-sm text-[10px] text-secondary-fixed font-bold tracking-wider uppercase">
+          <div className="absolute top-4 right-3 z-[400] flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-slate-700/50 pointer-events-none">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span className="font-label-sm text-[10px] text-emerald-300 font-bold tracking-wider uppercase">
               Normal Traffic
             </span>
-          </div>
-
-            </>
-          )}
-
-          {/* Floating Controls (Global on both OSM & Vector) */}
-          <div className="absolute bottom-6 right-margin flex flex-col gap-2.5 z-[450] pointer-events-auto">
-            <button
-              aria-label="Re-center route"
-              onClick={() => showToast('Route re-centered on live corridor')}
-              className="w-11 h-11 rounded-full bg-white shadow-lg border border-slate-200/80 flex items-center justify-center text-primary hover:bg-slate-50 transition-transform active:scale-95 cursor-pointer"
-              type="button"
-            >
-              <span className="material-symbols-outlined text-[20px]">my_location</span>
-            </button>
-            <button
-              aria-label="Toggle map layer"
-              onClick={() => {
-                const next = mapLayer === 'osm' ? 'vector' : 'osm';
-                setMapLayer(next);
-                showToast(`Map layer: ${next === 'osm' ? 'OpenStreetMap' : 'Daylight Vector'}`);
-              }}
-              className="w-11 h-11 rounded-full bg-white shadow-lg border border-slate-200/80 flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-transform active:scale-95 cursor-pointer"
-              type="button"
-              title="Toggle OpenStreetMap / Vector Map"
-            >
-              <span className="material-symbols-outlined text-[20px]">
-                {mapLayer === 'osm' ? 'layers' : 'public'}
-              </span>
-            </button>
           </div>
         </div>
 

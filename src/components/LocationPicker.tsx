@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { LocationItem } from '../types';
 import { MYSURU_LANDMARKS, MysuruLocation, calculateDistanceBetween } from '../utils/mysuruLocations';
+import { OpenStreetMap } from './OpenStreetMap';
 
 interface LocationPickerProps {
   mode: 'pickup' | 'destination';
@@ -380,114 +381,35 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
             <span className="text-[11px] text-tertiary">Movable Pin</span>
           </div>
 
-          {/* Interactive Map Canvas Container */}
-          <div
-            className="relative w-full h-[360px] overflow-hidden bg-inverse-surface select-none cursor-grab active:cursor-grabbing shadow-inner touch-none"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerUp}
-          >
-            {/* SVG Vector Map of Mysuru */}
-            <svg
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-75"
-              style={{
-                transform: `translate(${mapPan.x}px, ${mapPan.y}px) scale(1.15)`,
-                transformOrigin: 'center'
-              }}
-              viewBox="0 0 400 480"
-            >
-              <defs>
-                <radialGradient id="lakeGradient" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#1e3a5f" />
-                  <stop offset="100%" stopColor="#0f172a" />
-                </radialGradient>
-              </defs>
+          {/* Interactive Map Canvas Container (High-Fidelity OpenStreetMap) */}
+          <div className="relative w-full h-[360px] overflow-hidden bg-slate-100 select-none shadow-inner">
+            <OpenStreetMap
+              mode="picker"
+              selectedLocation={mapSelectedLocation}
+              onLocationSelect={(loc) => setMapSelectedLocation(loc)}
+              onToast={showToast}
+              className="w-full h-full"
+              showTransitPill={false}
+              showControls={true}
+            />
 
-              {/* Grid Roads */}
-              <g stroke="#263445" strokeWidth="1.2" opacity="0.7">
-                <line x1="-50" x2="450" y1="80" y2="95" />
-                <line x1="-50" x2="450" y1="160" y2="175" />
-                <line x1="-50" x2="450" y1="240" y2="255" />
-                <line x1="-50" x2="450" y1="320" y2="335" />
-                <line x1="-50" x2="450" y1="400" y2="415" />
-                <line x1="80" x2="95" y1="-50" y2="520" />
-                <line x1="170" x2="185" y1="-50" y2="520" />
-                <line x1="260" x2="275" y1="-50" y2="520" />
-                <line x1="350" x2="365" y1="-50" y2="520" />
-              </g>
-
-              {/* Chamundi Hill Forest */}
-              <path d="M 270,300 Q 340,290 380,340 T 400,430 L 280,450 Z" fill="#13231f" opacity="0.8" />
-              <text x="330" y="375" fill="#4ade80" fontSize="8" fontWeight="600" opacity="0.6">CHAMUNDI HILL</text>
-
-              {/* Kukkarahalli Lake */}
-              <path
-                d="M 260,160 C 290,140 340,155 355,190 C 365,220 345,260 315,265 C 285,270 250,245 245,210 Z"
-                fill="url(#lakeGradient)"
-                stroke="#38bdf8"
-                strokeWidth="1.5"
-                opacity="0.85"
-              />
-              <text x="300" y="210" fill="#38bdf8" fontSize="8" fontWeight="600" textAnchor="middle" opacity="0.7">
-                KUKKARAHALLI LAKE
-              </text>
-
-              {/* Major Arterial Boulevards */}
-              <path d="M 20,400 C 90,360 150,310 200,290 C 250,270 310,290 390,300" fill="none" stroke="#3b82f6" strokeWidth="3" opacity="0.6" />
-              <path d="M 70,30 C 120,110 170,170 220,210 C 280,255 320,330 360,400" fill="none" stroke="#2563eb" strokeWidth="3.5" opacity="0.7" />
-
-              {/* Interactive Landmark Anchor Points */}
-              {MYSURU_LANDMARKS.slice(0, 6).map((lm) => (
-                <g
-                  key={lm.id}
-                  transform={`translate(${lm.coordinates.x}, ${lm.coordinates.y})`}
-                  onClick={() => setMapSelectedLocation(lm)}
-                  className="cursor-pointer"
-                >
-                  <circle cx="0" cy="0" r="10" fill="#1e293b" stroke="#64748b" strokeWidth="1" />
-                  <circle cx="0" cy="0" r="4" fill={lm.id === mapSelectedLocation.id ? '#315ef8' : '#94a3b8'} />
-                  <text x="0" y="16" fill="#cbd5e1" fontSize="7" fontWeight="600" textAnchor="middle">
-                    {lm.title.split(',')[0].slice(0, 14)}
-                  </text>
-                </g>
-              ))}
-            </svg>
-
-            {/* FIXED CENTER PINPOINT MARKER OVERLAY */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
-              <div className="relative -mt-8 flex flex-col items-center">
-                {/* Pin Head */}
+            {/* Center Crosshair Target Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[400]">
+              <div className="relative -mt-6 flex flex-col items-center">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-2xl ring-4 ${
+                  className={`w-9 h-9 rounded-full flex items-center justify-center text-white shadow-xl ring-4 ${
                     mode === 'pickup'
-                      ? 'bg-secondary ring-secondary/30'
+                      ? 'bg-emerald-600 ring-emerald-500/30'
                       : 'bg-primary ring-primary/30'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[20px] font-bold">
+                  <span className="material-symbols-outlined text-[19px] font-bold">
                     {mode === 'pickup' ? 'trip_origin' : 'location_on'}
                   </span>
                 </div>
-                {/* Pin Tip / Stalk */}
-                <div
-                  className={`w-1.5 h-3 ${mode === 'pickup' ? 'bg-secondary' : 'bg-primary'}`}
-                />
-                {/* Shadow / Pulse Beacon Ring on Ground */}
-                <div className="w-5 h-2 rounded-full bg-black/50 blur-[2px] mt-0.5 animate-pulse" />
+                <div className={`w-1 h-2.5 ${mode === 'pickup' ? 'bg-emerald-600' : 'bg-primary'}`} />
+                <div className="w-4 h-1.5 rounded-full bg-black/40 blur-[1px]" />
               </div>
-            </div>
-
-            {/* Quick Map Controls Floating */}
-            <div className="absolute right-3 top-3 z-30 flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={() => setMapPan({ x: 0, y: 0 })}
-                className="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-md text-on-surface flex items-center justify-center hover:bg-surface-container active:scale-95 transition-transform"
-                title="Recenter Map"
-              >
-                <span className="material-symbols-outlined text-[18px]">my_location</span>
-              </button>
             </div>
           </div>
 
