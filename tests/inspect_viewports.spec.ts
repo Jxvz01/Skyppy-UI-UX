@@ -20,3 +20,4 @@ for (const vp of viewports) {
     await page.screenshot({ path: `tests/screenshots/courier_${vp.name}.png` });
   });
 }
+

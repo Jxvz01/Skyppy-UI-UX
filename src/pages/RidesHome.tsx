@@ -326,6 +326,87 @@ export const RidesHome: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* ==================== 7. RECENT DESTINATIONS ==================== */}
+        <div className="px-margin pt-1 pb-8">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              {t.recentDestinations}
+            </span>
+            <button
+              type="button"
+              onClick={() => navigate('/search')}
+              className="text-xs font-bold text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
+            >
+              <span>{t.seeAll}</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {/* Destination 1 */}
+            <div
+              onClick={() => {
+                setDestination({
+                  title: 'JSS Medical College & Hospital',
+                  address: 'Bannimantap, Mysuru, Karnataka',
+                  distanceKm: 4.2,
+                  durationMin: 12
+                });
+                navigate('/location');
+              }}
+              className="bg-white p-3 rounded-2xl border border-slate-100/90 shadow-xs flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer group active:scale-[0.99]"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[19px]">local_hospital</span>
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-sm font-bold text-slate-900 truncate">
+                    JSS Medical College & Hospital
+                  </span>
+                  <span className="text-xs text-slate-400 truncate">
+                    Bannimantap, Mysuru • 4.2 km • ~12 min
+                  </span>
+                </div>
+              </div>
+              <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-primary shrink-0 transition-colors">
+                <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+              </div>
+            </div>
+
+            {/* Destination 2 */}
+            <div
+              onClick={() => {
+                setDestination({
+                  title: 'Mysuru Railway Station (MYS)',
+                  address: 'Medar Block, Yadavagiri, Mysuru',
+                  distanceKm: 6.1,
+                  durationMin: 16
+                });
+                navigate('/location');
+              }}
+              className="bg-white p-3 rounded-2xl border border-slate-100/90 shadow-xs flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer group active:scale-[0.99]"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[19px]">directions_subway</span>
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-sm font-bold text-slate-900 truncate">
+                    Mysuru Railway Station (MYS)
+                  </span>
+                  <span className="text-xs text-slate-400 truncate">
+                    Medar Block, Yadavagiri • 6.1 km • ~16 min
+                  </span>
+                </div>
+              </div>
+              <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-primary shrink-0 transition-colors">
+                <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

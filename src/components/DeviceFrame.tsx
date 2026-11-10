@@ -35,7 +35,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0d14] flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden select-none">
+    <div className="h-[100dvh] w-full bg-[#0a0d14] flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden select-none">
       {/* REALISTIC SMARTPHONE SHELL (approx. 390 x 844 CSS viewport) */}
       <div className="relative w-full sm:w-[390px] h-[100dvh] sm:h-[844px] sm:max-h-[calc(100vh-2rem)] sm:rounded-[52px] sm:p-[10px] bg-[#161a23] sm:ring-1 sm:ring-white/10 sm:shadow-[0_25px_70px_rgba(0,0,0,0.65),0_10px_30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.06)] flex flex-col transition-all duration-200">
         
