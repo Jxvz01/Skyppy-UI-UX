@@ -14,29 +14,36 @@ test.describe('Skyppy Courier & Logistics Service E2E Tests', () => {
     await courierBtn.click();
     await page.waitForURL('**/courier');
 
-    // Courier Home verification
-    await expect(page.getByText(/Send an Intercity Parcel/i)).toBeVisible();
-    await expect(page.getByText(/Fast, Guaranteed Freight/i)).toBeVisible();
+    // Courier Home verification matching redesigned specification
+    await expect(page.getByText('SKAPPY MOVE')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Send a Parcel' })).toBeVisible();
+    await expect(page.getByText(/Ship your packages safely across cities/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /Create Shipment/i })).toBeVisible();
   });
 
-  test('Courier Home: displays services, quick tracking, and recent shipments', async ({ page }) => {
+  test('Courier Home: displays services, quick actions, and route selection card', async ({ page }) => {
     await page.goto('/courier');
 
-    // Check express corridor badge & service tiers
-    await expect(page.getByText(/Express Corridor Active/i)).toBeVisible();
-    await expect(page.getByText(/Same-Day Prime/i)).toBeVisible();
-    await expect(page.getByText(/Express Cargo/i)).toBeVisible();
-    await expect(page.getByText(/Surface Cargo/i)).toBeVisible();
+    // Check feature pills
+    await expect(page.getByText(/Intercity/i).first()).toBeVisible();
+    await expect(page.getByText(/Safe & Secure/i)).toBeVisible();
+    await expect(page.getByText(/Live/i).first()).toBeVisible();
+    await expect(page.getByText(/Proof of/i)).toBeVisible();
 
-    // Check recent shipment card
-    await expect(page.getByText(/SKP-EXP-849204/i).first()).toBeVisible();
+    // Check corridor route card
+    await expect(page.getByText('VVCE Campus, Gokulam').first()).toBeVisible();
+    await expect(page.getByText('Bengaluru, Karnataka')).toBeVisible();
 
-    // Quick track search
-    const trackInput = page.getByPlaceholder(/Track shipment/i);
-    await trackInput.fill('SKP-EXP-849204');
-    await page.getByRole('button', { name: 'Track', exact: true }).click();
-    await page.waitForURL('**/courier/track/shp_849204');
-    await expect(page.getByText(/Live Shipment Tracking/i)).toBeVisible();
+    // Check quick actions
+    await expect(page.getByText('New Shipment')).toBeVisible();
+    await expect(page.getByText('Track Shipment')).toBeVisible();
+    await expect(page.getByText('Scheduled')).toBeVisible();
+    await expect(page.getByText('History')).toBeVisible();
+
+    // Clicking Create Shipment button navigates to /courier/send
+    await page.getByRole('button', { name: /Create Shipment/i }).click();
+    await page.waitForURL('**/courier/send');
+    await expect(page.getByText(/What are you sending\?/i)).toBeVisible();
   });
 
   test('Create Shipment 4-step wizard: validates volumetric weight and creates booking', async ({ page }) => {
