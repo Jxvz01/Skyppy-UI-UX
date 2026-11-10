@@ -388,8 +388,6 @@ export const CourierHome: React.FC = () => {
           </div>
         </div>
       </main>
-
-      <BottomNav />
     </div>
   );
 };

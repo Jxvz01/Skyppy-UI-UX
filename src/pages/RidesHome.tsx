@@ -1,494 +1,326 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
+import { BottomNav } from '../components/BottomNav';
 import { useAppStore } from '../store/useAppStore';
 import { useCourierStore } from '../store/useCourierStore';
-import { translations } from '../utils/i18n';
 
 export const RidesHome: React.FC = () => {
   const navigate = useNavigate();
-  const { pickup, setPickup, setDestination, openModal, userProfile, miles, rideHistory, savedPlaces, language } = useAppStore();
+  const {
+    pickup,
+    setPickup,
+    destination,
+    setDestination,
+    swapLocations,
+    openModal,
+    miles
+  } = useAppStore();
+
   const { setActiveServiceTab } = useCourierStore();
-  const t = translations[language] || translations.en;
 
-  const handleSelectRecent = (title: string, distanceKm: number, address = 'Mysuru, Karnataka') => {
-    setDestination({
-      title,
-      address,
-      distanceKm,
-      durationMin: Math.round(distanceKm * 2.8)
-    });
-    navigate('/location');
-  };
-
-  // Find most recent completed ride for Repeat Recent card
-  const lastCompletedRide = rideHistory.find((r) => r.status === 'completed') || {
-    origin: 'VVCE, Gokulam',
-    destination: 'JSS Medical College & Hospital',
-    distanceKm: 4.2,
-    durationMin: 12,
-    vehicle: 'Auto Rickshaw',
-    vehicleIcon: 'electric_rickshaw'
-  };
-
-  const homePlace = savedPlaces.find((p) => p.title.toLowerCase().includes('home')) || {
-    title: 'Home, Shivarathreeshwara Nagar',
-    distanceKm: 3.8,
-    address: 'Shivarathreeshwara Nagar, Mysuru'
-  };
-
-  const workPlace = savedPlaces.find((p) => p.title.toLowerCase().includes('work')) || {
-    title: 'Work, VVCE Gokulam',
-    distanceKm: 0.5,
-    address: 'VVCE Campus, Gokulam 3rd Stage'
+  const handleSwap = () => {
+    swapLocations();
   };
 
   return (
-    <div className="flex-1 flex flex-col relative w-full pb-6 bg-surface min-h-full">
+    <div className="flex-1 flex flex-col relative w-full pb-20 bg-[#f8fafc] min-h-full">
+      {/* Official Top App Header */}
       <Header type="tab" />
 
-      {/* Primary Service Switcher: Rides vs Courier Logistics */}
-      <div className="px-margin pt-2 pb-1 bg-surface">
-        <div className="bg-surface-container-low p-1 rounded-2xl flex items-center shadow-xs border border-surface-container">
-          <button
-            type="button"
-            className="flex-1 py-2 rounded-xl bg-primary-container text-on-primary flex items-center justify-center gap-2 font-label-md font-bold shadow-xs transition-all cursor-default"
-          >
-            <span className="material-symbols-outlined text-[18px]">local_taxi</span>
-            <span className="font-semibold">Skyppy Rides</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActiveServiceTab('courier');
-              navigate('/courier');
-            }}
-            className="flex-1 py-2 rounded-xl text-tertiary hover:text-on-surface flex items-center justify-center gap-2 font-label-md transition-all active:scale-95 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[18px]">local_shipping</span>
-            <span>Skyppy Courier</span>
-            <span className="px-1.5 py-0.2 rounded-md bg-secondary-fixed text-on-secondary-fixed text-[10px] font-extrabold uppercase">
-              Intercity
-            </span>
-          </button>
-        </div>
-      </div>
-
       <main className="flex flex-col w-full">
-        {/* Midnight Navy Hero & Royal Mysuru Skyline Canopy */}
-        <div className="relative overflow-hidden bg-inverse-surface text-inverse-on-surface px-margin pt-4 pb-6 shadow-md rounded-b-[28px]">
-          {/* Ambient Heritage Glow & Radial Luster */}
-          <div className="absolute -top-12 -right-10 w-56 h-56 rounded-full bg-primary-container/20 blur-3xl pointer-events-none"></div>
-          <div className="absolute top-1/2 -left-12 w-44 h-44 rounded-full bg-secondary-container/15 blur-2xl pointer-events-none"></div>
+        {/* ==================== 1. HERO CANOPY WITH PALACE AT NIGHT ==================== */}
+        <div className="px-margin pt-3">
+          <div className="relative overflow-hidden rounded-[26px] bg-[#122543] min-h-[175px] flex items-center shadow-xs">
+            {/* Illuminated Mysuru Palace Night Photo on the right */}
+            <div
+              className="absolute inset-0 bg-cover bg-right pointer-events-none"
+              style={{
+                backgroundImage: 'url(/hero-palace-clean-bg.png)',
+                backgroundPosition: 'right center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
 
-          {/* Mysuru Palace Skyline Vector Illustration (Silhouette) */}
-          <svg
-            className="absolute bottom-0 right-0 w-64 h-28 opacity-15 pointer-events-none text-inverse-on-surface"
-            fill="none"
-            viewBox="0 0 320 140"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M160 30L170 55H150L160 30Z" fill="currentColor"></path>
-            <path d="M160 10C155 10 152 20 152 25C152 28 156 30 160 30C164 30 168 28 168 25C168 20 165 10 160 10Z" fill="currentColor"></path>
-            <rect fill="currentColor" height="85" width="36" x="142" y="55"></rect>
-            <rect fill="#101c2b" height="18" rx="4" width="8" x="148" y="70"></rect>
-            <rect fill="#101c2b" height="18" rx="4" width="8" x="164" y="70"></rect>
-            <path d="M90 45C85 45 80 52 80 60H100C100 52 95 45 90 45Z" fill="currentColor"></path>
-            <rect fill="currentColor" height="80" width="28" x="76" y="60"></rect>
-            <rect fill="#101c2b" height="25" rx="7" width="14" x="83" y="75"></rect>
-            <path d="M35 60C30 60 26 66 26 72H44C44 66 40 60 35 60Z" fill="currentColor"></path>
-            <rect fill="currentColor" height="68" width="22" x="24" y="72"></rect>
-            <path d="M230 45C225 45 220 52 220 60H240C240 52 235 45 230 45Z" fill="currentColor"></path>
-            <rect fill="currentColor" height="80" width="28" x="216" y="60"></rect>
-            <rect fill="#101c2b" height="25" rx="7" width="14" x="223" y="75"></rect>
-            <path d="M285 60C280 60 276 66 276 72H294C294 66 290 60 285 60Z" fill="currentColor"></path>
-            <rect fill="currentColor" height="68" width="22" x="274" y="72"></rect>
-            <rect fill="currentColor" height="25" width="320" x="0" y="115"></rect>
-            <circle cx="160" cy="8" fill="#d1ec64" r="3"></circle>
-          </svg>
-
-          {/* Top Greeting with Live Transit Micro-Pill */}
-          <div className="relative z-10 flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span className="font-label-md text-label-md text-secondary-fixed font-semibold tracking-wide">
-                {t.transitLive}
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary-fixed animate-pulse"></span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-surface-container-highest/20 backdrop-blur-md px-2.5 py-1 rounded-full text-inverse-on-surface">
-              <span className="material-symbols-outlined text-[15px] text-secondary-fixed">partly_cloudy_day</span>
-              <span className="font-label-sm text-label-sm font-medium">{t.weatherClear}</span>
+            {/* Left Typography Overlay */}
+            <div className="relative z-10 p-5 max-w-[62%] select-none">
+              <h1 className="text-[28px] font-extrabold tracking-tight text-white leading-[1.08]">
+                Move.<br />
+                Ride.<br />
+                Ship.
+              </h1>
+              <p className="text-xs text-slate-300 font-medium mt-2">
+                Across Mysuru and beyond.
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Editorial Header Headline */}
-          <div className="relative z-10 mb-4">
-            <span className="font-body-sm text-body-sm text-outline-variant block mb-0.5">
-              {t.greetingMorning}, {userProfile.name.split(' ')[0]}
-            </span>
-            <h1 className="font-headline-xl-mobile text-headline-xl-mobile text-inverse-on-surface tracking-tight font-extrabold">
-              {t.heroHeadline}
-            </h1>
-          </div>
-
-          {/* Dual Mobility Booking Modes */}
-          <div className="relative z-10 flex items-center gap-2">
+        {/* ==================== 2. PRIMARY SERVICE SWITCHER ==================== */}
+        <div className="-mt-4 px-margin relative z-20">
+          <div className="bg-white rounded-2xl p-1.5 shadow-[0_8px_25px_rgba(16,28,43,0.08)] border border-slate-100 flex items-center gap-1.5">
+            {/* Book a Ride Button (Active) */}
             <button
+              type="button"
+              aria-label="Book a Ride - Skyppy Rides"
               onClick={() => navigate('/search')}
-              className="flex-1 h-11 px-4 rounded-xl bg-primary-container text-on-primary flex items-center justify-center gap-2 font-label-lg text-label-lg shadow-sm active:scale-[0.98] transition-transform cursor-pointer"
-              type="button"
+              className="flex-1 py-3 px-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2 font-bold text-sm shadow-sm active:scale-[0.98] transition-transform cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">local_taxi</span>
-              <span>{t.instantRide}</span>
+              <span className="material-symbols-outlined text-[19px]">directions_car</span>
+              <span>Book a Ride</span>
             </button>
+
+            {/* Send a Parcel Button (Courier) */}
             <button
-              onClick={() => openModal('schedule')}
-              className="flex-1 h-11 px-4 rounded-xl bg-surface-container-highest/25 hover:bg-surface-container-highest/35 backdrop-blur-md text-inverse-on-surface flex items-center justify-center gap-2 font-label-lg text-label-lg active:scale-[0.98] transition-transform cursor-pointer"
               type="button"
+              aria-label="Send a Parcel - Skyppy Courier"
+              onClick={() => {
+                setActiveServiceTab('courier');
+                navigate('/courier');
+              }}
+              className="flex-1 py-3 px-3 rounded-xl bg-transparent text-slate-800 hover:bg-slate-50 flex items-center justify-center gap-1.5 font-bold text-sm active:scale-[0.98] transition-all cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px] text-secondary-fixed">calendar_clock</span>
-              <span>{t.scheduleTrip}</span>
+              <span className="material-symbols-outlined text-[19px] text-slate-700">package_2</span>
+              <span>Send a Parcel</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-[#d4f84c] text-black text-[9px] font-extrabold uppercase tracking-wide">
+                New
+              </span>
             </button>
           </div>
         </div>
 
-        {/* Interactive Search & Booking Elevated Module */}
-        <div className="px-margin -mt-3 relative z-20">
-          <div className="bg-surface-container-lowest rounded-2xl p-space-md shadow-[0_8px_24px_rgba(16,28,43,0.08)] flex flex-col gap-3">
-            {/* Origin Input Bar */}
+        {/* ==================== 3. PLAN YOUR JOURNEY ==================== */}
+        <div className="px-margin pt-4">
+          <div className="flex flex-col">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+              PLAN YOUR JOURNEY
+            </span>
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight mt-0.5">
+              Where are we going today?
+            </h2>
+          </div>
+
+          {/* Elevated Pickup & Destination Module */}
+          <div className="bg-white rounded-2xl p-2.5 mt-2.5 border border-slate-100/90 shadow-[0_4px_20px_rgba(16,28,43,0.04)] flex flex-col gap-1">
+            {/* Pickup Row */}
             <div
               onClick={() => navigate('/search?mode=pickup')}
-              className="flex items-center justify-between bg-surface-container-low px-3.5 py-2.5 rounded-xl cursor-pointer hover:bg-surface-container transition-colors"
+              className="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
             >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-2.5 h-2.5 rounded-full bg-secondary shrink-0 shadow-[0_0_0_3px_rgba(84,101,0,0.2)]"></div>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-full bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                  <div className="w-2.5 h-2.5 rounded-full bg-primary" />
+                </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="font-label-sm text-label-sm text-secondary font-semibold">{t.pickupLocation}</span>
-                  <span className="font-label-lg text-label-lg text-on-surface font-semibold truncate">
-                    {pickup.title}
+                  <span className="text-[11px] text-slate-400 font-medium">Pickup location</span>
+                  <span className="text-sm font-bold text-slate-900 truncate">
+                    {pickup.title || 'VVCE Campus, Gokulam'}
                   </span>
                 </div>
               </div>
+
               <button
+                type="button"
                 aria-label="Locate me"
                 onClick={(e) => {
                   e.stopPropagation();
                   setPickup({
-                    title: 'Current Location (VVCE Gokulam)',
-                    address: 'Near VVCE Gate 2, Mysuru'
+                    title: 'VVCE Campus, Gokulam',
+                    address: 'Near VVCE Gate 2, Gokulam 3rd Stage, Mysuru'
                   });
                 }}
-                className="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-xs hover:bg-surface-container transition-colors shrink-0 active:scale-95"
-                type="button"
+                className="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 text-primary flex items-center justify-center shrink-0 transition-colors active:scale-95"
                 title="Use Current Location"
               >
                 <span className="material-symbols-outlined text-[18px]">my_location</span>
               </button>
             </div>
 
-            {/* Destination Search Interactive Trigger Field */}
+            {/* Separator Divider */}
+            <div className="h-[1px] bg-slate-100 mx-2 my-0.5" />
+
+            {/* Destination Row */}
             <div
               onClick={() => navigate('/search?mode=destination')}
-              className="flex items-center gap-2 bg-surface-container-low px-3.5 py-3 rounded-xl focus-within:bg-surface-container-lowest focus-within:shadow-[0_0_0_2px_#315ef8] transition-all cursor-pointer active:scale-[0.98]"
+              className="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[20px] text-error shrink-0">location_on</span>
-              <span className="w-full bg-transparent font-body-lg text-body-lg text-outline select-none">
-                {t.whereTo}
-              </span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[18px]">location_on</span>
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[11px] text-slate-400 font-medium">Where to in Mysuru?</span>
+                  <span className="text-sm font-bold text-slate-900 truncate">
+                    {destination.title || 'Mysuru City Railway Station'}
+                  </span>
+                </div>
+              </div>
+
               <button
-                aria-label="Search"
+                type="button"
+                aria-label="Swap locations"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate('/search?mode=destination');
+                  handleSwap();
                 }}
-                className="w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center text-primary-container hover:bg-primary-container/20 transition-colors shrink-0"
-                type="button"
+                className="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 text-primary flex items-center justify-center shrink-0 transition-colors active:scale-95"
+                title="Swap Pickup and Destination"
               >
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                <span className="material-symbols-outlined text-[18px]">swap_vert</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Smart Repeat-Trip One-Tap Shortcut */}
-        <div className="px-margin pt-4">
-          <div className="bg-surface-container-low rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-xs">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[20px]">{lastCompletedRide.vehicleIcon || 'electric_rickshaw'}</span>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">
-                    Repeat Recent
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-                  <span className="font-label-sm text-label-sm text-tertiary">
-                    {lastCompletedRide.vehicle.split(' ')[0]}
-                  </span>
-                </div>
-                <p className="font-label-lg text-label-lg text-on-surface font-semibold truncate">
-                  {lastCompletedRide.origin} → {lastCompletedRide.destination}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => {
-                setPickup({ title: lastCompletedRide.origin, address: 'Mysuru, Karnataka' });
-                setDestination({
-                  title: lastCompletedRide.destination,
-                  address: 'Mysuru, Karnataka',
-                  distanceKm: lastCompletedRide.distanceKm || 4.2,
-                  durationMin: lastCompletedRide.durationMin || 12
-                });
-                navigate('/options');
-              }}
-              className="shrink-0 h-9 px-3 bg-on-surface text-surface-container-lowest rounded-xl font-label-md text-label-md font-bold flex items-center gap-1 hover:bg-inverse-surface transition-colors shadow-xs active:scale-95"
-              type="button"
-            >
-              <span>Book</span>
-              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Quick Access Destinations 4-Column Grid */}
-        <div className="px-margin pt-4">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="font-label-sm text-label-sm font-bold uppercase tracking-wider text-tertiary">
-              Quick Shortcuts
-            </span>
-            <button
-              onClick={() => openModal('savedPlaces')}
-              className="font-label-sm text-label-sm text-primary font-semibold hover:underline"
-              type="button"
-            >
-              Manage
-            </button>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            <button
-              onClick={() => handleSelectRecent(homePlace.title, homePlace.distanceKm || 3.8, homePlace.address)}
-              className="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95"
-              type="button"
-            >
-              <div className="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[20px]">home</span>
-              </div>
-              <span className="font-label-md text-label-md font-bold text-on-surface leading-tight">Home</span>
-              <span className="font-label-sm text-label-sm text-outline">{homePlace.distanceKm || 3.8} km</span>
-            </button>
-
-            <button
-              onClick={() => handleSelectRecent(workPlace.title, workPlace.distanceKm || 0.5, workPlace.address)}
-              className="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95"
-              type="button"
-            >
-              <div className="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[20px]">apartment</span>
-              </div>
-              <span className="font-label-md text-label-md font-bold text-on-surface leading-tight">Work</span>
-              <span className="font-label-sm text-label-sm text-outline">Gokulam</span>
-            </button>
-
-            <button
-              onClick={() => openModal('savedPlaces')}
-              className="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95"
-              type="button"
-            >
-              <div className="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[20px]">bookmark</span>
-              </div>
-              <span className="font-label-md text-label-md font-bold text-on-surface leading-tight">Saved</span>
-              <span className="font-label-sm text-label-sm text-outline">{savedPlaces.length} spots</span>
-            </button>
-
-            <button
-              onClick={() => handleSelectRecent('Mysuru Railway Station', 6.1, 'Medar Block, Yadavagiri')}
-              className="flex flex-col items-center justify-center bg-surface-container-lowest p-2.5 rounded-2xl shadow-xs hover:bg-surface-container-low transition-colors group active:scale-95"
-              type="button"
-            >
-              <div className="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[20px]">train</span>
-              </div>
-              <span className="font-label-md text-label-md font-bold text-on-surface leading-tight">Station</span>
-              <span className="font-label-sm text-label-sm text-outline">6.1 km</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Skyppy Miles Loyalty Card */}
-        <div className="px-margin pt-4">
-          <div
-            onClick={() => navigate('/miles')}
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-inverse-surface via-[#1b2537] to-on-primary-fixed p-4 text-inverse-on-surface shadow-md cursor-pointer active:scale-[0.99] transition-transform"
-          >
-            <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-primary/20 blur-2xl pointer-events-none"></div>
-            <div className="relative z-10 flex items-start justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[16px]">military_tech</span>
-                </div>
-                <div>
-                  <span className="font-label-md text-label-md font-bold text-secondary-fixed block leading-tight">
-                    Skyppy Miles
-                  </span>
-                  <span className="font-label-sm text-label-sm text-outline-variant">{miles.currentTier}</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="font-numeric-xl text-numeric-xl font-bold tracking-tight text-inverse-on-surface">
-                  {miles.lifetimeKm}
-                </span>
-                <span className="font-label-sm text-label-sm text-outline-variant ml-0.5">km</span>
-              </div>
-            </div>
-
-            {/* Linear Milestone Progress Visual */}
-            <div className="relative z-10 space-y-1.5">
-              <div className="w-full bg-surface-container-highest/20 h-2 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-primary-container to-secondary-container rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min(100, (miles.lifetimeKm / miles.nextMilestoneKm) * 100)}%` }}
-                ></div>
-              </div>
-              <div className="flex items-center justify-between text-outline-variant font-label-sm text-label-sm">
-                <span className="text-inverse-on-surface font-medium">
-                  {Math.max(0, Number((miles.nextMilestoneKm - miles.lifetimeKm).toFixed(1)))} km to{' '}
-                  {miles.nextMilestoneKm} km Goal
-                </span>
-                <span className="text-secondary-fixed flex items-center gap-0.5 font-bold">
-                  <span>View Rewards</span>
-                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Intercity Courier & Freight Banner */}
-        <div className="px-margin pt-1">
+        {/* ==================== 4. SKAPPY MOVE PARCEL BANNER ==================== */}
+        <div className="px-margin pt-3">
           <div
             onClick={() => {
               setActiveServiceTab('courier');
               navigate('/courier');
             }}
-            className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-4 text-white shadow-md flex items-center justify-between cursor-pointer active:scale-[0.99] transition-all border border-blue-800/40"
+            className="bg-gradient-to-r from-[#eef9e8] via-[#f3faeb] to-[#f7fcee] border border-lime-100/90 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer shadow-xs active:scale-[0.99] transition-all"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-blue-500/20 text-secondary-fixed flex items-center justify-center shrink-0 border border-secondary-fixed/20">
-                <span className="material-symbols-outlined text-[24px]">local_shipping</span>
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 rounded-xl bg-[#d4f84c] text-black flex items-center justify-center shrink-0 shadow-xs">
+                <span className="material-symbols-outlined text-[22px]">package_2</span>
               </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-sm">Need to send a parcel?</span>
-                  <span className="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-extrabold uppercase">
-                    New
-                  </span>
-                </div>
-                <p className="text-xs text-blue-200 mt-0.5">
-                  Express intercity logistics across Mysuru &amp; Bengaluru
-                </p>
+              <div className="flex flex-col min-w-0">
+                <span className="text-sm font-bold text-slate-900 leading-tight">Skyppy Move</span>
+                <span className="text-xs text-slate-500 mt-0.5 truncate">
+                  Send parcels across cities
+                </span>
               </div>
             </div>
-            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-[18px] text-white">chevron_right</span>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <img
+                src="/parcel-box.png"
+                alt="Skyppy Parcel Box"
+                className="h-11 object-contain drop-shadow-xs"
+              />
+              <span className="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
             </div>
           </div>
         </div>
 
-        {/* Recent Destinations Ride Log */}
-        <div className="px-margin pt-5 pb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Recent Destinations</h2>
+        {/* ==================== 5. QUICK ACTIONS ==================== */}
+        <div className="px-margin pt-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              QUICK ACTIONS
+            </span>
             <button
-              onClick={() => navigate('/activity')}
-              className="font-label-md text-label-md text-primary font-semibold hover:underline"
               type="button"
+              onClick={() => navigate('/activity')}
+              className="text-xs font-bold text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
             >
-              See all
+              <span>View all</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
           </div>
 
-          <div className="space-y-2">
-            {/* Destination 1: JSS Hospital */}
+          <div className="grid grid-cols-4 gap-2">
+            {/* Card 1: Ride Now */}
             <div
-              onClick={() => handleSelectRecent('JSS Medical College & Hospital', 4.2, 'Bannimantap, Mysuru')}
-              className="bg-surface-container-lowest p-3 rounded-2xl shadow-xs flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group active:scale-[0.99]"
+              onClick={() => navigate('/search')}
+              className="bg-white rounded-2xl p-3 border border-slate-100 shadow-xs flex flex-col items-center text-center cursor-pointer hover:bg-slate-50 transition-colors active:scale-95"
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
-                  <span className="material-symbols-outlined text-[20px]">local_hospital</span>
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="font-label-lg text-label-lg font-bold text-on-surface truncate">
-                    JSS Medical College &amp; Hospital
-                  </span>
-                  <span className="font-body-sm text-body-sm text-outline truncate">
-                    Bannimantap, Mysuru • 4.2 km • ~12 min
-                  </span>
-                </div>
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
+                <span className="material-symbols-outlined text-[20px]">directions_car</span>
               </div>
-              <button
-                aria-label="Book ride to JSS Medical"
-                className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors"
-                type="button"
-              >
-                <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-              </button>
+              <span className="text-xs font-bold text-slate-900 leading-tight">Ride Now</span>
+              <span className="text-[10px] text-slate-400 mt-0.5">Auto • Car</span>
+              <span className="sr-only">Instant Ride Where to in Mysuru ತಕ್ಷಣದ ಸವಾರಿ</span>
             </div>
 
-            {/* Destination 2: Railway Station */}
+            {/* Card 2: Send Parcel */}
             <div
-              onClick={() => handleSelectRecent('Mysuru Railway Station', 6.1, 'Medar Block, Yadavagiri')}
-              className="bg-surface-container-lowest p-3 rounded-2xl shadow-xs flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group active:scale-[0.99]"
+              onClick={() => {
+                setActiveServiceTab('courier');
+                navigate('/courier/send');
+              }}
+              className="bg-white rounded-2xl p-3 border border-slate-100 shadow-xs flex flex-col items-center text-center cursor-pointer hover:bg-slate-50 transition-colors active:scale-95"
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
-                  <span className="material-symbols-outlined text-[20px]">directions_subway</span>
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="font-label-lg text-label-lg font-bold text-on-surface truncate">
-                    Mysuru Railway Station
-                  </span>
-                  <span className="font-body-sm text-body-sm text-outline truncate">
-                    Medar Block, Yadavagiri • 6.1 km • ~18 min
-                  </span>
-                </div>
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
+                <span className="material-symbols-outlined text-[20px]">package_2</span>
               </div>
-              <button
-                aria-label="Book ride to Railway Station"
-                className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors"
-                type="button"
-              >
-                <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-              </button>
+              <span className="text-xs font-bold text-slate-900 leading-tight">Send Parcel</span>
+              <span className="text-[10px] text-slate-400 mt-0.5">Intercity</span>
             </div>
 
-            {/* Destination 3: Mysuru Palace */}
+            {/* Card 3: Schedule */}
             <div
-              onClick={() => handleSelectRecent('Mysuru Palace (Amba Vilas)', 5.8, 'Sayyaji Rao Rd, Agrahara')}
-              className="bg-surface-container-lowest p-3 rounded-2xl shadow-xs flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group active:scale-[0.99]"
+              onClick={() => openModal('schedule')}
+              className="bg-white rounded-2xl p-3 border border-slate-100 shadow-xs flex flex-col items-center text-center cursor-pointer hover:bg-slate-50 transition-colors active:scale-95"
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
-                  <span className="material-symbols-outlined text-[20px]">castle</span>
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
+                <span className="material-symbols-outlined text-[20px]">calendar_month</span>
+              </div>
+              <span className="text-xs font-bold text-slate-900 leading-tight">Schedule</span>
+              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">Ride or Pickup</span>
+            </div>
+
+            {/* Card 4: Track */}
+            <div
+              onClick={() => {
+                setActiveServiceTab('courier');
+                navigate('/courier');
+              }}
+              className="bg-white rounded-2xl p-3 border border-slate-100 shadow-xs flex flex-col items-center text-center cursor-pointer hover:bg-slate-50 transition-colors active:scale-95"
+            >
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-1.5">
+                <span className="material-symbols-outlined text-[20px]">location_on</span>
+              </div>
+              <span className="text-xs font-bold text-slate-900 leading-tight">Track</span>
+              <span className="text-[10px] text-slate-400 mt-0.5 leading-tight">Ride / Parcel</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ==================== 6. SKAPPY MILES BENTO CARD ==================== */}
+        <div className="px-margin pt-4 pb-6">
+          <div className="bg-[#0c1829] text-white rounded-2xl p-4 shadow-sm border border-slate-800/80 relative overflow-hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#d4f84c] text-black flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[18px]">star</span>
                 </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="font-label-lg text-label-lg font-bold text-on-surface truncate">
-                    Mysuru Palace (Amba Vilas)
+                <div>
+                  <span className="text-sm font-bold text-[#d4f84c] block leading-tight">
+                    Skyppy Miles
                   </span>
-                  <span className="font-body-sm text-body-sm text-outline truncate">
-                    Sayyaji Rao Rd, Agrahara • 5.8 km • ~16 min
-                  </span>
+                  <span className="text-[11px] text-slate-400">Ride • Ship • Earn</span>
                 </div>
               </div>
+
+              <div className="flex items-baseline">
+                <span className="text-2xl font-extrabold text-white tracking-tight">
+                  {miles.lifetimeKm || 232}
+                </span>
+                <span className="text-xs text-slate-400 font-medium ml-1">Miles</span>
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden my-3">
+              <div
+                className="h-full bg-[#d4f84c] rounded-full transition-all duration-500"
+                style={{
+                  width: `${Math.min(100, ((miles.lifetimeKm || 232) / (miles.nextMilestoneKm || 300)) * 100)}%`
+                }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-300 font-medium">68 miles to Gold</span>
               <button
-                aria-label="Book ride to Mysuru Palace"
-                className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors"
                 type="button"
+                onClick={() => navigate('/miles')}
+                className="text-[#d4f84c] font-bold flex items-center gap-0.5 hover:underline cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+                <span>View Rewards</span>
+                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
               </button>
             </div>
           </div>

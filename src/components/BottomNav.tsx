@@ -11,9 +11,9 @@ export const BottomNav: React.FC = () => {
   const t = translations[language] || translations.en;
 
   const tabs = [
-    { key: 'home', label: t.navHome, path: '/', icon: 'directions_car' },
+    { key: 'home', label: t.navHome, path: '/', icon: 'home' },
     { key: 'activity', label: t.navActivity, path: '/activity', icon: 'receipt_long' },
-    { key: 'miles', label: t.navMiles, path: '/miles', icon: 'military_tech' },
+    { key: 'miles', label: t.navMiles, path: '/miles', icon: 'layers' },
     { key: 'profile', label: t.navProfile, path: '/profile', icon: 'person' },
   ];
 

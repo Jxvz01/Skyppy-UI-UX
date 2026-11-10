@@ -20,7 +20,7 @@ export const Header: React.FC<HeaderProps> = ({
   rightAction = 'default'
 }) => {
   const navigate = useNavigate();
-  const { openModal, notifications, language, setLanguage, userProfile } = useAppStore();
+  const { openModal, showToast, notifications, language, setLanguage, userProfile } = useAppStore();
   const unreadCount = notifications.filter((n) => n.unread).length;
   const t = translations[language] || translations.en;
 
@@ -62,16 +62,28 @@ export const Header: React.FC<HeaderProps> = ({
         )}
 
         <div className="flex items-center gap-2 shrink-0">
+          {type === 'tab' && (
+            <button
+              type="button"
+              onClick={() => showToast('Mysuru Urban & Regional corridor active', 'info')}
+              className="h-8 px-2.5 rounded-full bg-[#edf3ff] text-primary border border-blue-100 font-semibold text-xs flex items-center gap-1 hover:bg-blue-100/70 transition-colors active:scale-95"
+            >
+              <span className="material-symbols-outlined text-[16px] text-primary">location_on</span>
+              <span className="font-bold">Mysuru</span>
+              <span className="material-symbols-outlined text-[15px] text-primary">keyboard_arrow_down</span>
+            </button>
+          )}
+
           {/* Quick Language Toggle Pill */}
           <button
             type="button"
             aria-label="Switch language English or Kannada"
             onClick={toggleLanguage}
-            className="h-8 px-2.5 rounded-full bg-surface-container text-xs font-bold text-primary hover:bg-surface-container-high transition-colors flex items-center gap-1 active:scale-95"
+            className="h-8 px-2 rounded-full bg-surface-container text-xs font-bold text-primary hover:bg-surface-container-high transition-colors flex items-center gap-0.5 active:scale-95"
             title="Switch Language (English / ಕನ್ನಡ)"
           >
-            <span className="material-symbols-outlined text-[15px]">translate</span>
-            <span>{language === 'en' ? 'ಕನ್ನಡ' : 'EN'}</span>
+            <span className="material-symbols-outlined text-[14px]">translate</span>
+            <span className="text-[11px]">{language === 'en' ? 'ಕನ್ನಡ' : 'EN'}</span>
           </button>
 
           {rightAction === 'default' ? (
@@ -80,13 +92,11 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   aria-label="Notifications"
                   onClick={() => openModal('notifications')}
-                  className="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors relative"
+                  className="w-8 h-8 rounded-full bg-[#f1f5f9] flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors relative active:scale-95"
                   type="button"
                 >
                   <span className="material-symbols-outlined text-[19px]">notifications</span>
-                  {unreadCount > 0 && (
-                    <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface"></span>
-                  )}
+                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-orange-500 ring-2 ring-white"></span>
                 </button>
               ) : (
                 <button
@@ -103,17 +113,9 @@ export const Header: React.FC<HeaderProps> = ({
                 type="button"
                 aria-label="Profile Account"
                 onClick={() => navigate('/profile')}
-                className="rounded-full ring-2 ring-transparent hover:ring-primary/40 transition-all cursor-pointer"
+                className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-xs active:scale-95 transition-transform"
               >
-                <div className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-primary to-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs border border-white/60">
-                  {userProfile?.name
-                    ? userProfile.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')
-                        .slice(0, 2)
-                    : 'SK'}
-                </div>
+                <span className="material-symbols-outlined text-[18px]">person</span>
               </button>
             </>
           ) : (

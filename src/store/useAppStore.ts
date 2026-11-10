@@ -507,10 +507,10 @@ export const useAppStore = create<AppState>((set, get) => {
       landmark: 'Gate 2 Entrance'
     },
     destination: {
-      title: 'JSS Medical College & Hospital',
-      address: 'Bannimantap A-Layout, Mysuru',
-      distanceKm: 4.2,
-      durationMin: 12
+      title: 'Mysuru City Railway Station',
+      address: 'Medar Block, Yadavagiri, Mysuru',
+      distanceKm: 4.8,
+      durationMin: 14
     },
     setPickup: (loc) => {
       const { destination } = get();

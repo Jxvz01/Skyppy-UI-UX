@@ -12,7 +12,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [timeStr, setTimeStr] = useState('09:41');
 
-  const isTabRoute = ['/', '/activity', '/miles', '/profile'].includes(location.pathname);
+  const isTabRoute = ['/', '/activity', '/miles', '/profile', '/courier'].includes(location.pathname);
 
   // Real-time status bar clock
   useEffect(() => {
