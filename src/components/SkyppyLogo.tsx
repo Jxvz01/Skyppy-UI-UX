@@ -48,8 +48,8 @@ export const SkyppyLogo: React.FC<SkyppyLogoProps> = ({
   className = ''
 }) => {
   const sizeMap = {
-    xs: { icon: 24, text: 'text-lg', sub: 'text-[9px]' },
-    sm: { icon: 32, text: 'text-xl', sub: 'text-[10px]' },
+    xs: { icon: 24, text: 'text-base', sub: 'text-[8.5px]' },
+    sm: { icon: 28, text: 'text-[18px]', sub: 'text-[9px]' },
     md: { icon: 40, text: 'text-2xl', sub: 'text-[11px]' },
     lg: { icon: 52, text: 'text-3xl', sub: 'text-xs' },
     xl: { icon: 68, text: 'text-4xl', sub: 'text-sm' }
@@ -71,7 +71,7 @@ export const SkyppyLogo: React.FC<SkyppyLogoProps> = ({
       : 'text-secondary dark:text-secondary-fixed';
 
   return (
-    <div className={`inline-flex items-center gap-2.5 ${className}`}>
+    <div className={`inline-flex items-center gap-2 ${className}`}>
       <SkyppyEmblem
         size={currentSize.icon}
         color={variant === 'white' ? '#ffffff25' : '#366eb6'}

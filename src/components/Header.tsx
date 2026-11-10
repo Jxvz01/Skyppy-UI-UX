@@ -39,38 +39,42 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 w-full z-40 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-surface-container/50">
-      <div className="flex items-center justify-between px-margin h-16">
+    <header className="sticky top-0 left-0 right-0 w-full z-40 bg-surface/95 backdrop-blur-xl shadow-[0_1px_6px_rgba(0,0,0,0.03)] border-b border-surface-container/60 shrink-0">
+      <div className="flex items-center justify-between px-3 sm:px-4 h-14 w-full">
         {type === 'tab' ? (
-          <div className="flex items-center cursor-pointer active:scale-95 transition-transform" onClick={() => navigate('/')}>
+          <div
+            className="flex items-center cursor-pointer active:scale-95 transition-transform shrink-0"
+            onClick={() => navigate('/')}
+          >
             <SkyppyLogo size="sm" subtitle={t.appSubtitle} />
           </div>
         ) : (
-          <div className="flex items-center gap-space-sm min-w-0">
+          <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
             <button
               aria-label="Go back"
               onClick={handleBack}
-              className="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95 shrink-0"
+              className="w-8.5 h-8.5 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95 shrink-0"
               type="button"
             >
-              <span className="material-symbols-outlined text-[22px]">arrow_back</span>
+              <span className="material-symbols-outlined text-[20px]">arrow_back</span>
             </button>
-            <h1 className="font-headline-md text-headline-md text-on-surface font-semibold truncate">
+            <h1 className="font-headline-md text-[17px] text-on-surface font-semibold truncate leading-tight">
               {title}
             </h1>
           </div>
         )}
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {type === 'tab' && (
             <button
               type="button"
               onClick={() => showToast('Mysuru Urban & Regional corridor active', 'info')}
-              className="h-8 px-2.5 rounded-full bg-[#edf3ff] text-primary border border-blue-100 font-semibold text-xs flex items-center gap-1 hover:bg-blue-100/70 transition-colors active:scale-95"
+              className="h-7.5 px-2 rounded-full bg-[#edf3ff] text-primary border border-blue-100 font-semibold text-[11px] flex items-center gap-0.5 hover:bg-blue-100/70 transition-colors active:scale-95 shrink-0"
+              title="Current City Corridor"
             >
-              <span className="material-symbols-outlined text-[16px] text-primary">location_on</span>
-              <span className="font-bold">{t.cityMysuru}</span>
-              <span className="material-symbols-outlined text-[15px] text-primary">keyboard_arrow_down</span>
+              <span className="material-symbols-outlined text-[15px] text-primary">location_on</span>
+              <span className="font-bold tracking-tight">{t.cityMysuru}</span>
+              <span className="material-symbols-outlined text-[14px] text-primary">keyboard_arrow_down</span>
             </button>
           )}
 
@@ -79,11 +83,11 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             aria-label="Switch language English or Kannada"
             onClick={toggleLanguage}
-            className="h-8 px-2 rounded-full bg-surface-container text-xs font-bold text-primary hover:bg-surface-container-high transition-colors flex items-center gap-0.5 active:scale-95"
+            className="h-7.5 px-2 rounded-full bg-surface-container text-[11px] font-bold text-primary hover:bg-surface-container-high transition-colors flex items-center gap-1 active:scale-95 shrink-0"
             title="Switch Language (English / ಕನ್ನಡ)"
           >
             <span className="material-symbols-outlined text-[14px]">translate</span>
-            <span className="text-[11px]">{language === 'en' ? 'ಕನ್ನಡ' : 'EN'}</span>
+            <span className="tracking-tight">{language === 'en' ? 'ಕನ್ನಡ' : 'EN'}</span>
           </button>
 
           {rightAction === 'default' ? (
@@ -92,20 +96,22 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   aria-label="Notifications"
                   onClick={() => openModal('notifications')}
-                  className="w-8 h-8 rounded-full bg-[#f1f5f9] flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors relative active:scale-95"
+                  className="w-7.5 h-7.5 rounded-full bg-[#f1f5f9] flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors relative active:scale-95 shrink-0"
                   type="button"
                 >
-                  <span className="material-symbols-outlined text-[19px]">notifications</span>
-                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-orange-500 ring-2 ring-white"></span>
+                  <span className="material-symbols-outlined text-[18px]">notifications</span>
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-orange-500 ring-2 ring-white"></span>
+                  )}
                 </button>
               ) : (
                 <button
                   aria-label="Help & Safety"
                   onClick={() => openModal('safety')}
-                  className="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"
+                  className="w-8.5 h-8.5 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95 shrink-0"
                   type="button"
                 >
-                  <span className="material-symbols-outlined text-[19px] text-secondary">shield</span>
+                  <span className="material-symbols-outlined text-[18px] text-secondary">shield</span>
                 </button>
               )}
 
@@ -113,9 +119,9 @@ export const Header: React.FC<HeaderProps> = ({
                 type="button"
                 aria-label="Profile Account"
                 onClick={() => navigate('/profile')}
-                className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-xs active:scale-95 transition-transform"
+                className="w-7.5 h-7.5 rounded-full bg-primary text-white flex items-center justify-center shadow-xs active:scale-95 transition-transform shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">person</span>
+                <span className="material-symbols-outlined text-[17px]">person</span>
               </button>
             </>
           ) : (

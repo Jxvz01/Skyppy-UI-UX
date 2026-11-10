@@ -51,14 +51,14 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
         <div className="relative flex-1 w-full bg-surface sm:rounded-[42px] overflow-hidden flex flex-col [transform:translateZ(0)] isolate select-auto shadow-inner">
           
           {/* REALISTIC STATUS BAR */}
-          <div className="h-11 w-full bg-surface/95 backdrop-blur-md px-7 pt-1 flex items-center justify-between z-50 shrink-0 select-none border-b border-black/[0.03]">
+          <div className="h-11 w-full bg-surface/95 backdrop-blur-md px-5 sm:px-6 pt-1 flex items-center justify-between z-50 shrink-0 select-none border-b border-black/[0.03]">
             {/* Live Clock */}
             <span className="text-[13px] font-semibold text-on-surface tracking-tight w-12 text-left">
               {timeStr}
             </span>
 
             {/* Dynamic Island Pill */}
-            <div className="w-[112px] h-[26px] bg-black rounded-full flex items-center justify-between px-3 shadow-inner">
+            <div className="w-[110px] h-[26px] bg-black rounded-full flex items-center justify-between px-3 shadow-inner">
               {/* Front Camera Lens */}
               <div className="w-2.5 h-2.5 rounded-full bg-[#121622] ring-1 ring-slate-800 flex items-center justify-center">
                 <div className="w-1 h-1 rounded-full bg-blue-900/60" />
@@ -83,7 +83,8 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
           <div
             ref={scrollRef}
             id="mobile-app-viewport"
-            className="flex-1 w-full bg-surface relative overflow-y-auto overflow-x-hidden flex flex-col"
+            className="flex-1 w-full bg-surface relative overflow-y-auto overflow-x-hidden flex flex-col overscroll-contain"
+            style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {children}
           </div>

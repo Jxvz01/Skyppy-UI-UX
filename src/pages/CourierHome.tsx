@@ -62,8 +62,8 @@ export const CourierHome: React.FC = () => {
         </div>
 
         {/* ==================== 2. PRIMARY SERVICE SWITCHER ==================== */}
-        <div className="-mt-4 px-margin relative z-20">
-          <div className="bg-white rounded-2xl p-1.5 shadow-[0_8px_25px_rgba(16,28,43,0.08)] border border-slate-100 flex items-center gap-1.5">
+        <div className="mt-3 px-margin relative z-10">
+          <div className="bg-white rounded-2xl p-1.5 shadow-[0_4px_20px_rgba(16,28,43,0.06)] border border-slate-100 flex items-center gap-1.5">
             {/* Book a Ride Button (Inactive) */}
             <button
               type="button"

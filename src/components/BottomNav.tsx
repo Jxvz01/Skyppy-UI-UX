@@ -21,7 +21,7 @@ export const BottomNav: React.FC = () => {
     <nav className="w-full shrink-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(16,28,43,0.05)] border-t border-surface-container/50 select-none">
       <div className="flex justify-around items-center h-16 px-space-xs w-full">
         {tabs.map((tab) => {
-          const isActive = tab.path === '/' ? path === '/' : path.startsWith(tab.path);
+          const isActive = tab.key === 'home' ? (path === '/' || path === '/courier') : path.startsWith(tab.path);
           return (
             <button
               key={tab.key}
