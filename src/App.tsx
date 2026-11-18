@@ -21,6 +21,9 @@ import { ShipmentTracking } from './pages/ShipmentTracking';
 import { ReceiverPortal } from './pages/ReceiverPortal';
 import { BusinessDashboard } from './pages/BusinessDashboard';
 
+// Skyppy Driver Experience
+import { DriverView } from './pages/driver/DriverView';
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -29,38 +32,57 @@ const ScrollToTop = () => {
   return null;
 };
 
+const AppContent: React.FC = () => {
+  const location = useLocation();
+  const isDriverRoute = location.pathname.startsWith('/driver-view');
+
+  if (isDriverRoute) {
+    return (
+      <Routes>
+        <Route path="/driver-view" element={<DriverView />} />
+        <Route path="/driver-view/*" element={<DriverView />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <DeviceFrame>
+      <Routes>
+        {/* Passenger Rides Routes */}
+        <Route path="/" element={<RidesHome />} />
+        <Route path="/search" element={<DestinationSearch />} />
+        <Route path="/location" element={<LocationSelection />} />
+        <Route path="/options" element={<RideOptions />} />
+        <Route path="/confirm" element={<BookingConfirmation />} />
+        <Route path="/tracking" element={<LiveRideTracking />} />
+        <Route path="/miles" element={<SkyppyMiles />} />
+        <Route path="/activity" element={<ActivityHistory />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/theme" element={<ThemeSettings />} />
+
+        {/* Intercity Courier & Logistics Routes */}
+        <Route path="/courier" element={<CourierHome />} />
+        <Route path="/courier/send" element={<CreateShipment />} />
+        <Route path="/courier/confirm" element={<ShipmentConfirmation />} />
+        <Route path="/courier/track" element={<ShipmentTracking />} />
+        <Route path="/courier/track/:id" element={<ShipmentTracking />} />
+        <Route path="/courier/receiver/:id" element={<ReceiverPortal />} />
+        <Route path="/courier/business" element={<BusinessDashboard />} />
+
+        {/* Catch-all redirect to Home */}
+        <Route path="*" element={<RidesHome />} />
+      </Routes>
+    </DeviceFrame>
+  );
+};
+
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <DeviceFrame>
-        <Routes>
-          {/* Passenger Rides Routes */}
-          <Route path="/" element={<RidesHome />} />
-          <Route path="/search" element={<DestinationSearch />} />
-          <Route path="/location" element={<LocationSelection />} />
-          <Route path="/options" element={<RideOptions />} />
-          <Route path="/confirm" element={<BookingConfirmation />} />
-          <Route path="/tracking" element={<LiveRideTracking />} />
-          <Route path="/miles" element={<SkyppyMiles />} />
-          <Route path="/activity" element={<ActivityHistory />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/theme" element={<ThemeSettings />} />
-
-          {/* Intercity Courier & Logistics Routes */}
-          <Route path="/courier" element={<CourierHome />} />
-          <Route path="/courier/send" element={<CreateShipment />} />
-          <Route path="/courier/confirm" element={<ShipmentConfirmation />} />
-          <Route path="/courier/track" element={<ShipmentTracking />} />
-          <Route path="/courier/track/:id" element={<ShipmentTracking />} />
-          <Route path="/courier/receiver/:id" element={<ReceiverPortal />} />
-          <Route path="/courier/business" element={<BusinessDashboard />} />
-
-          {/* Catch-all redirect to Home */}
-          <Route path="*" element={<RidesHome />} />
-        </Routes>
-      </DeviceFrame>
+      <AppContent />
     </BrowserRouter>
   );
 };
+
 export default App;

@@ -489,6 +489,35 @@ export const Profile: React.FC = () => {
             </div>
           </div>
 
+          {/* Driver Partner Portal Entry */}
+          <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-surface-container-lowest rounded-xl p-space-md shadow-sm border border-primary/20 flex flex-col gap-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center shadow-xs">
+                  <span className="material-symbols-outlined text-[18px]">local_taxi</span>
+                </div>
+                <div>
+                  <span className="font-label-lg font-bold text-on-surface">Skyppy Driver Experience</span>
+                  <p className="text-[11px] text-on-surface-variant">Live driver partner console & dispatch view</p>
+                </div>
+              </div>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-primary/20 text-primary">
+                PROTOTYPE
+              </span>
+            </div>
+            <p className="text-xs text-on-surface-variant leading-relaxed">
+              Experience the full driver journey: accept rides, turn-by-turn navigation, waiting timer, passenger OTP verification, earnings ledger, and safety toolkit.
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate('/driver-view')}
+              className="mt-1 h-11 w-full rounded-xl bg-primary hover:bg-primary/95 text-on-primary font-label-md font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] transition-transform"
+            >
+              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              <span>Launch Driver Experience (/driver-view)</span>
+            </button>
+          </div>
+
           {/* Developer & Demo Reset Card */}
           <div className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-2">
             <div className="flex items-center justify-between">
