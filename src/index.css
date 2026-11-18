@@ -127,8 +127,19 @@
   font-family: inherit;
   background-color: #f1f5f9;
 }
-.leaflet-tile-pane {
-  filter: contrast(1.04) saturate(1.08) brightness(1.02);
+
+.skyppy-osm-tiles .leaflet-tile-pane {
+  filter: contrast(1.03) saturate(0.88) brightness(1.02);
 }
+
+.custom-osm-vehicle {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.custom-osm-pickup, .custom-osm-dest, .custom-osm-searching-car {
+  transition: opacity 0.3s ease;
+}
+
 
 

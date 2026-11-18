@@ -86,6 +86,8 @@ interface AppState {
     ledger: Array<{ id: string; route: string; mode: string; date: string; km: number }>;
   };
   redeemVoucher: (id: string) => void;
+  earnCustomMiles: (amount: number, reason?: string) => void;
+  redeemMilesPoints: (amount: number, reason?: string) => boolean;
 
   // Activity & History
   rideHistory: RideHistoryItem[];
@@ -848,6 +850,71 @@ export const useAppStore = create<AppState>((set, get) => {
         saveJSON('skyppy_miles_data', updatedMiles);
         return { miles: updatedMiles };
       });
+    },
+
+    earnCustomMiles: (amount: number, reason = 'City Transit Express') => {
+      set((state) => {
+        const curMiles = state.miles;
+        const newLifetime = Number((curMiles.lifetimeKm + amount).toFixed(1));
+        const newMonthly = Number((curMiles.monthlyKm + amount).toFixed(1));
+
+        const updatedMilestones = curMiles.milestones.map((m) => {
+          if (newLifetime >= m.km) {
+            return { ...m, status: 'unlocked' as const, completedDate: m.completedDate || 'Completed Today' };
+          } else if (m.km - newLifetime <= 6) {
+            return { ...m, status: 'almost' as const };
+          }
+          return m;
+        });
+
+        const updatedMiles = {
+          ...curMiles,
+          lifetimeKm: newLifetime,
+          monthlyKm: newMonthly,
+          monthlyTrips: curMiles.monthlyTrips + 1,
+          milestones: updatedMilestones,
+          ledger: [
+            {
+              id: 'led-' + Date.now(),
+              route: `${reason} Corridor`,
+              mode: 'Simulated Ride',
+              date: 'Just now',
+              km: amount
+            },
+            ...curMiles.ledger
+          ]
+        };
+        saveJSON('skyppy_miles_data', updatedMiles);
+        return { miles: updatedMiles };
+      });
+      get().showToast(`+${amount} km added to Skyppy Miles Orbit!`, 'success');
+    },
+
+    redeemMilesPoints: (amount: number, reason = 'Voucher Redemption') => {
+      const curMiles = get().miles;
+      if (curMiles.lifetimeKm < amount) {
+        get().showToast('Insufficient miles to redeem', 'error');
+        return false;
+      }
+      const newLifetime = Number(Math.max(0, curMiles.lifetimeKm - amount).toFixed(1));
+      const updatedMiles = {
+        ...curMiles,
+        lifetimeKm: newLifetime,
+        ledger: [
+          {
+            id: 'led-' + Date.now(),
+            route: reason,
+            mode: 'Redeemed Voucher',
+            date: 'Just now',
+            km: -amount
+          },
+          ...curMiles.ledger
+        ]
+      };
+      saveJSON('skyppy_miles_data', updatedMiles);
+      set({ miles: updatedMiles });
+      get().showToast(`Redeemed ${amount} km for discount!`, 'info');
+      return true;
     },
 
     rideHistory: savedHistory,

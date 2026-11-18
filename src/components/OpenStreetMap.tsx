@@ -20,6 +20,7 @@ export interface OpenStreetMapProps {
   interactive?: boolean;
   showControls?: boolean;
   showTransitPill?: boolean;
+  bottomSheetPadding?: number; // Dynamic offset in px so markers are never hidden by bottom sheet
 }
 
 // Real GPS Coordinates across Mysuru, Karnataka
@@ -60,7 +61,8 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
   onLocationSelect,
   interactive = true,
   showControls = true,
-  showTransitPill = true
+  showTransitPill = true,
+  bottomSheetPadding
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -68,6 +70,12 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
   const trafficLinesRef = useRef<L.Polyline[]>([]);
   const pickerMarkersRef = useRef<L.Marker[]>([]);
   const [mapReady, setMapReady] = useState(false);
+  const [isFollowingVehicle, setIsFollowingVehicle] = useState(true);
+
+  // Dynamic bottom sheet padding to guarantee pins & vehicle stay visible above bottom cards
+  const resolvedBottomPadding =
+    bottomSheetPadding ??
+    (mode === 'live-tracking' ? 240 : mode === 'confirmation-searching' ? 220 : 70);
 
   const pickupCoords: [number, number] = [
     pickupLocation?.lat ?? DEFAULT_VVCE_PICKUP[0],
@@ -87,6 +95,41 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
   };
 
   const currentStep = STEP_POSITIONS[stepIndex] || STEP_POSITIONS[0];
+
+  // Helper to build bespoke vehicle marker HTML with forward headlight beam
+  const buildVehicleHtml = (heading: number, street: string, curSpeed: number) => {
+    return `
+      <div class="relative flex flex-col items-center">
+        <!-- Forward Directional Headlight Beam Cone -->
+        <div class="absolute -top-7 w-12 h-14 pointer-events-none" style="transform: rotate(${heading}deg); transform-origin: center 42px;">
+          <svg viewBox="0 0 60 70" class="w-full h-full opacity-60">
+            <defs>
+              <linearGradient id="beamGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#0042dd" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polygon points="30,55 8,4 52,4" fill="url(#beamGrad)" />
+          </svg>
+        </div>
+
+        <!-- Vehicle High-Contrast Center Capsule -->
+        <div class="w-10 h-10 rounded-full bg-white shadow-xl border-2 border-[#0042dd] flex items-center justify-center ring-4 ring-[#0042dd]/20 relative z-10 transition-transform duration-300" style="transform: rotate(${heading}deg)">
+          <span class="material-symbols-outlined text-[20px] text-[#0042dd]">${getVehicleIconName()}</span>
+        </div>
+
+        <!-- Live Driver Telemetry Badge -->
+        <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-950/90 backdrop-blur-md text-white text-[9px] font-bold shadow-xl whitespace-nowrap flex items-center gap-1.5 border border-slate-700/60 z-20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>${driverName.split(' ')[0]}</span>
+          <span class="text-slate-500">•</span>
+          <span class="text-[#d4f84c] font-mono">${curSpeed} km/h</span>
+          <span class="text-slate-500">•</span>
+          <span class="text-slate-300 max-w-[80px] truncate">${street}</span>
+        </div>
+      </div>
+    `;
+  };
 
   // Initialize Leaflet Map with High-Resolution OpenStreetMap Tiles
   useEffect(() => {
@@ -118,7 +161,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         boxZoom: interactive
       });
 
-      // Official High-Quality OpenStreetMap Tiles (100% Free, Authentic, No API Key Required)
+      // Official High-Quality OpenStreetMap Tiles (Clean, Restrained, Desaturated Mobility Aesthetic)
       const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
       L.tileLayer(tileUrl, {
@@ -127,92 +170,95 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      // Route polyline (Glowing underlay + Core blue transit track)
+      // Route polyline (Signature Skyppy Royal Blue layered transit track)
       if (mode !== 'picker') {
         // Glowing base polyline
         L.polyline(ROUTE_WAYPOINTS, {
-          color: '#2563eb',
+          color: '#0042dd',
           weight: 12,
           opacity: 0.22,
           lineCap: 'round',
           lineJoin: 'round'
         }).addTo(map);
 
-        // Crisp solid polyline
+        // Core solid polyline
         L.polyline(ROUTE_WAYPOINTS, {
-          color: '#2563eb',
+          color: '#0042dd',
           weight: 5,
           opacity: 0.95,
           lineCap: 'round',
           lineJoin: 'round'
         }).addTo(map);
+
+        // Center dash highlight
+        L.polyline(ROUTE_WAYPOINTS, {
+          color: '#d4ee66',
+          weight: 2,
+          opacity: 0.8,
+          dashArray: '4, 8',
+          lineCap: 'round',
+          lineJoin: 'round'
+        }).addTo(map);
       }
 
-      // Pickup Origin Marker (VVCE Gokulam or customized)
+      // Bespoke Pickup Origin Marker
       if (mode !== 'picker') {
         const pickupLabel = pickupLocation?.title?.split(',')[0] || 'VVCE Gate 2';
         const pickupIcon = L.divIcon({
           className: 'custom-osm-pickup',
           html: `
             <div class="relative flex flex-col items-center">
-              <div class="w-7 h-7 rounded-full bg-emerald-500/25 animate-ping absolute -top-1"></div>
-              <div class="w-6 h-6 rounded-full bg-emerald-500 border-2 border-white shadow-lg flex items-center justify-center text-white">
+              <div class="w-8 h-8 rounded-full bg-emerald-500/25 animate-ping absolute -top-1"></div>
+              <div class="w-6 h-6 rounded-full bg-emerald-600 border-2 border-white shadow-lg flex items-center justify-center text-white ring-2 ring-emerald-500/30">
                 <span class="w-2 h-2 rounded-full bg-white"></span>
               </div>
-              <div class="mt-1 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[9px] font-bold shadow-md whitespace-nowrap">
-                ${pickupLabel}
+              <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/90 backdrop-blur-md text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>PICKUP</span>
+                <span class="text-slate-400">•</span>
+                <span class="text-slate-200">${pickupLabel}</span>
               </div>
             </div>
           `,
-          iconSize: [80, 48],
-          iconAnchor: [40, 24]
+          iconSize: [120, 52],
+          iconAnchor: [60, 26]
         });
 
         L.marker(pickupCoords, { icon: pickupIcon }).addTo(map);
 
-        // Destination Marker
+        // Bespoke Destination Marker (Skyppy Royal Blue Pin)
         const destLabel = destinationLocation?.title?.split(',')[0] || 'JSS Hospital';
         const destIcon = L.divIcon({
           className: 'custom-osm-dest',
           html: `
             <div class="relative flex flex-col items-center">
-              <div class="w-7 h-7 rounded-full bg-red-500/25 animate-ping absolute -top-1"></div>
-              <div class="w-6 h-6 rounded-full bg-red-600 border-2 border-white shadow-lg flex items-center justify-center text-white">
+              <div class="w-8 h-8 rounded-full bg-blue-600/25 animate-ping absolute -top-1"></div>
+              <div class="w-6 h-6 rounded-full bg-[#0042dd] border-2 border-white shadow-lg flex items-center justify-center text-white ring-2 ring-blue-500/30">
                 <span class="w-2 h-2 rounded-full bg-white"></span>
               </div>
-              <div class="mt-1 px-2 py-0.5 rounded-full bg-slate-900 text-white text-[9px] font-bold shadow-md whitespace-nowrap">
-                ${destLabel}
+              <div class="mt-1 px-2.5 py-0.5 rounded-full bg-[#0042dd] text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/30">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span>DESTINATION</span>
+                <span class="text-blue-200">•</span>
+                <span class="text-white">${destLabel}</span>
               </div>
             </div>
           `,
-          iconSize: [80, 48],
-          iconAnchor: [40, 24]
+          iconSize: [130, 52],
+          iconAnchor: [65, 26]
         });
 
         L.marker(destCoords, { icon: destIcon }).addTo(map);
       }
 
-      // MODE: LIVE TRACKING - Vehicle Marker
+      // MODE: LIVE TRACKING - Bespoke Vehicle Marker with Spotlight
       if (mode === 'live-tracking') {
         const initialStep = STEP_POSITIONS[0];
         const vehicleDivIcon = L.divIcon({
           className: 'custom-osm-vehicle',
-          html: `
-            <div class="relative flex flex-col items-center">
-              <div class="w-10 h-10 rounded-full bg-primary/25 animate-ping absolute -top-1"></div>
-              <div class="w-10 h-10 rounded-full bg-white shadow-xl border-2 border-primary flex items-center justify-center ring-2 ring-primary/20" style="transform: rotate(${initialStep.heading}deg)">
-                <span class="material-symbols-outlined text-[20px] text-primary">${getVehicleIconName()}</span>
-              </div>
-              <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/90 text-white text-[9.5px] font-bold shadow-lg whitespace-nowrap flex items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>${driverName.split(' ')[0]}</span>
-                <span class="text-slate-400">•</span>
-                <span class="text-amber-300 font-mono">${speed} km/h</span>
-              </div>
-            </div>
-          `,
-          iconSize: [110, 56],
-          iconAnchor: [55, 28]
+          html: buildVehicleHtml(initialStep.heading, initialStep.street, speed),
+          iconSize: [140, 62],
+          iconAnchor: [70, 31]
         });
 
         vehicleMarkerRef.current = L.marker(initialStep.pos, {
@@ -221,23 +267,24 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         }).addTo(map);
       }
 
-      // MODE: CONFIRMATION SEARCHING - Animated Vehicle Scanning
+      // MODE: CONFIRMATION SEARCHING - Animated Radar Pulse Scan
       if (mode === 'confirmation-searching') {
         const searchIcon = L.divIcon({
           className: 'custom-osm-searching-car',
           html: `
             <div class="relative flex flex-col items-center">
-              <div class="w-9 h-9 rounded-full bg-primary/20 animate-ping absolute -top-1.5"></div>
-              <div class="w-8 h-8 rounded-full bg-white shadow-xl border-2 border-primary flex items-center justify-center">
-                <span class="material-symbols-outlined text-[17px] text-primary">local_taxi</span>
+              <div class="w-12 h-12 rounded-full bg-[#0042dd]/20 animate-ping absolute -top-2"></div>
+              <div class="w-9 h-9 rounded-full bg-white shadow-xl border-2 border-[#0042dd] flex items-center justify-center ring-2 ring-[#0042dd]/20">
+                <span class="material-symbols-outlined text-[19px] text-[#0042dd]">local_taxi</span>
               </div>
-              <div class="mt-1 px-2 py-0.5 rounded-full bg-primary text-white text-[8.5px] font-bold shadow-md whitespace-nowrap animate-pulse">
-                Matching Vehicle...
+              <div class="mt-1.5 px-3 py-0.5 rounded-full bg-[#0042dd] text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/30">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#d4f84c] animate-pulse"></span>
+                <span>Dispatching Driver...</span>
               </div>
             </div>
           `,
-          iconSize: [110, 48],
-          iconAnchor: [55, 24]
+          iconSize: [130, 52],
+          iconAnchor: [65, 26]
         });
 
         const midPoint: [number, number] = [
@@ -257,10 +304,14 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
             className: `picker-pin-${lm.id}`,
             html: `
               <div class="relative flex flex-col items-center cursor-pointer group">
-                <div class="w-7 h-7 rounded-full ${isSelected ? 'bg-primary ring-4 ring-primary/30' : 'bg-slate-800 hover:bg-primary'} text-white shadow-lg flex items-center justify-center transition-all">
+                <div class="w-7 h-7 rounded-full ${
+                  isSelected ? 'bg-[#0042dd] ring-4 ring-[#0042dd]/30' : 'bg-slate-800 hover:bg-[#0042dd]'
+                } text-white shadow-lg flex items-center justify-center transition-all">
                   <span class="material-symbols-outlined text-[15px]">location_on</span>
                 </div>
-                <div class="mt-1 px-2 py-0.5 rounded-full ${isSelected ? 'bg-primary text-white' : 'bg-white/90 text-slate-800'} text-[9px] font-bold shadow-md whitespace-nowrap border border-slate-200">
+                <div class="mt-1 px-2 py-0.5 rounded-full ${
+                  isSelected ? 'bg-[#0042dd] text-white' : 'bg-white/90 text-slate-800'
+                } text-[9px] font-bold shadow-md whitespace-nowrap border border-slate-200">
                   ${lm.title.split(',')[0]}
                 </div>
               </div>
@@ -280,7 +331,6 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
 
         // Click anywhere to pick location
         map.on('click', (e: L.LeafletMouseEvent) => {
-          // Find nearest landmark to clicked coordinates
           let nearest = MYSURU_LANDMARKS[0];
           let minDist = Infinity;
           MYSURU_LANDMARKS.forEach((lm) => {
@@ -296,10 +346,13 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         });
       }
 
-      // Fit bounds to show the transit area
+      // Intelligent Camera Framing with Dynamic Bottom Sheet Padding
       if (mode !== 'picker') {
         const bounds = L.latLngBounds([pickupCoords, destCoords]);
-        map.fitBounds(bounds, { padding: [45, 45] });
+        map.fitBounds(bounds, {
+          paddingTopLeft: [30, 40],
+          paddingBottomRight: [30, resolvedBottomPadding]
+        });
       }
 
       mapInstanceRef.current = map;
@@ -319,7 +372,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         mapInstanceRef.current = null;
       }
     };
-  }, [mode, pickupLocation?.title, destinationLocation?.title]);
+  }, [mode, pickupLocation?.title, destinationLocation?.title, resolvedBottomPadding]);
 
   // Update vehicle position, heading, and telemetry during Live Tracking
   useEffect(() => {
@@ -329,32 +382,17 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
 
     const vehicleDivIcon = L.divIcon({
       className: 'custom-osm-vehicle',
-      html: `
-        <div class="relative flex flex-col items-center">
-          <div class="w-10 h-10 rounded-full bg-primary/25 animate-ping absolute -top-1"></div>
-          <div class="w-10 h-10 rounded-full bg-white shadow-xl border-2 border-primary flex items-center justify-center ring-2 ring-primary/20" style="transform: rotate(${currentStep.heading}deg)">
-            <span class="material-symbols-outlined text-[20px] text-primary">${getVehicleIconName()}</span>
-          </div>
-          <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/90 text-white text-[9.5px] font-bold shadow-lg whitespace-nowrap flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span>${driverName.split(' ')[0]}</span>
-            <span class="text-slate-400">•</span>
-            <span class="text-amber-300 font-mono">${speed} km/h</span>
-            <span class="text-slate-400">•</span>
-            <span class="text-slate-200">${currentStep.street}</span>
-          </div>
-        </div>
-      `,
-      iconSize: [130, 56],
-      iconAnchor: [65, 28]
+      html: buildVehicleHtml(currentStep.heading, currentStep.street, speed),
+      iconSize: [140, 62],
+      iconAnchor: [70, 31]
     });
 
     vehicleMarkerRef.current.setIcon(vehicleDivIcon);
 
-    if (stepIndex >= 2 && stepIndex < 4) {
+    if (isFollowingVehicle) {
       mapInstanceRef.current.panTo(currentStep.pos, { animate: true, duration: 0.6 });
     }
-  }, [mode, stepIndex, speed, driverName, vehicleCategory, currentStep]);
+  }, [mode, stepIndex, speed, driverName, vehicleCategory, currentStep, isFollowingVehicle]);
 
   // Traffic Layer Toggle
   useEffect(() => {
@@ -408,8 +446,9 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
   const handleRecenter = () => {
     if (!mapInstanceRef.current) return;
     if (mode === 'live-tracking') {
+      setIsFollowingVehicle(true);
       mapInstanceRef.current.panTo(currentStep.pos, { animate: true, duration: 0.5 });
-      onToast?.(`Centered on ${driverName} (${currentStep.street})`);
+      onToast?.(`Follow lock: Centered on ${driverName}`);
     } else if (mode === 'picker' && selectedLocation?.gps) {
       mapInstanceRef.current.panTo([selectedLocation.gps.lat, selectedLocation.gps.lng], {
         animate: true,
@@ -418,15 +457,18 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
       onToast?.(`Centered on ${selectedLocation.title}`);
     } else {
       const bounds = L.latLngBounds([pickupCoords, destCoords]);
-      mapInstanceRef.current.fitBounds(bounds, { padding: [45, 45] });
+      mapInstanceRef.current.fitBounds(bounds, {
+        paddingTopLeft: [30, 40],
+        paddingBottomRight: [30, resolvedBottomPadding]
+      });
       onToast?.('Route re-centered on live corridor');
     }
   };
 
   return (
-    <div className={`relative ${className} select-none overflow-hidden`}>
+    <div className={`relative ${className} select-none overflow-hidden skyppy-osm-container`}>
       {/* Leaflet Map DOM Node */}
-      <div ref={containerRef} className="w-full h-full bg-[#f4f6fa]" />
+      <div ref={containerRef} className="w-full h-full bg-[#f4f6fa] skyppy-osm-tiles" />
 
       {/* Top Demo Simulation Status Pill */}
       {showTransitPill && (
@@ -438,28 +480,45 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         </div>
       )}
 
-      {/* OpenStreetMap Attribution Watermark */}
-      <div className="absolute bottom-1 left-2 z-[400] bg-white/85 backdrop-blur-xs px-2 py-0.5 rounded text-[8.5px] text-slate-600 font-medium border border-slate-200/60 pointer-events-none">
-        © <span className="font-semibold text-slate-800">OpenStreetMap</span> contributors
-      </div>
-
-      {/* Floating Map Controls Column */}
+      {/* Floating Glassmorphic Map Controls Column */}
       {showControls && (
         <div className="absolute right-3.5 bottom-5 z-[400] flex flex-col gap-2 pointer-events-auto">
           {/* North Compass Rose */}
           <div
-            className="w-9 h-9 rounded-full bg-white text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center font-black text-[11px] select-none"
+            className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center font-black text-[11px] select-none"
             title="Orientation: North"
           >
             <span className="text-red-500 font-bold">N</span>
           </div>
+
+          {/* Follow Driver Lock Toggle (in live tracking mode) */}
+          {mode === 'live-tracking' && (
+            <button
+              type="button"
+              aria-label={isFollowingVehicle ? 'Unlock free pan' : 'Lock follow driver'}
+              onClick={() => {
+                setIsFollowingVehicle(!isFollowingVehicle);
+                onToast?.(isFollowingVehicle ? 'Camera unlocked: Free pan' : 'Camera locked: Following driver');
+              }}
+              className={`w-9 h-9 rounded-full shadow-md border backdrop-blur-md flex items-center justify-center transition-all active:scale-95 cursor-pointer ${
+                isFollowingVehicle
+                  ? 'bg-[#0042dd] text-white border-blue-400'
+                  : 'bg-white/90 text-slate-700 border-slate-200 hover:bg-white'
+              }`}
+              title={isFollowingVehicle ? 'Camera locked to driver' : 'Free camera'}
+            >
+              <span className="material-symbols-outlined text-[17px]">
+                {isFollowingVehicle ? 'gps_fixed' : 'gps_not_fixed'}
+              </span>
+            </button>
+          )}
 
           {/* Zoom In */}
           <button
             type="button"
             aria-label="Zoom in map"
             onClick={handleZoomIn}
-            className="w-9 h-9 rounded-full bg-white text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-white transition-all active:scale-95 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">add</span>
           </button>
@@ -469,7 +528,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
             type="button"
             aria-label="Zoom out map"
             onClick={handleZoomOut}
-            className="w-9 h-9 rounded-full bg-white text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-white transition-all active:scale-95 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">remove</span>
           </button>
@@ -479,7 +538,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
             type="button"
             aria-label="Recenter map"
             onClick={handleRecenter}
-            className="w-9 h-9 rounded-full bg-white text-primary shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-[#0042dd] shadow-md border border-slate-200/80 flex items-center justify-center hover:bg-white transition-all active:scale-95 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">my_location</span>
           </button>

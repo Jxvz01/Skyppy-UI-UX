@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { BottomNav } from '../components/BottomNav';
+import { MilesOrbit } from '../components/miles/MilesOrbit';
 import { useAppStore } from '../store/useAppStore';
 import { useCourierStore } from '../store/useCourierStore';
 import { translations } from '../utils/i18n';
@@ -279,9 +280,9 @@ export const RidesHome: React.FC = () => {
           </div>
         </div>
 
-        {/* ==================== 6. SKAPPY MILES BENTO CARD ==================== */}
+        {/* ==================== 6. SKAPPY MILES BENTO CARD (SIGNATURE MILES ORBIT) ==================== */}
         <div className="px-margin pt-4 pb-6">
-          <div className="bg-[#0c1829] text-white rounded-2xl p-4 shadow-sm border border-slate-800/80 relative overflow-hidden">
+          <div className="bg-[#0c1829] text-white rounded-3xl p-4 shadow-sm border border-slate-800/80 relative overflow-hidden">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-[#d4f84c] text-black flex items-center justify-center shrink-0">
@@ -303,8 +304,13 @@ export const RidesHome: React.FC = () => {
               </div>
             </div>
 
+            {/* Signature Compact Miles Orbit Preview */}
+            <div className="my-2 py-1 flex justify-center cursor-pointer" onClick={() => navigate('/miles')} title="Tap to explore Skyppy Miles Orbit">
+              <MilesOrbit variant="compact" balanceKm={miles.lifetimeKm || 232} />
+            </div>
+
             {/* Progress Bar */}
-            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden my-3">
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-3">
               <div
                 className="h-full bg-[#d4f84c] rounded-full transition-all duration-500"
                 style={{
