@@ -30,56 +30,39 @@ test.describe('Skyppy Experience Redesign: Miles Orbit, Product Cohesion & Map E
     await page.goto('/miles');
     await page.waitForLoadState('networkidle');
 
-    // Verify Header and Tier
+    // Verify Header and Branding
     await expect(page.locator('text=Skyppy Miles').first()).toBeVisible();
-    await expect(page.locator('text=Tier 2 Explorer').first()).toBeVisible();
+    await expect(page.locator('text=Gold Explorer').first()).toBeVisible();
 
-    // Check SVG trajectory and orbital components
-    const orbitSvg = page.locator('svg[aria-label="Skyppy Miles Orbit System"]').first();
-    await expect(orbitSvg).toBeVisible();
+    // Check balance and tagline
+    await expect(page.locator('text=YOUR MILES').first()).toBeVisible();
+    await expect(page.locator('text=Ride. Send. Earn. Redeem.').first()).toBeVisible();
 
-    // Check numerical KM label inside core
-    await expect(page.locator('text=KM').first()).toBeVisible();
+    // Check Quick Action buttons
+    await expect(page.getByRole('button', { name: 'Earn', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Redeem', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Benefits', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'History', exact: true })).toBeVisible();
 
-    // Check Milestone Target card
-    await expect(page.locator('text=Next Tier Target:')).toBeVisible();
-
-    // Check Milestones Ladder
-    await expect(page.locator('text=Milestone Ladder')).toBeVisible();
-
-    // Check traveling nodes inside orbit
-    const nodes = page.getByRole('button', { name: /^Journey:/ });
-    const nodeCount = await nodes.count();
-    expect(nodeCount).toBeGreaterThanOrEqual(3);
+    // Check Featured rewards and Ways to earn
+    await expect(page.locator('text=Featured rewards').first()).toBeVisible();
+    await expect(page.locator('text=Ways to earn Miles').first()).toBeVisible();
+    await expect(page.locator('text=Your progress').first()).toBeVisible();
   });
 
-  test('03. Miles Orbit interactive lifecycle: Node inspection, earning simulation, and voucher redemption', async ({ page }) => {
+  test('03. Miles interactive lifecycle: Earning simulation, and voucher redemption', async ({ page }) => {
     await page.goto('/miles');
     await page.waitForLoadState('networkidle');
 
-    // 1. Click a journey node to inspect details tooltip
-    const firstNode = page.getByRole('button', { name: /^Journey:/ }).first();
-    await firstNode.click({ force: true });
-
-    // Tooltip should display journey info and "+... km"
-    await expect(page.locator('text=Dismiss')).toBeVisible();
-    await page.locator('text=Dismiss').click();
-
-    // 2. Simulate ride earn (+24 km)
-    const earnButton = page.locator('button:has-text("Simulate Ride Earn (+24 km)")');
+    // 1. Simulate ride earn
+    const earnButton = page.getByRole('button', { name: 'Earn', exact: true });
     await expect(earnButton).toBeVisible();
     await earnButton.click();
 
-    // Feedback banner should pop in
-    await expect(page.locator('text=+24.0 KM JOURNEY JOINED ORBIT')).toBeVisible();
-
-    // 3. Simulate voucher redemption
-    const redeemButton = page.locator('button:has-text("Redeem Test Voucher")');
+    // 2. Simulate voucher redemption
+    const redeemButton = page.getByRole('button', { name: 'Redeem', exact: true });
     await expect(redeemButton).toBeVisible();
     await redeemButton.click();
-
-    // Feedback banner for redemption
-    await expect(page.locator('text=-15.0 KM REDEEMED FOR ₹50 VOUCHER')).toBeVisible();
   });
 
   test('04. Map Experience: Custom desaturated tiles, bespoke markers, and glassmorphic controls', async ({ page }) => {

@@ -27,12 +27,12 @@ test.describe('06. Activity, Miles, Theme & Profile Tests', () => {
   test('Skyppy Miles displays lifetime stats and allows voucher redemption', async ({ page }) => {
     await page.goto('/miles');
 
-    // Total distance card visible
-    await expect(page.getByText('Total Distance Travelled')).toBeVisible();
-    await expect(page.getByText('KM', { exact: true }).first()).toBeVisible();
+    // Miles hero and balance visible
+    await expect(page.getByText('YOUR MILES')).toBeVisible();
+    await expect(page.getByText('Miles').first()).toBeVisible();
 
-    // Milestone ladder visible
-    await expect(page.getByText('Milestone Ladder')).toBeVisible();
+    // Your progress section visible
+    await expect(page.getByText('Your progress')).toBeVisible();
   });
 
   test('Theme switching toggles DOM class and persists preference', async ({ page }) => {
