@@ -8,6 +8,22 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Skyppy Brand Identity
+        brand: {
+          primary: '#0042dd',
+          'primary-hover': '#0036b5',
+          'primary-dark': '#00298a',
+          'primary-light': '#315ef8',
+          'primary-tint': '#edf3ff',
+          secondary: '#d4ee66',
+          'secondary-hover': '#c2e04f',
+          'secondary-dark': '#a8c738',
+          'secondary-light': '#d4f84c',
+          navy: '#0a121d',
+          'navy-card': '#0c1829',
+          'navy-border': '#1e2d42',
+        },
+        // Material Design 3 Core Roles (Backward Compatible)
         "secondary": "var(--color-secondary, #546500)",
         "on-primary-fixed-variant": "#0037ba",
         "secondary-fixed": "var(--color-secondary-fixed, #d4ee66)",
@@ -57,21 +73,35 @@ export default {
         "surface-container-lowest": "var(--color-surface-container-lowest, #ffffff)"
       },
       borderRadius: {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
+        "xs": "4px",
+        "sm": "8px",
+        "md": "12px",
+        "lg": "16px",
+        "xl": "20px",
+        "2xl": "24px",
+        "3xl": "32px",
         "full": "9999px"
+      },
+      boxShadow: {
+        "card": "0 2px 8px -2px rgba(16, 28, 43, 0.05), 0 1px 3px 0 rgba(16, 28, 43, 0.03)",
+        "elevated": "0 8px 24px -4px rgba(16, 28, 43, 0.08), 0 2px 6px -1px rgba(16, 28, 43, 0.04)",
+        "sheet": "0 -8px 32px rgba(16, 28, 43, 0.08)",
+        "glow-lime": "0 0 24px -4px rgba(212, 238, 102, 0.35)",
+        "glow-blue": "0 0 24px -4px rgba(0, 66, 221, 0.35)",
       },
       spacing: {
         "gutter": "1rem",
         "margin": "1rem",
-        "space-md": "1rem",
-        "space-xl": "2rem",
+        "space-xs": "0.25rem",
         "space-sm": "0.5rem",
+        "space-md": "1rem",
         "space-lg": "1.5rem",
-        "space-xs": "0.25rem"
+        "space-xl": "2rem",
+        "space-2xl": "2.5rem"
       },
       fontFamily: {
+        "sans": ["Inter", "sans-serif"],
+        "display": ["Manrope", "sans-serif"],
         "numeric-xl": ["Manrope", "sans-serif"],
         "body-md": ["Inter", "sans-serif"],
         "body-lg": ["Inter", "sans-serif"],
@@ -103,4 +133,3 @@ export default {
   },
   plugins: [],
 }
-

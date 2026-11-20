@@ -5,6 +5,7 @@ import { useAppStore } from '../store/useAppStore';
 import { useCourierStore } from '../store/useCourierStore';
 import { RideHistoryItem } from '../types';
 import { translations } from '../utils/i18n';
+import { Button, Card, Badge, SegmentedControl } from '../components/common';
 
 export const ActivityHistory: React.FC = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export const ActivityHistory: React.FC = () => {
 
   const totalKm = completedRides.reduce((acc, r) => acc + (r.distanceKm || 0), 0);
   const totalSpent = completedRides.reduce((acc, r) => acc + (r.fare || 0), 0);
+  const totalMilesEarned = completedRides.reduce((acc, r) => acc + (r.milesEarned || 0), 0);
 
   const handleRebook = (item: RideHistoryItem) => {
     rebookRide(item);
@@ -34,68 +36,58 @@ export const ActivityHistory: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col relative w-full pb-6 bg-surface min-h-full">
+    <div className="flex-1 flex flex-col relative w-full pb-8 bg-[#f8fafc] min-h-full">
       <Header type="tab" />
 
-      <main className="flex flex-col w-full">
+      <main className="flex flex-col w-full pb-8">
         {/* Page Title Section */}
-        <div className="flex items-center justify-between px-margin pt-space-xs pb-space-sm">
+        <div className="flex items-center justify-between px-margin pt-3 pb-2">
           <div>
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block leading-tight">
               {language === 'kn' ? t.activityTitle : 'Trip Ledger & History'}
             </span>
-            <h1 className="font-headline-lg text-headline-lg text-on-surface font-bold">
+            <h1 className="text-xl font-bold text-brand-navy tracking-tight mt-0.5">
               {language === 'kn' ? t.activityTitle : 'Your Activity'}
             </h1>
           </div>
           <button
             aria-label="Download statement"
             onClick={() => showToast('Exporting monthly transit summary as PDF...', 'success')}
-            className="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform"
+            className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 shadow-xs active:scale-95 transition-transform"
             type="button"
             title="Download Statement"
           >
-            <span className="material-symbols-outlined text-[22px]">download</span>
+            <span className="material-symbols-outlined text-[20px]">download</span>
           </button>
         </div>
 
-        {/* Service Type Switcher Pill */}
+        {/* Primary Service Segmented Switcher (Rides vs Courier) */}
         <div className="px-margin pb-3">
-          <div className="bg-surface-container-low p-1 rounded-2xl flex items-center border border-surface-container shadow-xs">
-            <button
-              type="button"
-              onClick={() => setServiceType('rides')}
-              className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-1.5 font-label-md text-xs transition-all ${
-                serviceType === 'rides'
-                  ? 'bg-primary text-white font-bold shadow-xs'
-                  : 'text-tertiary hover:text-on-surface'
-              }`}
-            >
-              <span className="material-symbols-outlined text-[16px]">local_taxi</span>
-              <span>{t.ridesTab} ({rideHistory.length})</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setServiceType('courier')}
-              className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-1.5 font-label-md text-xs transition-all ${
-                serviceType === 'courier'
-                  ? 'bg-primary text-white font-bold shadow-xs'
-                  : 'text-tertiary hover:text-on-surface'
-              }`}
-            >
-              <span className="material-symbols-outlined text-[16px]">local_shipping</span>
-              <span>{t.consignmentsTab} ({shipments.length})</span>
-            </button>
-          </div>
+          <SegmentedControl
+            size="md"
+            value={serviceType}
+            onChange={(val) => setServiceType(val as 'rides' | 'courier')}
+            options={[
+              {
+                id: 'rides',
+                label: `${t.ridesTab} (${rideHistory.length})`,
+                icon: <span className="material-symbols-outlined text-[16px]">local_taxi</span>
+              },
+              {
+                id: 'courier',
+                label: `${t.consignmentsTab} (${shipments.length})`,
+                icon: <span className="material-symbols-outlined text-[16px]">local_shipping</span>
+              }
+            ]}
+          />
         </div>
 
         {serviceType === 'courier' ? (
-          /* COURIER SHIPMENTS TAB */
+          /* ================= COURIER SHIPMENTS TAB ================= */
           <div className="flex flex-col gap-3">
             {/* Courier Filter Tabs */}
             <div className="px-margin">
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
                 {[
                   { id: 'all', label: `All (${shipments.length})` },
                   {
@@ -114,10 +106,10 @@ export const ActivityHistory: React.FC = () => {
                     <button
                       key={tab.id}
                       onClick={() => setCourierTab(tab.id as any)}
-                      className={`px-3.5 py-1.5 rounded-full font-label-md text-xs shrink-0 shadow-sm active:scale-95 transition-all ${
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-all ${
                         isSelected
-                          ? 'bg-on-surface text-surface-container-lowest font-bold'
-                          : 'bg-surface-container-lowest text-on-surface-variant font-medium hover:bg-surface-container-low'
+                          ? 'bg-brand-navy text-white shadow-xs'
+                          : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
                       }`}
                     >
                       {tab.label}
@@ -128,7 +120,7 @@ export const ActivityHistory: React.FC = () => {
             </div>
 
             {/* Courier Shipments List */}
-            <div className="px-margin flex flex-col gap-3 pb-6">
+            <div className="px-margin flex flex-col gap-2.5 pb-6">
               {shipments
                 .filter((s) => {
                   if (courierTab === 'all') return true;
@@ -137,43 +129,37 @@ export const ActivityHistory: React.FC = () => {
                   return true;
                 })
                 .map((shipment) => (
-                  <div
-                    key={shipment.id}
-                    className="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-container/60 flex flex-col gap-3"
-                  >
+                  <Card key={shipment.id} variant="default" padding="sm" className="flex flex-col gap-2.5">
                     <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
-                          <span className="material-symbols-outlined text-[24px]">local_shipping</span>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-brand-primary flex items-center justify-center shrink-0">
+                          <span className="material-symbols-outlined text-[20px]">local_shipping</span>
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <h3 className="font-mono font-bold text-xs text-on-surface">
+                            <h3 className="font-mono font-bold text-xs text-slate-900 truncate">
                               {shipment.trackingNumber}
                             </h3>
-                            <span
-                              className={`px-1.5 py-0.5 rounded font-label-sm text-[10px] font-bold ${
-                                shipment.status === 'delivered'
-                                  ? 'bg-emerald-100 text-emerald-800'
-                                  : 'bg-blue-100 text-primary'
-                              }`}
+                            <Badge
+                              variant={shipment.status === 'delivered' ? 'success' : 'primary'}
+                              size="sm"
                             >
                               {shipment.status.replace(/_/g, ' ')}
-                            </span>
+                            </Badge>
                           </div>
-                          <p className="text-xs text-on-surface-variant font-medium mt-0.5">
+                          <p className="text-xs text-slate-500 font-medium mt-0.5 truncate">
                             {shipment.sender.city} → {shipment.receiver.city} • {shipment.packageDetails.description}
                           </p>
                         </div>
                       </div>
-                      <span className="font-bold text-sm text-on-surface">
+                      <span className="font-bold text-sm text-slate-900 shrink-0">
                         ₹{shipment.pricing.totalEstimatedFare}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-surface-container text-xs">
-                      <span className="text-tertiary">
-                        Receiver: <strong>{shipment.receiver.name}</strong>
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                      <span className="text-slate-500 truncate">
+                        Receiver: <strong className="text-slate-800">{shipment.receiver.name}</strong>
                       </span>
                       <button
                         type="button"
@@ -181,248 +167,250 @@ export const ActivityHistory: React.FC = () => {
                           setActiveShipment(shipment);
                           navigate(`/courier/track/${shipment.id}`);
                         }}
-                        className="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-bold flex items-center gap-1 active:scale-95 shadow-xs"
+                        className="px-3 py-1 rounded-full bg-brand-primary text-white text-xs font-bold flex items-center gap-1 active:scale-95 shadow-xs"
                       >
-                        <span>Track Consignment</span>
-                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        <span>Track</span>
+                        <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
                       </button>
                     </div>
-                  </div>
+                  </Card>
                 ))}
 
-              <button
-                type="button"
+              <Button
+                variant="outline"
+                size="md"
+                fullWidth
+                leftIcon={<span className="material-symbols-outlined text-[18px]">add_circle</span>}
                 onClick={() => navigate('/courier/send')}
-                className="w-full py-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-surface-container text-primary font-bold text-xs flex items-center justify-center gap-2 active:scale-95 transition-all mt-1"
+                className="mt-1"
               >
-                <span className="material-symbols-outlined text-[18px]">add_circle</span>
-                <span>Send Another Intercity Parcel</span>
-              </button>
+                Send Another Intercity Parcel
+              </Button>
             </div>
           </div>
         ) : (
-          /* PASSENGER RIDES TAB (EXACT EXISTING FLOW) */
+          /* ================= PASSENGER RIDES TAB ================= */
           <>
-            {/* Active Ongoing Ride Banner */}
-        {activeBooking && (
-          <div className="px-margin mb-3">
-            <div
-              onClick={() => navigate('/tracking')}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-container to-[#1a42be] p-4 text-on-primary shadow-lg cursor-pointer active:scale-[0.99] transition-transform"
-            >
-              <div className="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
-              <div className="relative z-10 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-secondary-fixed shrink-0">
-                    <span className="material-symbols-outlined text-[28px] animate-pulse">electric_rickshaw</span>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-label-sm text-[11px] font-bold uppercase tracking-wider bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full">
-                        Active Ride
-                      </span>
-                      <span className="font-label-sm text-on-primary-container text-[11px]">
-                        Arriving in {activeBooking.etaMinutes || 4} min
-                      </span>
-                    </div>
-                    <h3 className="font-label-lg text-label-lg font-bold text-on-primary mt-0.5">
-                      {activeBooking.pickup.title} → {activeBooking.destination.title}
-                    </h3>
-                    <p className="font-body-sm text-[12px] text-on-primary-container">
-                      Driver: {activeBooking.driver.name} • {activeBooking.driver.plate}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-full text-on-primary text-[12px] font-semibold">
-                  <span>Track</span>
-                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Filter Segmented Tabs with Dynamic Counts */}
-        <div className="px-margin mb-3">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {[
-              { id: 'all', label: `All (${rideHistory.length})` },
-              { id: 'completed', label: `Completed (${completedRides.length})` },
-              { id: 'scheduled', label: `Scheduled (${scheduledRides.length})` },
-              { id: 'cancelled', label: `Cancelled (${cancelledRides.length})` }
-            ].map((tab) => {
-              const isSelected = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3.5 py-1.5 rounded-full font-label-md text-xs shrink-0 shadow-sm active:scale-95 transition-all ${
-                    isSelected
-                      ? 'bg-on-surface text-surface-container-lowest font-bold'
-                      : 'bg-surface-container-lowest text-on-surface-variant font-medium hover:bg-surface-container-low'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Monthly Transit Stats Bento Mini */}
-        <div className="px-margin mb-4">
-          <div className="bg-surface-container-low rounded-2xl p-3.5 flex items-center justify-between shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary shrink-0">
-                <span className="material-symbols-outlined text-[20px]">calendar_month</span>
-              </div>
-              <div>
-                <span className="font-label-sm text-[11px] uppercase tracking-wider text-outline font-semibold">
-                  Transit Ledger
-                </span>
-                <p className="font-label-md text-label-md font-bold text-on-surface">
-                  {completedRides.length} Trips • {totalKm.toFixed(1)} km Travelled
-                </p>
-              </div>
-            </div>
-            <div className="text-right">
-              <span className="font-numeric-md text-numeric-md font-bold text-on-surface">₹{totalSpent}</span>
-              <span className="block font-label-sm text-[10px] text-secondary font-semibold">100% Eco-Credited</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Activity List & Empty State */}
-        <div className="px-margin flex flex-col gap-3 pb-6">
-          {filtered.length === 0 ? (
-            <div className="p-8 text-center bg-surface-container-lowest rounded-2xl shadow-xs flex flex-col items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-[40px] text-tertiary">history_toggle_off</span>
-              <h3 className="font-headline font-bold text-on-surface text-base">No {activeTab} rides found</h3>
-              <p className="text-xs text-on-surface-variant max-w-xs">
-                Your past trips, upcoming schedules, and receipts will appear here automatically.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/search')}
-                className="mt-2 px-5 py-2.5 rounded-full bg-primary text-on-primary font-label-md text-xs font-bold shadow-md hover:bg-primary-container active:scale-95 transition-transform"
-              >
-                Book a Ride Now
-              </button>
-            </div>
-          ) : (
-            filtered.map((item) => {
-              const isCompleted = item.status === 'completed';
-              const isScheduled = item.status === 'scheduled';
-              const isCancelled = item.status === 'cancelled';
-
-              return (
+            {/* Active Ongoing Ride Banner (If In-Transit) */}
+            {activeBooking && (
+              <div className="px-margin mb-3">
                 <div
-                  key={item.id}
-                  className={`bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 ${
-                    isScheduled ? 'border border-secondary/30 ring-1 ring-secondary/20' : ''
-                  }`}
+                  onClick={() => navigate('/tracking')}
+                  className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-primary to-blue-800 p-3.5 text-white shadow-elevated cursor-pointer active:scale-[0.99] transition-transform"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
-                          isCancelled
-                            ? 'bg-error-container text-error'
-                            : isScheduled
-                            ? 'bg-secondary-container text-on-secondary-container'
-                            : 'bg-surface-container text-primary'
-                        }`}
-                      >
-                        <span className="material-symbols-outlined text-[24px]">{item.vehicleIcon || 'directions_car'}</span>
+                  <div className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none" />
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-lime-300 shrink-0">
+                        <span className="material-symbols-outlined text-[24px] animate-pulse">electric_rickshaw</span>
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <h3 className="font-label-lg text-label-lg font-bold text-on-surface">{item.vehicle}</h3>
-                          <span
-                            className={`px-1.5 py-0.5 rounded font-label-sm text-[10px] ${
-                              isCancelled
-                                ? 'bg-error-container text-on-error-container font-bold'
-                                : isScheduled
-                                ? 'bg-secondary-container text-on-secondary-container font-semibold'
-                                : 'bg-surface-container text-tertiary'
-                            }`}
-                          >
-                            {isCancelled ? 'Cancelled' : isScheduled ? 'Scheduled' : item.date}
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-lime-300 text-slate-950 px-2 py-0.2 rounded-full">
+                            Active Ride
+                          </span>
+                          <span className="text-white/80 text-[11px]">
+                            Arriving in {activeBooking.etaMinutes || 4} min
                           </span>
                         </div>
-                        <p className="font-body-sm text-[13px] text-on-surface-variant font-medium">
-                          {item.origin} → {item.destination}
+                        <h3 className="text-sm font-bold text-white mt-0.5 truncate">
+                          {activeBooking.pickup.title} → {activeBooking.destination.title}
+                        </h3>
+                        <p className="text-[11px] text-white/70 truncate">
+                          Driver: {activeBooking.driver.name} • {activeBooking.driver.plate}
                         </p>
                       </div>
                     </div>
-
-                    <div className="text-right">
-                      <span className="font-numeric-md text-numeric-md font-bold text-on-surface">₹{item.fare}</span>
-                      <span className="block font-label-sm text-[10px] text-secondary font-semibold">
-                        {item.paymentMethod}
-                      </span>
+                    <div className="flex items-center gap-1 bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-xs font-bold shrink-0">
+                      <span>Track</span>
+                      <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
 
-                  {/* Trip Meta Pill */}
-                  {isCompleted && (
-                    <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-surface-container-low text-[12px] text-tertiary">
-                      <div className="flex items-center gap-2">
-                        <span>{item.distanceKm} km • {item.durationMin} mins</span>
-                        <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-                        <span className="text-primary font-semibold">+{item.milesEarned} Skyppy Miles</span>
+            {/* Filter Pills with Counts */}
+            <div className="px-margin mb-3">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                {[
+                  { id: 'all', label: `All (${rideHistory.length})` },
+                  { id: 'completed', label: `Completed (${completedRides.length})` },
+                  { id: 'scheduled', label: `Scheduled (${scheduledRides.length})` },
+                  { id: 'cancelled', label: `Cancelled (${cancelledRides.length})` }
+                ].map((tab) => {
+                  const isSelected = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id as any)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-all ${
+                        isSelected
+                          ? 'bg-brand-navy text-white shadow-xs'
+                          : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Monthly Transit Stats Card */}
+            <div className="px-margin mb-3">
+              <div className="bg-white rounded-2xl p-3.5 flex items-center justify-between border border-slate-100 shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-brand-primary shrink-0">
+                    <span className="material-symbols-outlined text-[20px]">calendar_month</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block leading-tight">
+                      Transit Summary
+                    </span>
+                    <p className="text-xs font-bold text-slate-900 mt-0.5">
+                      {completedRides.length} Trips • {totalKm.toFixed(1)} km Travelled
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-sm font-bold text-slate-900 block">₹{totalSpent}</span>
+                  <span className="text-[10px] text-emerald-600 font-bold">+{totalMilesEarned} Miles</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Activity List & Empty State */}
+            <div className="px-margin flex flex-col gap-2.5 pb-6">
+              {filtered.length === 0 ? (
+                <div className="p-8 text-center bg-white rounded-2xl shadow-xs flex flex-col items-center justify-center gap-2 border border-slate-100">
+                  <span className="material-symbols-outlined text-[36px] text-slate-300">history_toggle_off</span>
+                  <h3 className="font-bold text-slate-900 text-sm">No {activeTab} rides found</h3>
+                  <p className="text-xs text-slate-500 max-w-xs">
+                    Your past trips, upcoming schedules, and receipts will appear here automatically.
+                  </p>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => navigate('/search')}
+                    className="mt-2"
+                  >
+                    Book a Ride Now
+                  </Button>
+                </div>
+              ) : (
+                filtered.map((item) => {
+                  const isCompleted = item.status === 'completed';
+                  const isScheduled = item.status === 'scheduled';
+                  const isCancelled = item.status === 'cancelled';
+
+                  return (
+                    <Card
+                      key={item.id}
+                      variant="default"
+                      padding="sm"
+                      className={`flex flex-col gap-2.5 ${
+                        isScheduled ? 'border-amber-200 ring-1 ring-amber-100' : ''
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                              isCancelled
+                                ? 'bg-red-50 text-red-600'
+                                : isScheduled
+                                ? 'bg-amber-50 text-amber-600'
+                                : 'bg-slate-100 text-brand-primary'
+                            }`}
+                          >
+                            <span className="material-symbols-outlined text-[22px]">
+                              {item.vehicleIcon || 'directions_car'}
+                            </span>
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <h3 className="font-bold text-sm text-slate-900 truncate">{item.vehicle}</h3>
+                              <Badge
+                                variant={
+                                  isCancelled ? 'error' : isScheduled ? 'warning' : 'neutral'
+                                }
+                                size="sm"
+                              >
+                                {isCancelled ? 'Cancelled' : isScheduled ? 'Scheduled' : item.date}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
+                              {item.origin} → {item.destination}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="text-right shrink-0 pl-2">
+                          <span className="text-sm font-bold text-slate-900 block">₹{item.fare}</span>
+                          <span className="text-[10px] text-slate-400 font-medium">
+                            {item.paymentMethod}
+                          </span>
+                        </div>
                       </div>
-                      {item.rating && (
-                        <div className="flex items-center gap-1 text-secondary font-bold">
-                          <span className="material-symbols-outlined text-[14px] fill-1">star</span>
-                          <span>{item.rating.toFixed(1)}</span>
+
+                      {/* Trip Meta Pill */}
+                      {isCompleted && (
+                        <div className="flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 text-[11px] text-slate-600 border border-slate-100">
+                          <div className="flex items-center gap-2">
+                            <span>{item.distanceKm} km • {item.durationMin} mins</span>
+                            <span className="w-1 h-1 rounded-full bg-slate-300" />
+                            <span className="text-brand-primary font-bold">+{item.milesEarned} Miles</span>
+                          </div>
+                          {item.rating && (
+                            <div className="flex items-center gap-0.5 text-amber-500 font-bold">
+                              <span className="material-symbols-outlined text-[13px]">star</span>
+                              <span>{item.rating.toFixed(1)}</span>
+                            </div>
+                          )}
                         </div>
                       )}
-                    </div>
-                  )}
 
-                  {isScheduled && (
-                    <div className="flex items-center justify-between pt-1">
-                      <span className="font-label-sm text-[11px] text-tertiary">Advance reservation confirmed</span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => cancelScheduledRide(item.id)}
-                          className="px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-[11px] font-bold active:scale-95 transition-transform"
-                        >
-                          Cancel Schedule
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                      {isScheduled && (
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[11px] text-slate-500">Advance reservation confirmed</span>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => cancelScheduledRide(item.id)}
+                          >
+                            Cancel Schedule
+                          </Button>
+                        </div>
+                      )}
 
-                  {/* Action Buttons for Completed Trips */}
-                  {isCompleted && (
-                    <div className="flex items-center justify-between pt-0.5 border-t border-surface-container-low">
-                      <button
-                        onClick={() => openModal('receipt', item)}
-                        className="font-label-md text-label-md text-primary font-semibold flex items-center gap-1 hover:underline cursor-pointer"
-                        type="button"
-                      >
-                        <span className="material-symbols-outlined text-[16px]">receipt</span>
-                        <span>{t.viewReceipt}</span>
-                      </button>
-                      <button
-                        onClick={() => handleRebook(item)}
-                        className="h-8 px-3.5 rounded-full bg-primary text-on-primary font-label-sm text-[11px] font-bold flex items-center gap-1 shadow-sm active:scale-95 transition-transform cursor-pointer"
-                        type="button"
-                      >
-                        <span>{t.rebookRide}</span>
-                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          )}
-        </div>
-        </>
+                      {/* Action Buttons for Completed Trips */}
+                      {isCompleted && (
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                          <button
+                            onClick={() => openModal('receipt', item)}
+                            className="text-xs text-brand-primary font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                            type="button"
+                          >
+                            <span className="material-symbols-outlined text-[15px]">receipt</span>
+                            <span>{t.viewReceipt}</span>
+                          </button>
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            rightIcon={<span className="material-symbols-outlined text-[14px]">arrow_forward</span>}
+                            onClick={() => handleRebook(item)}
+                          >
+                            {t.rebookRide}
+                          </Button>
+                        </div>
+                      )}
+                    </Card>
+                  );
+                })
+              )}
+            </div>
+          </>
         )}
       </main>
     </div>

@@ -58,7 +58,7 @@ export const SkyppyMiles: React.FC = () => {
           {/* Top telemetry bar */}
           <div className="w-full flex items-center justify-between text-xs mb-2 z-10">
             <span className="font-label-sm text-[11px] uppercase tracking-widest text-slate-400 font-bold">
-              {language === 'kn' ? t.lifetimeMiles : 'The Miles Orbit'}
+              {language === 'kn' ? t.lifetimeMiles : 'The Miles Orbit • Total Distance Travelled'}
             </span>
             <div className="flex items-center gap-1 text-[#d4ee66] font-label-md text-xs bg-white/10 px-2.5 py-0.5 rounded-full backdrop-blur-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-[#d4ee66] animate-ping" />

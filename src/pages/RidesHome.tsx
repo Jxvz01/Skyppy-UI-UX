@@ -174,7 +174,7 @@ export const RidesHome: React.FC = () => {
           </div>
         </div>
 
-        {/* ==================== 4. SKAPPY MOVE PARCEL BANNER ==================== */}
+        {/* ==================== 4. SKYPPY MOVE PARCEL BANNER ==================== */}
         <div className="px-margin pt-3">
           <div
             onClick={() => {
@@ -280,7 +280,7 @@ export const RidesHome: React.FC = () => {
           </div>
         </div>
 
-        {/* ==================== 6. SKAPPY MILES BENTO CARD (SIGNATURE MILES ORBIT) ==================== */}
+        {/* ==================== 6. SKYPPY MILES BENTO CARD (SIGNATURE MILES ORBIT) ==================== */}
         <div className="px-margin pt-4 pb-6">
           <div className="bg-[#0c1829] text-white rounded-3xl p-4 shadow-sm border border-slate-800/80 relative overflow-hidden">
             <div className="flex items-center justify-between">

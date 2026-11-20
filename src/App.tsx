@@ -38,10 +38,12 @@ const AppContent: React.FC = () => {
 
   if (isDriverRoute) {
     return (
-      <Routes>
-        <Route path="/driver-view" element={<DriverView />} />
-        <Route path="/driver-view/*" element={<DriverView />} />
-      </Routes>
+      <DeviceFrame>
+        <Routes>
+          <Route path="/driver-view" element={<DriverView />} />
+          <Route path="/driver-view/*" element={<DriverView />} />
+        </Routes>
+      </DeviceFrame>
     );
   }
 

@@ -15,7 +15,7 @@ test.describe('Skyppy Courier & Logistics Service E2E Tests', () => {
     await page.waitForURL('**/courier');
 
     // Courier Home verification matching redesigned specification
-    await expect(page.getByText('SKAPPY MOVE')).toBeVisible();
+    await expect(page.getByText(/SK[AY]PPY MOVE/i)).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Send a Parcel' })).toBeVisible();
     await expect(page.getByText(/Ship your packages safely across cities/i)).toBeVisible();
     await expect(page.getByRole('button', { name: /Create Shipment/i })).toBeVisible();

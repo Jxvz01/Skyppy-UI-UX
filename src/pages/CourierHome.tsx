@@ -93,7 +93,7 @@ export const CourierHome: React.FC = () => {
           </div>
         </div>
 
-        {/* ==================== 3. SKAPPY MOVE CARD ==================== */}
+        {/* ==================== 3. SKYPPY MOVE CARD ==================== */}
         <div className="px-margin pt-4">
           <div className="bg-gradient-to-r from-[#eef4ff] to-[#f4f7fc] border border-blue-100/80 rounded-2xl p-4 shadow-xs">
             <div className="flex items-start justify-between gap-3">
@@ -292,7 +292,7 @@ export const CourierHome: React.FC = () => {
           </div>
         </div>
 
-        {/* ==================== 6. SKAPPY MILES BENTO CARD ==================== */}
+        {/* ==================== 6. SKYPPY MILES BENTO CARD ==================== */}
         <div className="px-margin pt-4 pb-6">
           <div className="bg-[#0c1829] text-white rounded-2xl p-4 shadow-sm border border-slate-800/80 relative overflow-hidden">
             <div className="flex items-center justify-between">
