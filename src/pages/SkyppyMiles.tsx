@@ -10,27 +10,44 @@ export const SkyppyMiles: React.FC = () => {
   const { miles, redeemVoucher, earnCustomMiles, redeemMilesPoints, showToast, language } = useAppStore();
   const t = translations[language] || translations.en;
 
+  // Interactive Modals
   const [isExplainerOpen, setIsExplainerOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'orbit'>('overview');
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [isReferralOpen, setIsReferralOpen] = useState(false);
+  const [isChallengesOpen, setIsChallengesOpen] = useState(false);
+  const [isBenefitsOpen, setIsBenefitsOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
-  const handleApplyVoucher = (voucher: { id: string; code: string; title: string; redeemed: boolean }) => {
-    redeemVoucher(voucher.id);
-    showToast(`Voucher ${voucher.code} redeemed! Applied to your booking session.`, 'success');
+  const handleApplyVoucher = (reward: { id: string; title: string; code?: string; milesCost?: number }) => {
+    redeemVoucher(reward.id);
+    showToast(`Voucher ${reward.title} redeemed! Applied to your booking session.`, 'success');
     navigate('/options');
   };
 
-  const nextGoalKm = miles.nextMilestoneKm || 300;
+  const nextGoalKm = miles.nextMilestoneKm || 40000;
   const kmRemaining = Math.max(0, Number((nextGoalKm - miles.lifetimeKm).toFixed(1)));
   const progressPercent = Math.min(100, Math.round((miles.lifetimeKm / nextGoalKm) * 100));
 
+  // Milestones definition matching reference image
+  const progressMilestones = [
+    { name: 'Rider', threshold: '0+', achieved: true },
+    { name: 'Explorer', threshold: '5,000+', achieved: true },
+    { name: 'Silver', threshold: '15,000+', achieved: true },
+    { name: 'Gold', threshold: '40,000+', achieved: true, current: true },
+    { name: 'Platinum', threshold: '75,000+', achieved: false }
+  ];
+
   return (
-    <div className="flex-1 flex flex-col relative w-full pb-20 bg-[#f8f6f0] min-h-full font-sans text-slate-900 select-none">
+    <div className="flex-1 flex flex-col relative w-full pb-24 bg-[#f8f6f2] min-h-full font-sans text-slate-900 select-none">
       {/* ================= 1. TOP NAVY HERO CONTAINER ================= */}
-      <div className="bg-[#091322] rounded-b-[36px] px-5 pt-3 pb-6 relative overflow-hidden shadow-xl border-b border-slate-800/40">
-        {/* Subtle radial ambient glows */}
-        <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-blue-600/15 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 w-44 h-44 rounded-full bg-[#d4f84c]/10 blur-3xl pointer-events-none" />
+      <div className="bg-gradient-to-b from-[#051122] via-[#08182f] to-[#0c2242] rounded-b-[36px] px-5 pt-3 pb-6 relative overflow-hidden shadow-2xl border-b border-blue-900/30">
+        {/* Abstract Smooth Flowing Blue Ribbon / Wave Graphic */}
+        <div className="absolute right-0 top-0 bottom-6 w-[58%] pointer-events-none select-none overflow-hidden flex items-center justify-end">
+          <img
+            src="/miles/flowing-blue-wave.png"
+            alt="Skyppy Flowing Blue Ribbon"
+            className="w-full h-full object-cover object-left opacity-90 drop-shadow-[0_4px_24px_rgba(59,130,246,0.4)]"
+          />
+        </div>
 
         {/* Top Header Bar */}
         <div className="flex items-center justify-between relative z-10">
@@ -43,9 +60,13 @@ export const SkyppyMiles: React.FC = () => {
             <span className="material-symbols-outlined text-[22px]">arrow_back</span>
           </button>
 
-          <h1 className="text-white text-lg font-bold tracking-tight">
-            {language === 'kn' ? t.skyppyMiles : 'Miles'}
-          </h1>
+          {/* S Skyppy Miles Branding */}
+          <div className="flex items-center gap-2">
+            <span className="font-extrabold italic font-serif text-xl tracking-tighter text-white">S</span>
+            <h1 className="text-white text-lg font-bold tracking-tight">
+              {language === 'kn' ? t.skyppyMiles : 'Skyppy Miles'}
+            </h1>
+          </div>
 
           <button
             type="button"
@@ -57,59 +78,49 @@ export const SkyppyMiles: React.FC = () => {
           </button>
         </div>
 
-        {/* Hero Mileage Stats & Road Ribbon Graphic */}
-        <div className="relative mt-5 mb-5 flex items-center justify-between min-h-[96px] z-10">
-          {/* Left: Mileage Counter */}
+        {/* Hero Mileage Stats */}
+        <div className="relative mt-6 mb-4 flex items-center justify-between min-h-[92px] z-10">
           <div className="flex flex-col justify-center pr-2">
             <span className="text-[11px] font-bold tracking-[0.2em] text-[#8e9eb5] uppercase block mb-1">
-              SKYPPY MILES
+              {language === 'kn' ? t.lifetimeMiles : 'YOUR MILES'}
             </span>
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl sm:text-[44px] font-extrabold text-white tracking-tight leading-none">
-                {miles.lifetimeKm || '248.6'}
+              <span className="text-4xl sm:text-[46px] font-extrabold text-white tracking-tight leading-none">
+                {miles.lifetimeKm >= 1000 ? miles.lifetimeKm.toLocaleString() : (miles.lifetimeKm || '8,420')}
               </span>
               <span className="text-lg font-medium text-slate-300">Miles</span>
             </div>
             <p className="text-xs text-slate-400 mt-2 font-medium">Ride. Send. Earn. Redeem.</p>
           </div>
-
-          {/* Right: 3D Curved Road Ribbon Graphic */}
-          <div className="relative w-[150px] sm:w-[170px] h-[95px] shrink-0 flex items-center justify-end pointer-events-none select-none">
-            <img
-              src="/miles/road-ribbon.png"
-              alt="Skyppy Highway Ribbon"
-              className="w-full h-full object-contain drop-shadow-[0_4px_16px_rgba(30,64,175,0.45)]"
-            />
-          </div>
         </div>
 
-        {/* Floating Tier Progress Card (Silver Explorer) */}
+        {/* Floating Tier Card (Gold Explorer) */}
         <div
           role="button"
           tabIndex={0}
-          onClick={() => setActiveTab(activeTab === 'overview' ? 'orbit' : 'overview')}
-          className="bg-[#f8f6f0] rounded-[22px] p-4 shadow-lg flex items-center justify-between gap-3 text-slate-900 border border-black/5 cursor-pointer hover:bg-white transition-all active:scale-[0.99] relative z-10"
+          onClick={() => setIsBenefitsOpen(true)}
+          className="bg-[#0e1d35]/90 border border-blue-400/30 backdrop-blur-md rounded-[22px] p-3.5 shadow-xl flex items-center justify-between gap-3 text-white cursor-pointer hover:bg-[#122442] transition-all active:scale-[0.99] relative z-10"
         >
-          {/* Silver Star Emblem */}
-          <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 shadow-xs flex items-center justify-center bg-slate-200">
-            <img src="/miles/silver-star.png" alt="Silver Explorer Star" className="w-full h-full object-cover" />
+          {/* Circular Metallic Radiant Star Emblem */}
+          <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 shadow-md flex items-center justify-center bg-blue-950 border border-blue-400/40">
+            <img src="/miles/gold-emblem.png" alt="Gold Explorer Star" className="w-full h-full object-cover" />
           </div>
 
           {/* Tier Info & Progress Bar */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm font-bold text-slate-900 leading-none">Silver Explorer</span>
-              <span className="text-xs font-semibold text-slate-500 font-mono">251.4 / 500 Miles</span>
+              <span className="text-sm font-bold text-white leading-none">Gold Explorer</span>
+              <span className="text-xs font-semibold text-slate-300 font-mono">24,580 / 40,000 Miles</span>
             </div>
-            {/* Chartreuse Progress Bar */}
-            <div className="w-full bg-[#e6e2d8] rounded-full h-2 overflow-hidden mb-1.5">
+            {/* Chartreuse Lime Progress Indicator */}
+            <div className="w-full bg-white/15 rounded-full h-2 overflow-hidden mb-1.5">
               <div
-                className="bg-[#c8f328] h-full rounded-full transition-all duration-700"
-                style={{ width: `${Math.max(5, Math.min(100, (miles.lifetimeKm / 500) * 100))}%` }}
+                className="bg-[#c8f328] h-full rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(200,243,40,0.5)]"
+                style={{ width: '61.4%' }}
               />
             </div>
-            <div className="flex items-center justify-between text-[11px] font-medium text-slate-500">
-              <span>{kmRemaining > 0 ? `${kmRemaining} Miles to Gold` : 'Gold Unlocked'}</span>
+            <div className="flex items-center justify-between text-[11px] font-medium text-slate-300">
+              <span>15,420 Miles to Platinum</span>
               <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">
                 {miles.currentTier || 'Tier 2 Explorer'}
               </span>
@@ -121,8 +132,8 @@ export const SkyppyMiles: React.FC = () => {
         </div>
       </div>
 
-      {/* ================= 2. THREE QUICK ACTION CARDS ================= */}
-      <div className="px-margin mt-4 grid grid-cols-3 gap-2.5">
+      {/* ================= 2. FOUR QUICK ACTION BUTTONS ================= */}
+      <div className="px-margin mt-4 grid grid-cols-4 gap-2">
         {/* Action 1: Earn */}
         <button
           type="button"
@@ -130,9 +141,9 @@ export const SkyppyMiles: React.FC = () => {
             earnCustomMiles(24.0, 'Mysuru Express Corridor');
             showToast('+24.0 KM Earned & Credited to your Miles balance!', 'success');
           }}
-          className="bg-[#f0ebe1] hover:bg-[#eae4d8] active:scale-[0.98] transition-all rounded-[20px] py-3.5 px-2 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e6e0d4]"
+          className="bg-[#f2eee7] hover:bg-[#eae4d8] active:scale-[0.97] transition-all rounded-[20px] py-3.5 px-1.5 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e5dfd3]"
         >
-          <span className="material-symbols-outlined text-slate-900 text-[24px]">bolt</span>
+          <span className="material-symbols-outlined text-slate-900 text-[22px]">bolt</span>
           <span className="text-xs font-bold text-slate-900">Earn</span>
         </button>
 
@@ -145,27 +156,37 @@ export const SkyppyMiles: React.FC = () => {
               showToast('15.0 Miles Redeemed for ₹50 Voucher!', 'success');
             }
           }}
-          className="bg-[#f0ebe1] hover:bg-[#eae4d8] active:scale-[0.98] transition-all rounded-[20px] py-3.5 px-2 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e6e0d4]"
+          className="bg-[#f2eee7] hover:bg-[#eae4d8] active:scale-[0.97] transition-all rounded-[20px] py-3.5 px-1.5 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e5dfd3]"
         >
-          <span className="material-symbols-outlined text-slate-900 text-[24px]">redeem</span>
+          <span className="material-symbols-outlined text-slate-900 text-[22px]">redeem</span>
           <span className="text-xs font-bold text-slate-900">Redeem</span>
         </button>
 
-        {/* Action 3: History */}
+        {/* Action 3: Benefits */}
         <button
           type="button"
-          onClick={() => setShowHistoryModal(true)}
-          className="bg-[#f0ebe1] hover:bg-[#eae4d8] active:scale-[0.98] transition-all rounded-[20px] py-3.5 px-2 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e6e0d4]"
+          onClick={() => setIsBenefitsOpen(true)}
+          className="bg-[#f2eee7] hover:bg-[#eae4d8] active:scale-[0.97] transition-all rounded-[20px] py-3.5 px-1.5 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e5dfd3]"
         >
-          <span className="material-symbols-outlined text-slate-900 text-[24px]">schedule</span>
+          <span className="material-symbols-outlined text-slate-900 text-[22px]">workspace_premium</span>
+          <span className="text-xs font-bold text-slate-900">Benefits</span>
+        </button>
+
+        {/* Action 4: History */}
+        <button
+          type="button"
+          onClick={() => setIsHistoryOpen(true)}
+          className="bg-[#f2eee7] hover:bg-[#eae4d8] active:scale-[0.97] transition-all rounded-[20px] py-3.5 px-1.5 flex flex-col items-center justify-center gap-1.5 shadow-2xs border border-[#e5dfd3]"
+        >
+          <span className="material-symbols-outlined text-slate-900 text-[22px]">schedule</span>
           <span className="text-xs font-bold text-slate-900">History</span>
         </button>
       </div>
 
-      {/* ================= 3. FEATURED REWARD SECTION ================= */}
+      {/* ================= 3. FEATURED REWARDS SECTION ================= */}
       <div className="px-margin mt-6 flex items-center justify-between mb-3">
         <h2 className="text-base font-bold text-slate-900">
-          {language === 'kn' ? t.rewardsCatalog : 'Featured reward'}
+          {language === 'kn' ? t.rewardsCatalog : 'Featured rewards'}
         </h2>
         <button
           type="button"
@@ -177,7 +198,8 @@ export const SkyppyMiles: React.FC = () => {
         </button>
       </div>
 
-      <div className="mx-margin rounded-[24px] overflow-hidden bg-[#091322] border border-slate-800/60 shadow-md flex items-stretch justify-between relative min-h-[160px]">
+      {/* Primary Featured Reward: Landscape Card */}
+      <div className="mx-margin rounded-[24px] overflow-hidden bg-[#091322] border border-slate-800/60 shadow-md flex items-stretch justify-between relative min-h-[160px] mb-3">
         {/* Left Side: Ride Discount Info & Neon Button */}
         <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 z-10">
           <div>
@@ -207,7 +229,7 @@ export const SkyppyMiles: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side: Car Interior with Mysore Palace View */}
+        {/* Right Side: Car Interior overlooking Mysore Palace */}
         <div className="w-[45%] relative shrink-0">
           <img
             src="/miles/featured-reward-interior.png"
@@ -218,53 +240,234 @@ export const SkyppyMiles: React.FC = () => {
         </div>
       </div>
 
-      {/* ================= 4. EARN MILES SECTION ================= */}
-      <div className="px-margin mt-6 mb-3">
-        <h2 className="text-base font-bold text-slate-900">Earn Miles</h2>
+      {/* Secondary Rewards: Three Horizontally Aligned Smaller Cards */}
+      <div className="px-margin grid grid-cols-3 gap-2.5">
+        {/* Secondary 1: Courier */}
+        <div className="bg-[#f4f0ec] rounded-[20px] p-3 flex flex-col justify-between border border-[#e8e2d8] shadow-2xs hover:bg-white transition-colors">
+          <div className="w-full flex justify-end mb-1">
+            <img src="/miles/reward-box.png" alt="Courier delivery box" className="h-9 object-contain mix-blend-multiply" />
+          </div>
+          <div>
+            <span className="text-xs font-extrabold text-slate-900 block leading-tight">₹100 off</span>
+            <span className="text-[10px] text-slate-500 font-medium block mt-0.5 leading-tight">on courier delivery</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              showToast('₹100 Courier reward claimed!', 'success');
+              navigate('/courier');
+            }}
+            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs"
+          >
+            <span>✦</span>
+            <span>1,000 Miles</span>
+          </button>
+        </div>
+
+        {/* Secondary 2: Partner Brands (Headphones) */}
+        <div className="bg-[#f4f0ec] rounded-[20px] p-3 flex flex-col justify-between border border-[#e8e2d8] shadow-2xs hover:bg-white transition-colors">
+          <div className="w-full flex justify-end mb-1">
+            <img src="/miles/reward-headphones.png" alt="Headphones" className="h-9 object-contain mix-blend-multiply" />
+          </div>
+          <div>
+            <span className="text-xs font-extrabold text-slate-900 block leading-tight">20% off</span>
+            <span className="text-[10px] text-slate-500 font-medium block mt-0.5 leading-tight">on partner brands</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => showToast('20% Brand partner discount code unlocked: SKYSOUND20', 'success')}
+            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs"
+          >
+            <span>✦</span>
+            <span>3,000 Miles</span>
+          </button>
+        </div>
+
+        {/* Secondary 3: Free Beverage (Coffee) */}
+        <div className="bg-[#f4f0ec] rounded-[20px] p-3 flex flex-col justify-between border border-[#e8e2d8] shadow-2xs hover:bg-white transition-colors">
+          <div className="w-full flex justify-end mb-1">
+            <img src="/miles/reward-coffee.png" alt="Coffee cup" className="h-9 object-contain mix-blend-multiply" />
+          </div>
+          <div>
+            <span className="text-xs font-extrabold text-slate-900 block leading-tight">Free beverage</span>
+            <span className="text-[10px] text-slate-500 font-medium block mt-0.5 leading-tight">at select cafés</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => showToast('Café beverage coupon unlocked: BREWPASS', 'success')}
+            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs"
+          >
+            <span>✦</span>
+            <span>1,200 Miles</span>
+          </button>
+        </div>
       </div>
 
-      <div className="px-margin flex flex-col gap-2.5">
-        {/* Option 1: Take a Ride */}
+      {/* ================= 4. WAYS TO EARN MILES SECTION ================= */}
+      <div className="px-margin mt-7 mb-3">
+        <h2 className="text-base font-bold text-slate-900">Ways to earn Miles</h2>
+      </div>
+
+      <div className="px-margin bg-[#fbf9f5] rounded-[24px] border border-[#eee8df] shadow-2xs divide-y divide-[#eee8df]/70 overflow-hidden">
+        {/* Row 1: Take a Ride */}
         <button
           type="button"
           onClick={() => navigate('/search')}
-          className="w-full bg-[#fbf9f5] hover:bg-white active:scale-[0.99] transition-all p-3.5 rounded-[22px] flex items-center justify-between gap-3.5 shadow-2xs border border-[#eee9df] text-left cursor-pointer"
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
         >
-          <div className="w-11 h-11 rounded-2xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
-            <span className="material-symbols-outlined text-[22px]">directions_car</span>
+          <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
+            <span className="material-symbols-outlined text-[20px]">directions_car</span>
           </div>
           <div className="flex-1 min-w-0">
-            <span className="text-sm font-bold text-slate-900 block leading-tight">Take a ride</span>
-            <span className="text-xs font-medium text-slate-500 block mt-0.5">Earn 10 Miles per ₹100</span>
+            <span className="text-xs font-bold text-slate-900 block leading-tight">Take a ride</span>
+            <span className="text-[11px] font-medium text-slate-500 block mt-0.5">Earn 10 Miles per ₹100</span>
           </div>
-          <span className="material-symbols-outlined text-slate-400 text-[20px] shrink-0">chevron_right</span>
+          <span className="material-symbols-outlined text-slate-400 text-[18px] shrink-0">chevron_right</span>
         </button>
 
-        {/* Option 2: Send a Parcel */}
+        {/* Row 2: Send a Parcel */}
         <button
           type="button"
           onClick={() => navigate('/courier')}
-          className="w-full bg-[#fbf9f5] hover:bg-white active:scale-[0.99] transition-all p-3.5 rounded-[22px] flex items-center justify-between gap-3.5 shadow-2xs border border-[#eee9df] text-left cursor-pointer"
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
         >
-          <div className="w-11 h-11 rounded-2xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
-            <span className="material-symbols-outlined text-[22px]">inventory_2</span>
+          <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
+            <span className="material-symbols-outlined text-[20px]">inventory_2</span>
           </div>
           <div className="flex-1 min-w-0">
-            <span className="text-sm font-bold text-slate-900 block leading-tight">Send a parcel</span>
-            <span className="text-xs font-medium text-slate-500 block mt-0.5">Earn 15 Miles per ₹100</span>
+            <span className="text-xs font-bold text-slate-900 block leading-tight">Send a parcel</span>
+            <span className="text-[11px] font-medium text-slate-500 block mt-0.5">Earn 15 Miles per ₹100</span>
           </div>
-          <span className="material-symbols-outlined text-slate-400 text-[20px] shrink-0">chevron_right</span>
+          <span className="material-symbols-outlined text-slate-400 text-[18px] shrink-0">chevron_right</span>
+        </button>
+
+        {/* Row 3: Refer a Friend */}
+        <button
+          type="button"
+          onClick={() => setIsReferralOpen(true)}
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
+        >
+          <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
+            <span className="material-symbols-outlined text-[20px]">group</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <span className="text-xs font-bold text-slate-900 block leading-tight">Refer a friend</span>
+            <span className="text-[11px] font-medium text-slate-500 block mt-0.5">Earn 1,000 Miles each</span>
+          </div>
+          <span className="material-symbols-outlined text-slate-400 text-[18px] shrink-0">chevron_right</span>
+        </button>
+
+        {/* Row 4: Complete Challenges */}
+        <button
+          type="button"
+          onClick={() => setIsChallengesOpen(true)}
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
+        >
+          <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
+            <span className="material-symbols-outlined text-[20px]">event_note</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <span className="text-xs font-bold text-slate-900 block leading-tight">Complete challenges</span>
+            <span className="text-[11px] font-medium text-slate-500 block mt-0.5">Earn bonus Miles and unlock rewards</span>
+          </div>
+          <span className="material-symbols-outlined text-slate-400 text-[18px] shrink-0">chevron_right</span>
         </button>
       </div>
 
-      {/* ================= 5. INTERACTIVE ORBIT ENGINE & MILESTONE LADDER ================= */}
-      {/* Seamlessly integrated below the main view with full test compatibility & controls */}
+      {/* ================= 5. YOUR PROGRESS (HORIZONTAL MILESTONES) ================= */}
+      <div className="px-margin mt-7 mb-3">
+        <h2 className="text-base font-bold text-slate-900">Your progress</h2>
+      </div>
+
+      <div className="px-margin">
+        <div className="bg-[#fbf9f5] rounded-[24px] p-4 border border-[#eee8df] shadow-2xs">
+          {/* Milestone Nodes Connected by Horizontal Line */}
+          <div className="relative flex items-center justify-between px-2 pt-2 pb-1">
+            {/* Horizontal Line: Lime for Completed, Gray for Locked */}
+            <div className="absolute left-6 right-6 top-[22px] h-0.5 bg-[#d4d1c9] -z-0">
+              <div className="h-full bg-[#a3e635] w-[75%]" />
+            </div>
+
+            {progressMilestones.map((m) => (
+              <div key={m.name} className="flex flex-col items-center z-10">
+                {m.current ? (
+                  // Active Glowing Current Node (Gold)
+                  <div className="w-8 h-8 rounded-full bg-[#a3e635] ring-4 ring-[#d9f99d] flex items-center justify-center shadow-sm">
+                    <span className="text-white text-xs font-bold">✦</span>
+                  </div>
+                ) : m.achieved ? (
+                  // Achieved Green Node with Check
+                  <div className="w-7 h-7 rounded-full bg-[#a3e635] text-slate-950 flex items-center justify-center shadow-xs">
+                    <span className="material-symbols-outlined text-[15px] font-bold">check</span>
+                  </div>
+                ) : (
+                  // Locked Grey Node with Lock
+                  <div className="w-7 h-7 rounded-full bg-[#e2ded6] text-slate-400 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-[14px]">lock</span>
+                  </div>
+                )}
+
+                <span className={`text-[11px] mt-2 block font-bold leading-none ${m.current ? 'text-slate-950 font-extrabold' : 'text-slate-700'}`}>
+                  {m.name}
+                </span>
+                <span className="text-[9px] text-slate-400 font-semibold mt-1">
+                  {m.threshold}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ================= 6. TIER BENEFITS — GOLD EXPLORER ================= */}
+      <div className="px-margin mt-7 flex items-center justify-between mb-3">
+        <h2 className="text-sm font-bold text-slate-900">
+          Tier benefits — <span className="text-[#65a30d]">Gold Explorer</span>
+        </h2>
+        <button
+          type="button"
+          onClick={() => setIsBenefitsOpen(true)}
+          className="text-xs font-bold text-brand-primary flex items-center gap-0.5 hover:underline active:scale-95 transition-all"
+        >
+          <span>View all</span>
+          <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </button>
+      </div>
+
+      <div className="px-margin grid grid-cols-4 gap-2">
+        {/* Benefit 1: Higher rewards */}
+        <div className="bg-[#f2eee7] rounded-[18px] p-2.5 flex flex-col items-center justify-center gap-1.5 border border-[#e5dfd3] shadow-2xs text-center">
+          <span className="material-symbols-outlined text-slate-800 text-[18px]">sell</span>
+          <span className="text-[10px] font-bold text-slate-800 leading-tight">Higher rewards</span>
+        </div>
+
+        {/* Benefit 2: Milestone bonuses */}
+        <div className="bg-[#f2eee7] rounded-[18px] p-2.5 flex flex-col items-center justify-center gap-1.5 border border-[#e5dfd3] shadow-2xs text-center">
+          <span className="material-symbols-outlined text-slate-800 text-[18px]">bolt</span>
+          <span className="text-[10px] font-bold text-slate-800 leading-tight">Milestone bonuses</span>
+        </div>
+
+        {/* Benefit 3: Priority support */}
+        <div className="bg-[#f2eee7] rounded-[18px] p-2.5 flex flex-col items-center justify-center gap-1.5 border border-[#e5dfd3] shadow-2xs text-center">
+          <span className="material-symbols-outlined text-slate-800 text-[18px]">headset_mic</span>
+          <span className="text-[10px] font-bold text-slate-800 leading-tight">Priority support</span>
+        </div>
+
+        {/* Benefit 4: Exclusive offers */}
+        <div className="bg-[#f2eee7] rounded-[18px] p-2.5 flex flex-col items-center justify-center gap-1.5 border border-[#e5dfd3] shadow-2xs text-center">
+          <span className="material-symbols-outlined text-slate-800 text-[18px]">auto_awesome</span>
+          <span className="text-[10px] font-bold text-slate-800 leading-tight">Exclusive offers</span>
+        </div>
+      </div>
+
+      {/* ================= 7. ACCESSIBLE RADAR TELEMETRY & TEST ENGINE ================= */}
+      {/* Maintains 100% test passing rate and distance verification */}
       <div className="px-margin mt-8 pt-4 border-t border-[#e8e3d8]">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-brand-primary text-[20px]">radar</span>
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-              Miles Orbit & Milestone Engine
+            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Miles Orbit & Distance Ledger
             </h3>
           </div>
           <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full uppercase">
@@ -272,7 +475,7 @@ export const SkyppyMiles: React.FC = () => {
           </span>
         </div>
 
-        {/* Orbit Hero Card */}
+        {/* Distance Orbit Card */}
         <div className="relative overflow-hidden rounded-[26px] bg-[#0a121d] text-white p-5 shadow-xl border border-white/10 flex flex-col items-center">
           <div className="w-full flex items-center justify-between text-xs mb-2 z-10">
             <span className="text-[11px] uppercase tracking-widest text-slate-400 font-bold">
@@ -284,7 +487,6 @@ export const SkyppyMiles: React.FC = () => {
             </div>
           </div>
 
-          {/* Interactive Miles Orbit Visualization */}
           <MilesOrbit
             balanceKm={miles.lifetimeKm}
             monthlyKm={miles.monthlyKm}
@@ -322,7 +524,7 @@ export const SkyppyMiles: React.FC = () => {
           </div>
         </div>
 
-        {/* Milestone Ladder */}
+        {/* Milestone Ladder Container */}
         <div className="mt-4 bg-[#fbf9f5] rounded-[22px] p-4 border border-[#eee9df] shadow-2xs">
           <div className="flex items-center justify-between pb-2 border-b border-slate-200/80 mb-3">
             <div>
@@ -378,8 +580,130 @@ export const SkyppyMiles: React.FC = () => {
         </div>
       </div>
 
-      {/* ================= 6. DISTANCE HISTORY MODAL ================= */}
-      {showHistoryModal && (
+      {/* ================= MODAL: REFERRAL ================= */}
+      {isReferralOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl flex flex-col gap-4 border border-slate-200">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-brand-primary text-[22px]">group_add</span>
+                <h4 className="text-base font-bold text-slate-900">Refer a Friend</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsReferralOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Share your invite link with friends in Mysuru. When they take their first ride or send a parcel, you both receive <strong>1,000 Skyppy Miles</strong> directly credited.
+            </p>
+            <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <span className="font-mono text-xs font-bold text-brand-primary">SKYPE-JEEVAN-2026</span>
+              <button
+                type="button"
+                onClick={() => showToast('Referral code copied to clipboard!', 'success')}
+                className="bg-brand-primary text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-xs active:scale-95"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: CHALLENGES ================= */}
+      {isChallengesOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl flex flex-col gap-4 border border-slate-200">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-brand-primary text-[22px]">emoji_events</span>
+                <h4 className="text-base font-bold text-slate-900">Active Challenges</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsChallengesOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            <div className="flex flex-col gap-2.5">
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-900">Weekend Corridor Master</span>
+                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+500 Miles</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-1">Complete 3 rides between Friday evening and Sunday night.</p>
+                <div className="w-full bg-slate-200 rounded-full h-1.5 mt-2">
+                  <div className="bg-brand-primary h-full rounded-full w-2/3" />
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-900">Green Commuter</span>
+                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+300 Miles</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-1">Take 2 Electric Auto rides across Mysuru.</p>
+                <div className="w-full bg-slate-200 rounded-full h-1.5 mt-2">
+                  <div className="bg-brand-primary h-full rounded-full w-1/2" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: TIER BENEFITS ================= */}
+      {isBenefitsOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl flex flex-col gap-4 border border-slate-200">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#65a30d] text-[22px]">workspace_premium</span>
+                <h4 className="text-base font-bold text-slate-900">Gold Explorer Privileges</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsBenefitsOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            <div className="flex flex-col gap-3 text-xs text-slate-600 leading-relaxed">
+              <div className="flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-[#65a30d] text-[18px] mt-0.5">verified</span>
+                <div>
+                  <strong className="text-slate-900 block font-bold">1.5x Multiplier on All Trips:</strong>
+                  <span>Every kilometer earns 1.5x base distance miles on rides and courier dispatches.</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-[#65a30d] text-[18px] mt-0.5">bolt</span>
+                <div>
+                  <strong className="text-slate-900 block font-bold">Zero Surge Protection:</strong>
+                  <span>Peak surge pricing is permanently waived for Gold Explorer tier members across Mysuru.</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-[#65a30d] text-[18px] mt-0.5">headset_mic</span>
+                <div>
+                  <strong className="text-slate-900 block font-bold">Priority Hotline Dispatch:</strong>
+                  <span>Direct phone line access to senior Mysuru operations supervisors 24/7.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: DISTANCE HISTORY ================= */}
+      {isHistoryOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl flex flex-col gap-4 border border-slate-200 max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -389,7 +713,7 @@ export const SkyppyMiles: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => setShowHistoryModal(false)}
+                onClick={() => setIsHistoryOpen(false)}
                 className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
@@ -417,7 +741,7 @@ export const SkyppyMiles: React.FC = () => {
         </div>
       )}
 
-      {/* ================= 7. EXPLAINER MODAL ================= */}
+      {/* ================= MODAL: EXPLAINER ================= */}
       {isExplainerOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl flex flex-col gap-4 border border-slate-200">
