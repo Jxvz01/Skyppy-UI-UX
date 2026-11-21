@@ -8,7 +8,7 @@ test.describe('Skyppy Experience Redesign: Miles Orbit, Product Cohesion & Map E
   });
 
   test('01. Home Page renders signature Miles Orbit preview and navigates to Miles Hub', async ({ page }) => {
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify Home page branding
     await expect(page.locator('text=Skyppy').first()).toBeVisible();
@@ -28,7 +28,7 @@ test.describe('Skyppy Experience Redesign: Miles Orbit, Product Cohesion & Map E
 
   test('02. Skyppy Miles Hub renders complete signature Miles Orbit hero with all visual elements', async ({ page }) => {
     await page.goto('/miles');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify Header and Branding
     await expect(page.locator('text=Skyppy Miles').first()).toBeVisible();
@@ -52,7 +52,7 @@ test.describe('Skyppy Experience Redesign: Miles Orbit, Product Cohesion & Map E
 
   test('03. Miles interactive lifecycle: Earning simulation, and voucher redemption', async ({ page }) => {
     await page.goto('/miles');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // 1. Simulate ride earn
     const earnButton = page.getByRole('button', { name: 'Earn', exact: true });
@@ -67,7 +67,7 @@ test.describe('Skyppy Experience Redesign: Miles Orbit, Product Cohesion & Map E
 
   test('04. Map Experience: Custom desaturated tiles, bespoke markers, and glassmorphic controls', async ({ page }) => {
     await page.goto('/tracking');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify OpenStreetMap container and tiles
     const mapContainer = page.locator('.skyppy-osm-container');
@@ -114,12 +114,12 @@ test.describe('Skyppy Experience Redesign: Miles Orbit, Product Cohesion & Map E
   test('06. System Regression Protection: Courier and Driver Experience remain fully functional', async ({ page }) => {
     // Test Courier Experience
     await page.goto('/courier');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('text=Send a Parcel').first()).toBeVisible();
 
     // Test Driver Experience route
     await page.goto('/driver-view');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.getByText('Driver Partner').first()).toBeVisible();
     await expect(page.getByText('ONLINE').first()).toBeVisible();
     await expect(page.getByRole('button', { name: /Passenger App/i })).toBeVisible();

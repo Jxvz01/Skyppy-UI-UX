@@ -21,7 +21,7 @@ export const SkyppyMiles: React.FC = () => {
     navigate('/options');
   };
 
-  // Milestones definition exactly matching reference image
+  // Milestones definition matching reference image
   const progressMilestones = [
     { name: 'Rider', threshold: '0+', achieved: true },
     { name: 'Explorer', threshold: '5,000+', achieved: true },
@@ -31,11 +31,11 @@ export const SkyppyMiles: React.FC = () => {
   ];
 
   return (
-    <div className="flex-1 flex flex-col relative w-full pb-20 bg-[#fbf9f5] min-h-full font-sans text-slate-900 select-none">
+    <div className="w-full min-h-full flex flex-col bg-[#fbf9f5] font-sans text-slate-900 pb-36 select-none">
       {/* ================= 1. TOP NAVY HERO CONTAINER ================= */}
-      <div className="bg-gradient-to-b from-[#051122] via-[#08182f] to-[#0c2242] rounded-b-[36px] px-5 pt-3 pb-6 relative overflow-hidden shadow-2xl border-b border-blue-900/30">
+      <div className="w-full shrink-0 bg-gradient-to-b from-[#051122] via-[#08182f] to-[#0c2242] rounded-b-[36px] px-5 pt-3 pb-6 relative overflow-hidden shadow-2xl border-b border-blue-900/30">
         {/* Abstract Smooth Flowing Blue Ribbon / Wave Graphic */}
-        <div className="absolute right-0 top-0 bottom-6 w-[60%] pointer-events-none select-none overflow-hidden flex items-center justify-end">
+        <div className="absolute right-0 top-0 bottom-6 w-[62%] pointer-events-none select-none overflow-hidden flex items-center justify-end z-0">
           <img
             src="/miles/flowing-blue-wave.png"
             alt="Flowing Blue Wave"
@@ -124,7 +124,7 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* ================= 2. FOUR QUICK ACTION BUTTONS ================= */}
-      <div className="px-margin mt-4 grid grid-cols-4 gap-2.5">
+      <div className="w-full shrink-0 px-4 mt-5 grid grid-cols-4 gap-2.5">
         {/* Action 1: Earn */}
         <button
           type="button"
@@ -179,7 +179,7 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* ================= 3. FEATURED REWARDS SECTION ================= */}
-      <div className="px-margin mt-6 flex items-center justify-between mb-3">
+      <div className="w-full shrink-0 px-4 mt-6 flex items-center justify-between mb-3">
         <h2 className="text-base font-bold text-slate-900">
           {language === 'kn' ? t.rewardsCatalog : 'Featured rewards'}
         </h2>
@@ -194,7 +194,7 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* Primary Featured Reward: Landscape Card */}
-      <div className="mx-margin rounded-[24px] overflow-hidden bg-[#091322] border border-slate-800/80 shadow-md flex items-stretch justify-between relative min-h-[160px] mb-3">
+      <div className="shrink-0 mx-4 rounded-[24px] overflow-hidden bg-[#091322] border border-slate-800/80 shadow-md flex items-stretch justify-between relative min-h-[160px] mb-3">
         {/* Left Side: Ride Discount Info & Neon Button */}
         <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 z-10">
           <div>
@@ -236,7 +236,7 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* Secondary Rewards: Three Horizontally Aligned Smaller Cards */}
-      <div className="px-margin grid grid-cols-3 gap-2.5">
+      <div className="w-full shrink-0 px-4 grid grid-cols-3 gap-2.5">
         {/* Secondary 1: Courier */}
         <div className="bg-[#f4f0ec] rounded-[20px] p-3 flex flex-col justify-between border border-[#e8e2d8] shadow-2xs hover:bg-white transition-colors">
           <div className="w-full flex justify-end mb-1">
@@ -252,7 +252,7 @@ export const SkyppyMiles: React.FC = () => {
               showToast('₹100 Courier reward claimed!', 'success');
               navigate('/courier');
             }}
-            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs"
+            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs cursor-pointer"
           >
             <span>✦</span>
             <span>1,000 Miles</span>
@@ -271,7 +271,7 @@ export const SkyppyMiles: React.FC = () => {
           <button
             type="button"
             onClick={() => showToast('20% Brand partner discount code unlocked: SKYSOUND20', 'success')}
-            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs"
+            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs cursor-pointer"
           >
             <span>✦</span>
             <span>3,000 Miles</span>
@@ -290,7 +290,7 @@ export const SkyppyMiles: React.FC = () => {
           <button
             type="button"
             onClick={() => showToast('Café beverage coupon unlocked: BREWPASS', 'success')}
-            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs"
+            className="mt-2.5 bg-[#d4f84c] hover:bg-[#c6f135] active:scale-95 text-slate-950 text-[10px] font-extrabold py-1 px-2 rounded-full flex items-center justify-center gap-1 shadow-2xs cursor-pointer"
           >
             <span>✦</span>
             <span>1,200 Miles</span>
@@ -299,16 +299,16 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* ================= 4. WAYS TO EARN MILES SECTION ================= */}
-      <div className="px-margin mt-7 mb-3">
+      <div className="w-full shrink-0 px-4 mt-7 mb-3">
         <h2 className="text-base font-bold text-slate-900">Ways to earn Miles</h2>
       </div>
 
-      <div className="px-margin bg-[#fbf9f5] rounded-[24px] border border-[#eee8df] shadow-2xs divide-y divide-[#eee8df]/70 overflow-hidden">
+      <div className="shrink-0 mx-4 bg-[#fbf9f5] rounded-[24px] border border-[#eee8df] shadow-2xs divide-y divide-[#eee8df]/70 overflow-hidden">
         {/* Row 1: Take a Ride */}
         <button
           type="button"
           onClick={() => navigate('/search')}
-          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors cursor-pointer"
         >
           <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
             <span className="material-symbols-outlined text-[20px]">directions_car</span>
@@ -324,7 +324,7 @@ export const SkyppyMiles: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate('/courier')}
-          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors cursor-pointer"
         >
           <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
             <span className="material-symbols-outlined text-[20px]">inventory_2</span>
@@ -340,7 +340,7 @@ export const SkyppyMiles: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsReferralOpen(true)}
-          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors cursor-pointer"
         >
           <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
             <span className="material-symbols-outlined text-[20px]">group</span>
@@ -356,7 +356,7 @@ export const SkyppyMiles: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsChallengesOpen(true)}
-          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors"
+          className="w-full p-3.5 flex items-center justify-between gap-3 text-left hover:bg-white active:bg-slate-50 transition-colors cursor-pointer"
         >
           <div className="w-9 h-9 rounded-xl bg-[#ede8de] flex items-center justify-center text-slate-800 shrink-0">
             <span className="material-symbols-outlined text-[20px]">event_note</span>
@@ -370,11 +370,11 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* ================= 5. YOUR PROGRESS (HORIZONTAL MILESTONES) ================= */}
-      <div className="px-margin mt-7 mb-3">
+      <div className="w-full shrink-0 px-4 mt-7 mb-3">
         <h2 className="text-base font-bold text-slate-900">Your progress</h2>
       </div>
 
-      <div className="px-margin">
+      <div className="w-full shrink-0 px-4">
         <div className="bg-[#fbf9f5] rounded-[24px] p-4 border border-[#eee8df] shadow-2xs">
           {/* Milestone Nodes Connected by Horizontal Line */}
           <div className="relative flex items-center justify-between px-2 pt-2 pb-1">
@@ -415,21 +415,21 @@ export const SkyppyMiles: React.FC = () => {
       </div>
 
       {/* ================= 6. TIER BENEFITS — GOLD EXPLORER ================= */}
-      <div className="px-margin mt-7 flex items-center justify-between mb-3">
+      <div className="w-full shrink-0 px-4 mt-7 flex items-center justify-between mb-3">
         <h2 className="text-sm font-bold text-slate-900">
           Tier benefits — <span className="text-[#65a30d]">Gold Explorer</span>
         </h2>
         <button
           type="button"
           onClick={() => setIsBenefitsOpen(true)}
-          className="text-xs font-bold text-[#0042dd] flex items-center gap-0.5 hover:underline active:scale-95 transition-all"
+          className="text-xs font-bold text-[#0042dd] flex items-center gap-0.5 hover:underline active:scale-95 transition-all cursor-pointer"
         >
           <span>View all</span>
           <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
         </button>
       </div>
 
-      <div className="px-margin grid grid-cols-4 gap-2 mb-6">
+      <div className="w-full shrink-0 px-4 grid grid-cols-4 gap-2 mb-6">
         {/* Benefit 1: Higher rewards */}
         <div className="bg-[#f2eee7] rounded-[18px] p-2.5 flex flex-col items-center justify-center gap-1.5 border border-[#e5dfd3] shadow-2xs text-center">
           <span className="material-symbols-outlined text-slate-800 text-[18px]">sell</span>
@@ -467,7 +467,7 @@ export const SkyppyMiles: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsReferralOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
@@ -480,7 +480,7 @@ export const SkyppyMiles: React.FC = () => {
               <button
                 type="button"
                 onClick={() => showToast('Referral code copied to clipboard!', 'success')}
-                className="bg-[#0042dd] text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-xs active:scale-95"
+                className="bg-[#0042dd] text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-xs active:scale-95 cursor-pointer"
               >
                 Copy
               </button>
@@ -501,7 +501,7 @@ export const SkyppyMiles: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsChallengesOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
@@ -545,7 +545,7 @@ export const SkyppyMiles: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsBenefitsOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
@@ -589,7 +589,7 @@ export const SkyppyMiles: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsHistoryOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
@@ -628,7 +628,7 @@ export const SkyppyMiles: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsExplainerOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
@@ -656,7 +656,7 @@ export const SkyppyMiles: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsExplainerOpen(false)}
-              className="w-full py-3 rounded-xl bg-[#0042dd] text-white text-xs font-bold shadow-md active:scale-95 transition-transform mt-1"
+              className="w-full py-3 rounded-xl bg-[#0042dd] text-white text-xs font-bold shadow-md active:scale-95 transition-transform mt-1 cursor-pointer"
             >
               Got It, Let's Ride
             </button>
