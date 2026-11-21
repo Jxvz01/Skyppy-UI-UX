@@ -157,4 +157,5 @@ export type ModalType =
   | 'paymentMethods'
   | 'helpSupport'
   | 'tripCompleted'
-  | 'fareBreakdown';
+  | 'fareBreakdown'
+  | 'shareTrip';

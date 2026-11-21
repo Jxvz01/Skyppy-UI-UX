@@ -8,6 +8,7 @@ import { LocationSelection } from './pages/LocationSelection';
 import { RideOptions } from './pages/RideOptions';
 import { BookingConfirmation } from './pages/BookingConfirmation';
 import { LiveRideTracking } from './pages/LiveRideTracking';
+import { SharedTripView } from './pages/SharedTripView';
 import { SkyppyMiles } from './pages/SkyppyMiles';
 import { ActivityHistory } from './pages/ActivityHistory';
 import { Profile } from './pages/Profile';
@@ -57,6 +58,9 @@ const AppContent: React.FC = () => {
         <Route path="/options" element={<RideOptions />} />
         <Route path="/confirm" element={<BookingConfirmation />} />
         <Route path="/tracking" element={<LiveRideTracking />} />
+        <Route path="/share-trip" element={<SharedTripView />} />
+        <Route path="/share-trip/:id" element={<SharedTripView />} />
+        <Route path="/track/:id" element={<SharedTripView />} />
         <Route path="/miles" element={<SkyppyMiles />} />
         <Route path="/activity" element={<ActivityHistory />} />
         <Route path="/profile" element={<Profile />} />

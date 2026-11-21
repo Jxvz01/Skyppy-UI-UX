@@ -27,6 +27,24 @@ export interface DetailedFare {
   ratePerKm: number;
 }
 
+export interface TrustedContact {
+  id: string;
+  name: string;
+  phone: string;
+  relation: string;
+  selected: boolean;
+}
+
+export interface LiveTripShareState {
+  isSharing: boolean;
+  sharedAt: number | null;
+  shareToken: string | null;
+  contacts: TrustedContact[];
+  includeLiveLocation: boolean;
+  includeDriverDetails: boolean;
+  includeEta: boolean;
+}
+
 interface AppState {
   // Theme & Language
   theme: ThemeMode;
@@ -98,6 +116,15 @@ interface AppState {
   addSavedPlace: (place: LocationItem) => void;
   deleteSavedPlace: (id: string) => void;
   updateSavedPlace: (id: string, place: LocationItem) => void;
+
+  // Live Trip Safety & Location Sharing
+  liveTripShare: LiveTripShareState;
+  startTripShare: (contactIds?: string[]) => string;
+  stopTripShare: () => void;
+  toggleShareContact: (contactId: string) => void;
+  addTrustedContact: (name: string, phone: string, relation?: string) => void;
+  removeTrustedContact: (id: string) => void;
+  updateShareSettings: (settings: Partial<{ includeLiveLocation: boolean; includeDriverDetails: boolean; includeEta: boolean }>) => void;
 
   // Notifications
   notifications: NotificationItem[];
@@ -265,6 +292,12 @@ const DEFAULT_SAVED_PLACES: LocationItem[] = [
   { id: 'sp-2', title: 'Work', address: 'VVCE Campus, Gokulam 3rd Stage', icon: 'work', distanceKm: 0.5, isOrigin: true },
   { id: 'sp-3', title: 'Railway Station', address: 'Medar Block, Yadavagiri, Mysuru', icon: 'train', distanceKm: 6.1 },
   { id: 'sp-4', title: 'Mysuru Palace', address: 'Sayyaji Rao Rd, Agrahara', icon: 'castle', distanceKm: 5.8 }
+];
+
+const DEFAULT_TRUSTED_CONTACTS: TrustedContact[] = [
+  { id: 'tc-1', name: 'Ananya H. (Sister)', phone: '+91 98451 90812', relation: 'Sister', selected: true },
+  { id: 'tc-2', name: 'K. Venkatesh (Father)', phone: '+91 94480 87654', relation: 'Parent', selected: true },
+  { id: 'tc-3', name: 'Pooja Sharma (Colleague)', phone: '+91 99001 44521', relation: 'Friend', selected: false }
 ];
 
 const DEFAULT_HISTORY: RideHistoryItem[] = [
@@ -952,6 +985,105 @@ export const useAppStore = create<AppState>((set, get) => {
       get().showToast('Saved spot updated', 'success');
     },
 
+    liveTripShare: {
+      isSharing: false,
+      sharedAt: null,
+      shareToken: null,
+      contacts: DEFAULT_TRUSTED_CONTACTS,
+      includeLiveLocation: true,
+      includeDriverDetails: true,
+      includeEta: true
+    },
+
+    startTripShare: (contactIds?: string[]) => {
+      const active = get().activeBooking;
+      const bId = active?.bookingId || 'SKY784392';
+      const shareToken = `SAFE-${bId}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
+      const currentContacts = get().liveTripShare.contacts.map((c) => ({
+        ...c,
+        selected: contactIds ? contactIds.includes(c.id) : c.selected
+      }));
+
+      const activeContacts = currentContacts.filter((c) => c.selected);
+      const recipientText = activeContacts.length === 1
+        ? activeContacts[0].name
+        : `${activeContacts.length} trusted contacts`;
+
+      set((state) => ({
+        liveTripShare: {
+          ...state.liveTripShare,
+          isSharing: true,
+          sharedAt: Date.now(),
+          shareToken,
+          contacts: currentContacts
+        }
+      }));
+
+      const shareUrl = `${window.location.origin}/share-trip?token=${shareToken}&id=${bId}`;
+      get().showToast(`Live trip tracking shared with ${recipientText}!`, 'success');
+      return shareUrl;
+    },
+
+    stopTripShare: () => {
+      set((state) => ({
+        liveTripShare: {
+          ...state.liveTripShare,
+          isSharing: false,
+          sharedAt: null,
+          shareToken: null
+        }
+      }));
+      get().showToast('Live trip sharing stopped. Location updates disabled.', 'info');
+    },
+
+    toggleShareContact: (contactId: string) => {
+      set((state) => ({
+        liveTripShare: {
+          ...state.liveTripShare,
+          contacts: state.liveTripShare.contacts.map((c) =>
+            c.id === contactId ? { ...c, selected: !c.selected } : c
+          )
+        }
+      }));
+    },
+
+    addTrustedContact: (name: string, phone: string, relation = 'Contact') => {
+      const newContact: TrustedContact = {
+        id: 'tc-' + Date.now(),
+        name,
+        phone,
+        relation,
+        selected: true
+      };
+      set((state) => ({
+        liveTripShare: {
+          ...state.liveTripShare,
+          contacts: [...state.liveTripShare.contacts, newContact]
+        }
+      }));
+      get().showToast(`Added ${name} to trusted safety contacts`, 'success');
+    },
+
+    removeTrustedContact: (id: string) => {
+      set((state) => ({
+        liveTripShare: {
+          ...state.liveTripShare,
+          contacts: state.liveTripShare.contacts.filter((c) => c.id !== id)
+        }
+      }));
+      get().showToast('Trusted contact removed', 'info');
+    },
+
+    updateShareSettings: (settings) => {
+      set((state) => ({
+        liveTripShare: {
+          ...state.liveTripShare,
+          ...settings
+        }
+      }));
+    },
+
     notifications: [
       {
         id: 'notif-1',
@@ -1018,6 +1150,15 @@ export const useAppStore = create<AppState>((set, get) => {
         savedPlaces: DEFAULT_SAVED_PLACES,
         rideHistory: DEFAULT_HISTORY,
         activeBooking: null,
+        liveTripShare: {
+          isSharing: false,
+          sharedAt: null,
+          shareToken: null,
+          contacts: DEFAULT_TRUSTED_CONTACTS,
+          includeLiveLocation: true,
+          includeDriverDetails: true,
+          includeEta: true
+        },
         miles: defaultMiles,
         appliedCoupon: { code: 'MILES15', discount: 15 }
       });

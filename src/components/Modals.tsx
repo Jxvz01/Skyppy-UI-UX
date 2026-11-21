@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
+import { ShareLiveTripModal } from './ShareLiveTripModal';
 
 export const ModalsContainer: React.FC = () => {
   const navigate = useNavigate();
   const {
     activeModal,
     modalData,
+    openModal,
     closeModal,
     notifications,
     markNotificationsAsRead,
@@ -991,8 +993,7 @@ export const ModalsContainer: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  showToast(`Live ride location shared with ${userProfile.emergencyContactName}!`, 'success');
-                  closeModal();
+                  openModal('shareTrip');
                 }}
                 className="flex items-center gap-3 p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container transition-colors text-left"
               >
@@ -1001,7 +1002,7 @@ export const ModalsContainer: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-headline font-bold text-sm text-on-surface">
-                    Share with Emergency Contact
+                    Share Live Trip with Contacts
                   </h4>
                   <p className="text-xs text-on-surface-variant">
                     {userProfile.emergencyContactName} ({userProfile.emergencyContactPhone})
@@ -1297,6 +1298,9 @@ export const ModalsContainer: React.FC = () => {
           </div>
         );
       })()}
+
+      {/* SHARE LIVE TRIP SAFETY MODAL */}
+      <ShareLiveTripModal isOpen={activeModal === 'shareTrip'} onClose={closeModal} />
     </>
   );
 };

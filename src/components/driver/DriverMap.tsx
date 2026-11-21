@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useDriverStore } from '../../store/useDriverStore';
+import { FALLBACK_DRIVER_APPROACH, FALLBACK_TRIP_ROUTE } from '../../utils/roadRouting';
 
 interface DriverMapProps {
   className?: string;
@@ -39,22 +40,9 @@ export const DriverMap: React.FC<DriverMapProps> = ({
     activeRequest?.destination?.lng || 76.6436
   ];
 
-  // Route Waypoints for Navigating
-  const routeToPickup: [number, number][] = [
-    driverPos,
-    [12.3348, 76.6242], // Temple Rd
-    [12.3358, 76.6225], // Gokulam 3rd stage
-    pickupPos           // VVCE
-  ];
-
-  const routeToDest: [number, number][] = [
-    pickupPos,
-    [12.3348, 76.6242], // Kalidasa Rd
-    [12.3325, 76.6288], // Temple Rd Jn
-    [12.3282, 76.6355], // KRS Road Jn
-    [12.3228, 76.6425], // Cheluvamba Park
-    destPos             // Railway Station
-  ];
+  // Route Waypoints for Navigating along actual roads
+  const routeToPickup: [number, number][] = FALLBACK_DRIVER_APPROACH;
+  const routeToDest: [number, number][] = FALLBACK_TRIP_ROUTE;
 
   // Initialize Leaflet Map
   useEffect(() => {
@@ -119,7 +107,6 @@ export const DriverMap: React.FC<DriverMapProps> = ({
         color: '#0042dd',
         weight: 5,
         opacity: 0.95,
-        dashArray: '1, 10',
         lineCap: 'round',
         lineJoin: 'round'
       }).addTo(map);

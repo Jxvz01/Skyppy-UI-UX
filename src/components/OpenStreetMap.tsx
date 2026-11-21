@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { MYSURU_LANDMARKS, MysuruLocation } from '../utils/mysuruLocations';
+import { FALLBACK_DRIVER_APPROACH, FALLBACK_TRIP_ROUTE } from '../utils/roadRouting';
 
-export type MapMode = 'live-tracking' | 'route-preview' | 'picker' | 'confirmation-searching';
+export type MapMode = 'live-tracking' | 'route-preview' | 'picker' | 'confirmation-searching' | 'shared-tracking';
 
 export interface OpenStreetMapProps {
   mode?: MapMode;
@@ -20,39 +22,24 @@ export interface OpenStreetMapProps {
   interactive?: boolean;
   showControls?: boolean;
   showTransitPill?: boolean;
-  bottomSheetPadding?: number; // Dynamic offset in px so markers are never hidden by bottom sheet
+  bottomSheetPadding?: number;
+  // Dynamic Real Road Navigation Props
+  activeVehiclePosition?: [number, number];
+  activeVehicleHeading?: number;
+  activeRouteCoordinates?: [number, number][];
+  isApproachingPickup?: boolean;
+  streetName?: string;
 }
 
-// Real GPS Coordinates across Mysuru, Karnataka
-const DEFAULT_VVCE_PICKUP: [number, number] = [12.3364, 76.6213]; // Gokulam 3rd Stage
-const DEFAULT_JSS_DESTINATION: [number, number] = [12.3392, 76.6575]; // Bannimantap
-
-const ROUTE_WAYPOINTS: [number, number][] = [
-  [12.3364, 76.6213], // VVCE Gate 2
-  [12.3348, 76.6242], // Kalidasa Rd west
-  [12.3325, 76.6288], // Kalidasa / Temple Rd Jn
-  [12.3282, 76.6355], // KRS Road Jn
-  [12.3228, 76.6425], // Cheluvamba Park / Station approach
-  [12.3260, 76.6488], // Sayyaji Rao Rd
-  [12.3325, 76.6532], // Bannimantap Rd
-  [12.3392, 76.6575]  // JSS Hospital entrance
-];
-
-const STEP_POSITIONS: { pos: [number, number]; heading: number; street: string }[] = [
-  { pos: [12.3348, 76.6242], heading: 245, street: 'Kalidasa Rd' },
-  { pos: [12.3358, 76.6222], heading: 245, street: 'Temple Rd, Gokulam' },
-  { pos: [12.3364, 76.6213], heading: 35, street: 'VVCE Campus Gate 2' },
-  { pos: [12.3260, 76.6488], heading: 45, street: 'Sayyaji Rao Rd' },
-  { pos: [12.3392, 76.6575], heading: 40, street: 'JSS Hospital Bannimantap' }
-];
+// Default Mysuru Coordinates
+const DEFAULT_PICKUP: [number, number] = [12.3364, 76.6213]; // VVCE Gate 2, Gokulam
+const DEFAULT_DESTINATION: [number, number] = [12.3392, 76.6575]; // JSS Hospital, Bannimantap
 
 export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
   mode = 'live-tracking',
-  stepIndex = 0,
   speed = 24,
   driverName = 'Ramesh K.',
   vehicleCategory = 'auto',
-  isTrafficOn = true,
   onToast,
   className = 'w-full h-full',
   pickupLocation,
@@ -62,30 +49,61 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
   interactive = true,
   showControls = true,
   showTransitPill = true,
-  bottomSheetPadding
+  bottomSheetPadding,
+  activeVehiclePosition,
+  activeVehicleHeading,
+  activeRouteCoordinates,
+  isApproachingPickup = false,
+  streetName = 'Gokulam Road'
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const vehicleMarkerRef = useRef<L.Marker | null>(null);
-  const trafficLinesRef = useRef<L.Polyline[]>([]);
+  const routePolylineRef = useRef<L.Polyline | null>(null);
+  const routeCasingRef = useRef<L.Polyline | null>(null);
+  const pickupMarkerRef = useRef<L.Marker | null>(null);
+  const destMarkerRef = useRef<L.Marker | null>(null);
   const pickerMarkersRef = useRef<L.Marker[]>([]);
-  const [mapReady, setMapReady] = useState(false);
+
   const [isFollowingVehicle, setIsFollowingVehicle] = useState(true);
 
-  // Dynamic bottom sheet padding to guarantee pins & vehicle stay visible above bottom cards
+  // Dynamic bottom sheet padding to keep road elements visible
   const resolvedBottomPadding =
     bottomSheetPadding ??
-    (mode === 'live-tracking' ? 240 : mode === 'confirmation-searching' ? 220 : 70);
+    (mode === 'live-tracking' || mode === 'shared-tracking'
+      ? 240
+      : mode === 'confirmation-searching'
+      ? 220
+      : 70);
 
   const pickupCoords: [number, number] = [
-    pickupLocation?.lat ?? DEFAULT_VVCE_PICKUP[0],
-    pickupLocation?.lng ?? DEFAULT_VVCE_PICKUP[1]
+    pickupLocation?.lat ?? DEFAULT_PICKUP[0],
+    pickupLocation?.lng ?? DEFAULT_PICKUP[1]
   ];
 
   const destCoords: [number, number] = [
-    destinationLocation?.lat ?? DEFAULT_JSS_DESTINATION[0],
-    destinationLocation?.lng ?? DEFAULT_JSS_DESTINATION[1]
+    destinationLocation?.lat ?? DEFAULT_DESTINATION[0],
+    destinationLocation?.lng ?? DEFAULT_DESTINATION[1]
   ];
+
+  // Resolve road coordinates
+  const resolvedRoute: [number, number][] =
+    activeRouteCoordinates && activeRouteCoordinates.length > 1
+      ? activeRouteCoordinates
+      : isApproachingPickup
+      ? FALLBACK_DRIVER_APPROACH
+      : FALLBACK_TRIP_ROUTE;
+
+  const currentVehiclePos: [number, number] =
+    activeVehiclePosition ||
+    (isApproachingPickup
+      ? FALLBACK_DRIVER_APPROACH[0]
+      : resolvedRoute[0] || pickupCoords);
+
+  const currentVehicleHeading: number =
+    activeVehicleHeading !== undefined
+      ? activeVehicleHeading
+      : 45;
 
   const getVehicleIconName = () => {
     const cat = vehicleCategory.toLowerCase();
@@ -94,48 +112,37 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
     return 'directions_car';
   };
 
-  const currentStep = STEP_POSITIONS[stepIndex] || STEP_POSITIONS[0];
-
-  // Helper to build bespoke vehicle marker HTML with forward headlight beam
-  const buildVehicleHtml = (heading: number, street: string, curSpeed: number) => {
+  // Build clean, high-precision vehicle marker HTML with smooth rotation
+  const buildVehicleHtml = useCallback((heading: number, street: string, curSpeed: number) => {
     return `
-      <div class="relative flex flex-col items-center">
-        <!-- Forward Directional Headlight Beam Cone -->
-        <div class="absolute -top-7 w-12 h-14 pointer-events-none" style="transform: rotate(${heading}deg); transform-origin: center 42px;">
-          <svg viewBox="0 0 60 70" class="w-full h-full opacity-60">
-            <defs>
-              <linearGradient id="beamGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stop-color="#0042dd" stop-opacity="0.45"/>
-                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <polygon points="30,55 8,4 52,4" fill="url(#beamGrad)" />
-          </svg>
+      <div class="relative flex flex-col items-center select-none" style="filter: drop-shadow(0 4px 10px rgba(0,0,0,0.22));">
+        <!-- Forward Direction Indicator Chevron -->
+        <div class="absolute -top-3 w-4 h-4 flex items-center justify-center transition-transform duration-200 pointer-events-none" style="transform: rotate(${heading}deg); transform-origin: center 20px;">
+          <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[8px] border-b-[#0042dd]"></div>
         </div>
 
-        <!-- Vehicle High-Contrast Center Capsule -->
-        <div class="w-10 h-10 rounded-full bg-white shadow-xl border-2 border-[#0042dd] flex items-center justify-center ring-4 ring-[#0042dd]/20 relative z-10 transition-transform duration-300" style="transform: rotate(${heading}deg)">
+        <!-- High-Contrast Vehicle Capsule -->
+        <div class="w-10 h-10 rounded-full bg-white border-2 border-[#0042dd] flex items-center justify-center shadow-lg relative z-10 transition-transform duration-200" style="transform: rotate(${heading}deg);">
           <span class="material-symbols-outlined text-[20px] text-[#0042dd]">${getVehicleIconName()}</span>
         </div>
 
-        <!-- Live Driver Telemetry Badge -->
-        <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-950/90 backdrop-blur-md text-white text-[9px] font-bold shadow-xl whitespace-nowrap flex items-center gap-1.5 border border-slate-700/60 z-20">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <!-- Real-Time Telemetry Badge -->
+        <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/95 backdrop-blur-md text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1.5 border border-white/20 z-20 pointer-events-none">
+          <span class="w-1.5 h-1.5 rounded-full ${curSpeed > 0 ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}"></span>
           <span>${driverName.split(' ')[0]}</span>
-          <span class="text-slate-500">•</span>
+          <span class="text-slate-400">•</span>
           <span class="text-[#d4f84c] font-mono">${curSpeed} km/h</span>
-          <span class="text-slate-500">•</span>
-          <span class="text-slate-300 max-w-[80px] truncate">${street}</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-slate-200 max-w-[85px] truncate">${street}</span>
         </div>
       </div>
     `;
-  };
+  }, [driverName, vehicleCategory]);
 
-  // Initialize Leaflet Map with High-Resolution OpenStreetMap Tiles
+  // Initialize Leaflet Map
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Clean up any stale instances
     if (mapInstanceRef.current) {
       mapInstanceRef.current.remove();
       mapInstanceRef.current = null;
@@ -145,9 +152,9 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
       const centerCoord: [number, number] =
         mode === 'picker' && selectedLocation?.gps
           ? [selectedLocation.gps.lat, selectedLocation.gps.lng]
-          : [12.3340, 76.6394];
+          : currentVehiclePos;
 
-      const initialZoom = mode === 'picker' ? 14 : mode === 'confirmation-searching' ? 13 : 14;
+      const initialZoom = mode === 'picker' ? 14 : mode === 'confirmation-searching' ? 14 : 15;
 
       const map = L.map(containerRef.current, {
         center: centerCoord,
@@ -161,55 +168,44 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         boxZoom: interactive
       });
 
-      // Official High-Quality OpenStreetMap Tiles (Clean, Restrained, Desaturated Mobility Aesthetic)
+      // OpenStreetMap Standard Tiles
       const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
       L.tileLayer(tileUrl, {
         subdomains: ['a', 'b', 'c'],
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      // Route polyline (Signature Skyppy Royal Blue layered transit track)
-      if (mode !== 'picker') {
-        // Glowing base polyline
-        L.polyline(ROUTE_WAYPOINTS, {
-          color: '#0042dd',
-          weight: 12,
-          opacity: 0.22,
+      // Clean, Believable Road Route (No tacky neon overlays or fake lines)
+      if (mode !== 'picker' && resolvedRoute.length > 1) {
+        // Subtle road casing/shadow for contrast against map roads
+        routeCasingRef.current = L.polyline(resolvedRoute, {
+          color: '#0a2368',
+          weight: 7,
+          opacity: 0.35,
           lineCap: 'round',
           lineJoin: 'round'
         }).addTo(map);
 
-        // Core solid polyline
-        L.polyline(ROUTE_WAYPOINTS, {
+        // Primary road polyline: Clean Skyppy Royal Blue
+        routePolylineRef.current = L.polyline(resolvedRoute, {
           color: '#0042dd',
           weight: 5,
           opacity: 0.95,
           lineCap: 'round',
           lineJoin: 'round'
         }).addTo(map);
-
-        // Center dash highlight
-        L.polyline(ROUTE_WAYPOINTS, {
-          color: '#d4ee66',
-          weight: 2,
-          opacity: 0.8,
-          dashArray: '4, 8',
-          lineCap: 'round',
-          lineJoin: 'round'
-        }).addTo(map);
       }
 
-      // Bespoke Pickup Origin Marker
+      // Pickup Origin Marker
       if (mode !== 'picker') {
         const pickupLabel = pickupLocation?.title?.split(',')[0] || 'VVCE Gate 2';
         const pickupIcon = L.divIcon({
           className: 'custom-osm-pickup',
           html: `
-            <div class="relative flex flex-col items-center">
-              <div class="w-8 h-8 rounded-full bg-emerald-500/25 animate-ping absolute -top-1"></div>
-              <div class="w-6 h-6 rounded-full bg-emerald-600 border-2 border-white shadow-lg flex items-center justify-center text-white ring-2 ring-emerald-500/30">
+            <div class="relative flex flex-col items-center select-none">
+              <div class="w-7 h-7 rounded-full bg-emerald-500/25 animate-ping absolute -top-0.5"></div>
+              <div class="w-6 h-6 rounded-full bg-emerald-600 border-2 border-white shadow-md flex items-center justify-center text-white ring-2 ring-emerald-500/30">
                 <span class="w-2 h-2 rounded-full bg-white"></span>
               </div>
               <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/90 backdrop-blur-md text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/20">
@@ -220,71 +216,77 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
               </div>
             </div>
           `,
-          iconSize: [120, 52],
-          iconAnchor: [60, 26]
+          iconSize: [120, 50],
+          iconAnchor: [60, 25]
         });
 
-        L.marker(pickupCoords, { icon: pickupIcon }).addTo(map);
+        pickupMarkerRef.current = L.marker(pickupCoords, {
+          icon: pickupIcon,
+          zIndexOffset: 800
+        }).addTo(map);
 
-        // Bespoke Destination Marker (Skyppy Royal Blue Pin)
-        const destLabel = destinationLocation?.title?.split(',')[0] || 'JSS Hospital';
-        const destIcon = L.divIcon({
-          className: 'custom-osm-dest',
-          html: `
-            <div class="relative flex flex-col items-center">
-              <div class="w-8 h-8 rounded-full bg-blue-600/25 animate-ping absolute -top-1"></div>
-              <div class="w-6 h-6 rounded-full bg-[#0042dd] border-2 border-white shadow-lg flex items-center justify-center text-white ring-2 ring-blue-500/30">
-                <span class="w-2 h-2 rounded-full bg-white"></span>
+        // Destination Marker (Displayed during trip or route-preview)
+        if (!isApproachingPickup || mode === 'route-preview') {
+          const destLabel = destinationLocation?.title?.split(',')[0] || 'JSS Hospital';
+          const destIcon = L.divIcon({
+            className: 'custom-osm-dest',
+            html: `
+              <div class="relative flex flex-col items-center select-none">
+                <div class="w-6 h-6 rounded-full bg-[#0042dd] border-2 border-white shadow-md flex items-center justify-center text-white ring-2 ring-blue-500/30">
+                  <span class="material-symbols-outlined text-[13px]">flag</span>
+                </div>
+                <div class="mt-1 px-2.5 py-0.5 rounded-full bg-[#0042dd] text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                  <span>DESTINATION</span>
+                  <span class="text-blue-200">•</span>
+                  <span class="text-white">${destLabel}</span>
+                </div>
               </div>
-              <div class="mt-1 px-2.5 py-0.5 rounded-full bg-[#0042dd] text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/30">
-                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                <span>DESTINATION</span>
-                <span class="text-blue-200">•</span>
-                <span class="text-white">${destLabel}</span>
-              </div>
-            </div>
-          `,
-          iconSize: [130, 52],
-          iconAnchor: [65, 26]
-        });
+            `,
+            iconSize: [130, 50],
+            iconAnchor: [65, 25]
+          });
 
-        L.marker(destCoords, { icon: destIcon }).addTo(map);
+          destMarkerRef.current = L.marker(destCoords, {
+            icon: destIcon,
+            zIndexOffset: 750
+          }).addTo(map);
+        }
       }
 
-      // MODE: LIVE TRACKING - Bespoke Vehicle Marker with Spotlight
-      if (mode === 'live-tracking') {
-        const initialStep = STEP_POSITIONS[0];
+      // Live Tracking Vehicle Marker
+      if (mode === 'live-tracking' || mode === 'shared-tracking') {
         const vehicleDivIcon = L.divIcon({
           className: 'custom-osm-vehicle',
-          html: buildVehicleHtml(initialStep.heading, initialStep.street, speed),
+          html: buildVehicleHtml(currentVehicleHeading, streetName, speed),
           iconSize: [140, 62],
           iconAnchor: [70, 31]
         });
 
-        vehicleMarkerRef.current = L.marker(initialStep.pos, {
+        vehicleMarkerRef.current = L.marker(currentVehiclePos, {
           icon: vehicleDivIcon,
           zIndexOffset: 1000
         }).addTo(map);
       }
 
-      // MODE: CONFIRMATION SEARCHING - Animated Radar Pulse Scan
+      // Mode: Confirmation Searching
       if (mode === 'confirmation-searching') {
         const searchIcon = L.divIcon({
           className: 'custom-osm-searching-car',
           html: `
-            <div class="relative flex flex-col items-center">
-              <div class="w-12 h-12 rounded-full bg-[#0042dd]/20 animate-ping absolute -top-2"></div>
+            <div class="relative flex flex-col items-center select-none">
+              <div class="w-11 h-11 rounded-full bg-[#0042dd]/20 animate-ping absolute -top-1.5"></div>
               <div class="w-9 h-9 rounded-full bg-white shadow-xl border-2 border-[#0042dd] flex items-center justify-center ring-2 ring-[#0042dd]/20">
                 <span class="material-symbols-outlined text-[19px] text-[#0042dd]">local_taxi</span>
               </div>
               <div class="mt-1.5 px-3 py-0.5 rounded-full bg-[#0042dd] text-white text-[9px] font-bold shadow-md whitespace-nowrap flex items-center gap-1 border border-white/30">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#d4f84c] animate-pulse"></span>
-                <span>Dispatching Driver...</span>
+                <span>Connecting Nearby Driver...</span>
               </div>
             </div>
           `,
-          iconSize: [130, 52],
-          iconAnchor: [65, 26]
+          iconSize: [140, 52],
+          iconAnchor: [70, 26]
         });
 
         const midPoint: [number, number] = [
@@ -294,7 +296,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         L.marker(midPoint, { icon: searchIcon, zIndexOffset: 900 }).addTo(map);
       }
 
-      // MODE: PICKER - Landmark Pins across Mysuru
+      // Mode: Picker (City Landmarks)
       if (mode === 'picker') {
         pickerMarkersRef.current = [];
         MYSURU_LANDMARKS.forEach((lm) => {
@@ -303,14 +305,14 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
           const markerIcon = L.divIcon({
             className: `picker-pin-${lm.id}`,
             html: `
-              <div class="relative flex flex-col items-center cursor-pointer group">
+              <div class="relative flex flex-col items-center cursor-pointer select-none">
                 <div class="w-7 h-7 rounded-full ${
                   isSelected ? 'bg-[#0042dd] ring-4 ring-[#0042dd]/30' : 'bg-slate-800 hover:bg-[#0042dd]'
                 } text-white shadow-lg flex items-center justify-center transition-all">
                   <span class="material-symbols-outlined text-[15px]">location_on</span>
                 </div>
                 <div class="mt-1 px-2 py-0.5 rounded-full ${
-                  isSelected ? 'bg-[#0042dd] text-white' : 'bg-white/90 text-slate-800'
+                  isSelected ? 'bg-[#0042dd] text-white' : 'bg-white/95 text-slate-800'
                 } text-[9px] font-bold shadow-md whitespace-nowrap border border-slate-200">
                   ${lm.title.split(',')[0]}
                 </div>
@@ -329,7 +331,6 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
           pickerMarkersRef.current.push(marker);
         });
 
-        // Click anywhere to pick location
         map.on('click', (e: L.LeafletMouseEvent) => {
           let nearest = MYSURU_LANDMARKS[0];
           let minDist = Infinity;
@@ -346,22 +347,32 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         });
       }
 
-      // Intelligent Camera Framing with Dynamic Bottom Sheet Padding
+      // Initial Camera Framing
       if (mode !== 'picker') {
-        const bounds = L.latLngBounds([pickupCoords, destCoords]);
-        map.fitBounds(bounds, {
-          paddingTopLeft: [30, 40],
-          paddingBottomRight: [30, resolvedBottomPadding]
-        });
+        if (isApproachingPickup) {
+          // Frame Driver and Pickup point
+          const bounds = L.latLngBounds([currentVehiclePos, pickupCoords]);
+          map.fitBounds(bounds, {
+            paddingTopLeft: [40, 40],
+            paddingBottomRight: [40, resolvedBottomPadding],
+            maxZoom: 16
+          });
+        } else {
+          // Frame Vehicle/Pickup and Destination
+          const bounds = L.latLngBounds([currentVehiclePos, destCoords]);
+          map.fitBounds(bounds, {
+            paddingTopLeft: [30, 40],
+            paddingBottomRight: [30, resolvedBottomPadding],
+            maxZoom: 16
+          });
+        }
       }
 
       mapInstanceRef.current = map;
-      setMapReady(true);
 
-      // Force layout invalidation once DOM is mounted
       setTimeout(() => {
         map.invalidateSize();
-      }, 200);
+      }, 150);
     } catch (e) {
       console.warn('Leaflet OpenStreetMap initialization warning:', e);
     }
@@ -372,65 +383,54 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         mapInstanceRef.current = null;
       }
     };
-  }, [mode, pickupLocation?.title, destinationLocation?.title, resolvedBottomPadding]);
+  }, [
+    mode,
+    pickupLocation?.title,
+    destinationLocation?.title,
+    isApproachingPickup,
+    resolvedBottomPadding
+  ]);
 
-  // Update vehicle position, heading, and telemetry during Live Tracking
-  useEffect(() => {
-    if (mode !== 'live-tracking' || !mapInstanceRef.current || !vehicleMarkerRef.current) return;
-
-    vehicleMarkerRef.current.setLatLng(currentStep.pos);
-
-    const vehicleDivIcon = L.divIcon({
-      className: 'custom-osm-vehicle',
-      html: buildVehicleHtml(currentStep.heading, currentStep.street, speed),
-      iconSize: [140, 62],
-      iconAnchor: [70, 31]
-    });
-
-    vehicleMarkerRef.current.setIcon(vehicleDivIcon);
-
-    if (isFollowingVehicle) {
-      mapInstanceRef.current.panTo(currentStep.pos, { animate: true, duration: 0.6 });
-    }
-  }, [mode, stepIndex, speed, driverName, vehicleCategory, currentStep, isFollowingVehicle]);
-
-  // Traffic Layer Toggle
+  // Update dynamic route line if activeRouteCoordinates change
   useEffect(() => {
     if (!mapInstanceRef.current || mode === 'picker') return;
 
-    trafficLinesRef.current.forEach((line) => line.remove());
-    trafficLinesRef.current = [];
-
-    if (isTrafficOn) {
-      const freeFlowSegment = L.polyline(
-        [
-          [12.3364, 76.6213],
-          [12.3348, 76.6242],
-          [12.3325, 76.6288]
-        ],
-        { color: '#22c55e', weight: 4, opacity: 0.9, lineCap: 'round' }
-      ).addTo(mapInstanceRef.current);
-
-      const moderateSegment = L.polyline(
-        [
-          [12.3282, 76.6355],
-          [12.3228, 76.6425],
-          [12.3260, 76.6488]
-        ],
-        { color: '#f59e0b', weight: 4, opacity: 0.9, lineCap: 'round' }
-      ).addTo(mapInstanceRef.current);
-
-      const freeFlowEnd = L.polyline(
-        [
-          [12.3325, 76.6532],
-          [12.3392, 76.6575]
-        ],
-        { color: '#22c55e', weight: 4, opacity: 0.9, lineCap: 'round' }
-      ).addTo(mapInstanceRef.current);
-
-      trafficLinesRef.current = [freeFlowSegment, moderateSegment, freeFlowEnd];
+    if (routePolylineRef.current) {
+      routePolylineRef.current.setLatLngs(resolvedRoute);
     }
-  }, [isTrafficOn, mapReady, mode]);
+    if (routeCasingRef.current) {
+      routeCasingRef.current.setLatLngs(resolvedRoute);
+    }
+  }, [resolvedRoute, mode]);
+
+  // Update vehicle position, heading, and telemetry smoothly along roads
+  useEffect(() => {
+    if ((mode !== 'live-tracking' && mode !== 'shared-tracking') || !mapInstanceRef.current) return;
+
+    if (vehicleMarkerRef.current) {
+      vehicleMarkerRef.current.setLatLng(currentVehiclePos);
+
+      const vehicleDivIcon = L.divIcon({
+        className: 'custom-osm-vehicle',
+        html: buildVehicleHtml(currentVehicleHeading, streetName, speed),
+        iconSize: [140, 62],
+        iconAnchor: [70, 31]
+      });
+      vehicleMarkerRef.current.setIcon(vehicleDivIcon);
+    }
+
+    if (isFollowingVehicle) {
+      mapInstanceRef.current.panTo(currentVehiclePos, { animate: true, duration: 0.3 });
+    }
+  }, [
+    mode,
+    currentVehiclePos,
+    currentVehicleHeading,
+    speed,
+    streetName,
+    isFollowingVehicle,
+    buildVehicleHtml
+  ]);
 
   // Map Controls
   const handleZoomIn = () => {
@@ -445,14 +445,14 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
 
   const handleRecenter = () => {
     if (!mapInstanceRef.current) return;
-    if (mode === 'live-tracking') {
+    if (mode === 'live-tracking' || mode === 'shared-tracking') {
       setIsFollowingVehicle(true);
-      mapInstanceRef.current.panTo(currentStep.pos, { animate: true, duration: 0.5 });
-      onToast?.(`Follow lock: Centered on ${driverName}`);
+      mapInstanceRef.current.panTo(currentVehiclePos, { animate: true, duration: 0.4 });
+      onToast?.(`Centered on ${driverName}`);
     } else if (mode === 'picker' && selectedLocation?.gps) {
       mapInstanceRef.current.panTo([selectedLocation.gps.lat, selectedLocation.gps.lng], {
         animate: true,
-        duration: 0.5
+        duration: 0.4
       });
       onToast?.(`Centered on ${selectedLocation.title}`);
     } else {
@@ -461,7 +461,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
         paddingTopLeft: [30, 40],
         paddingBottomRight: [30, resolvedBottomPadding]
       });
-      onToast?.('Route re-centered on live corridor');
+      onToast?.('Route re-centered');
     }
   };
 
@@ -470,7 +470,7 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
       {/* Leaflet Map DOM Node */}
       <div ref={containerRef} className="w-full h-full bg-[#f4f6fa] skyppy-osm-tiles" />
 
-      {/* Top Demo Simulation Status Pill */}
+      {/* Real-Time Mobility Corridor Pill */}
       {showTransitPill && (
         <div className="absolute top-3.5 left-3.5 z-[400] flex items-center gap-2 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-slate-200/80 pointer-events-auto">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
@@ -491,21 +491,21 @@ export const OpenStreetMap: React.FC<OpenStreetMapProps> = ({
             <span className="text-red-500 font-bold">N</span>
           </div>
 
-          {/* Follow Driver Lock Toggle (in live tracking mode) */}
-          {mode === 'live-tracking' && (
+          {/* Follow Driver Lock Toggle */}
+          {(mode === 'live-tracking' || mode === 'shared-tracking') && (
             <button
               type="button"
               aria-label={isFollowingVehicle ? 'Unlock free pan' : 'Lock follow driver'}
               onClick={() => {
                 setIsFollowingVehicle(!isFollowingVehicle);
-                onToast?.(isFollowingVehicle ? 'Camera unlocked: Free pan' : 'Camera locked: Following driver');
+                onToast?.(isFollowingVehicle ? 'Camera unlocked: Free pan' : 'Camera locked: Following vehicle');
               }}
               className={`w-9 h-9 rounded-full shadow-md border backdrop-blur-md flex items-center justify-center transition-all active:scale-95 cursor-pointer ${
                 isFollowingVehicle
                   ? 'bg-[#0042dd] text-white border-blue-400'
                   : 'bg-white/90 text-slate-700 border-slate-200 hover:bg-white'
               }`}
-              title={isFollowingVehicle ? 'Camera locked to driver' : 'Free camera'}
+              title={isFollowingVehicle ? 'Camera locked to vehicle' : 'Free camera'}
             >
               <span className="material-symbols-outlined text-[17px]">
                 {isFollowingVehicle ? 'gps_fixed' : 'gps_not_fixed'}
